@@ -1,0 +1,42 @@
+{
+  "headerTitle": "BlinkenRocket DE",
+  "animation": {
+    "new": "Neu {{type}}",
+    "text": "Text",
+    "animation": "Animation",
+    "pixel": "Animation"
+  },
+  "textEditor": {
+    "name": "Name des Textes",
+    "textPlaceholder": "Angezeigter Text",
+    "title": "Text Editor",
+    "speed": "Geschwindigkeit",
+    "delay": "Wartezeit am Ende",
+    "rtl": "Rechts-nach-Links",
+    "livePreview": "Simulation"
+  },
+  "pixelEditor": {
+    "name": "Name der Animation",
+    "title": "Animations Editor",
+    "speed": "Geschwindigkeit",
+    "delay": "Wartezeit am Ende",
+    "nextFrame": "Nächstes Bild",
+    "previousFrame": "Vorheriges Bild"
+  },
+  "menu": {
+    "transfer": "Übertragen",
+    "new": "Neu",
+    "addAnimation": "Neue Animation",
+    "addText": "Neuer Text"
+  },
+  "dialog": {
+    "cancel": "Abbrechen",
+    "transfer": "Übertragen",
+    "submit": "Übertragen",
+    "title": "Daten Übertragen",
+    "instructions0": "Bitte schalte deine BlinkenRocket an",
+    "instructions1": "Verbinde das Audio-Kabel mit deinem Computer und deiner BlinkenRocket",
+    "instructions2": "Stelle die Lautstärke auf das Maxmimum!",
+    "instructions3": "Drücke auf den Übertragen-Button"
+  }
+}

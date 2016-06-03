@@ -1,0 +1,42 @@
+{
+  "headerTitle": "BlinkenRocket",
+  "animation": {
+    "new": "New {{type}}",
+    "text": "Text",
+    "animation": "Animation",
+    "pixel": "Animation"
+  },
+  "textEditor": {
+    "name": "Text Name",
+    "textPlaceholder": "Text to display",
+    "title": "Text Editor",
+    "speed": "Scroll Speed",
+    "delay": "Delay in Seconds",
+    "rtl": "right To left",
+    "livePreview": "live Preview"
+  },
+  "pixelEditor": {
+    "name": "Animation Name",
+    "title": "Animation Editor",
+    "speed": "Animation Speed",
+    "delay": "Delay in Seconds",
+    "nextFrame": "Next Frame",
+    "previousFrame": "Previous Frame"
+  },
+  "menu": {
+    "transfer": "Transfer",
+    "new": "New",
+    "addAnimation": "New Animation",
+    "addText": "New Text"
+  },
+  "dialog": {
+    "cancel": "Cancel",
+    "transfer": "Transfer",
+    "submit": "Submit",
+    "title": "Transfer your data",
+    "instructions0": "Please turn on your BlinkenRocket",
+    "instructions1": "Connect the audio cable to the computer and your BlinkenRocket",
+    "instructions2": "Turn up the volume to maximum!",
+    "instructions3": "Click the transfer button"
+  }
+}

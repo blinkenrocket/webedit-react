@@ -1,0 +1,11 @@
+declare interface Animation {
+  id: string,
+  delay?: number,
+  direction?: 0|1,
+  name: string,
+  speed?: number,
+  text: string,
+  creationDate: number,
+  type: 'text'|'pixel',
+  animation: {length: number, currentFrame: number, frames: number, data: number[]},
+}
