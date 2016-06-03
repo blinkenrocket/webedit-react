@@ -1,0 +1,49 @@
+[ignore]
+.*node_modules/babel.*
+.*node_modules/fbjs/.*
+.*node_modules/react/.*
+.*interfaces/public/\.git.*
+.*\.json
+
+[include]
+src/
+
+[libs]
+_Interfaces/
+node_modules/iflow-radium/index.js.flow
+node_modules/iflow-bluebird/index.js.flow
+node_modules/iflow-react-redux/index.js.flow
+node_modules/iflow-react-router/index.js.flow
+node_modules/iflow-redux-actions/index.js.flow
+node_modules/iflow-immutable/index.js.flow
+node_modules/iflow-immutable/devtools.js.flow
+node_modules/iflow-lodash/index.js.flow
+node_modules/iflow-audiocontext/index.js.flow
+node_modules/iflow-i18next/index.js.flow
+node_modules/iflow-material-ui/index.js.flow
+node_modules/iflow-core-decorators/index.js.flow
+node_modules/iflow-uuid-js/index.js.flow
+
+[options]
+traces=5
+module.name_mapper='^.*\.css$' -> 'ModuleStub'
+module.name_mapper='^.*\.svg$' -> 'ModuleStub'
+module.name_mapper='^@mohayonao/web-audio-api-shim$' -> 'ModuleStub'
+module.name_mapper='^redux$' -> 'ModuleStub'
+module.name_mapper='^babel-polyfill$' -> 'ModuleStub'
+module.name_mapper='^svg-inline-react$' -> 'ModuleStub'
+module.name_mapper='^redux-promise$' -> 'ModuleStub'
+module.name_mapper='^react-tap-event-plugin$' -> 'ModuleStub'
+module.system=haste
+module.system.node.resolve_dirname=.
+esproposal.decorators=ignore
+esproposal.class_static_fields=enable
+esproposal.class_instance_fields=enable
+unsafe.enable_getters_and_setters=true
+experimental.const_params=true
+esproposal.export_star_as=enable
+module.ignore_non_literal_requires=true
+
+suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-0]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\(site=[a-z,_]*react_native[a-z,_]*\\)?)\\)
+suppress_comment=\\(.\\|\n\\)*\\$FlowIssue\\((\\(>=0\\.\\(2[0-0]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\(site=[a-z,_]*react_native[a-z,_]*\\)?)\\)?:? #[0-9]+
+suppress_comment=\\(.\\|\n\\)*\\$FlowFixedInNextDeploy
