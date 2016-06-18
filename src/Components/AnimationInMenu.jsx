@@ -44,7 +44,7 @@ export default class AnimationInMenu extends React.Component {
         primaryText={animation.name}
         secondaryText={(animation.type === 'pixel') ? t('animation.animation') : t('animation.text')}
         onTouchTap={this.selectAnimation}
-        style={selected && { backgroundColor: '#e0e0e0' }} />
+        style={selected ? { backgroundColor: '#e0e0e0' } : {}} />
     );
   }
 }

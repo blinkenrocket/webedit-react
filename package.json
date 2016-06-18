@@ -5,7 +5,7 @@
   "scripts": {
     "test": "npm run build && npm run lint && flow",
     "gh-pages": "NODE_ENV=production BASE_URL=webedit-react/ webpack",
-    "start": "BABEL_ENV=hot webpack-dev-server --host 0.0.0.0 --hot --inline --progress --history-api-fallbacck --content-base www",
+    "start": "BABEL_ENV=hot webpack-dev-server --host 0.0.0.0 --hot --inline --progress --history-api-fallback --content-base www",
     "dev": "webpack-dev-server --inline --progress --history-api-fallback --content-base www",
     "lint": "eslint src/**/*.js && eslint src/**/*.jsx",
     "build": "webpack"
