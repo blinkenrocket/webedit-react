@@ -71,6 +71,14 @@ export default class RightMenu extends React.Component {
       isOpen: false,
     });
   }
+  @autobind
+  share() {
+    const selectedAnimation = this.context.store.getState().selectedAnimation,
+          encodedAnimation = btoa(JSON.stringify(selectedAnimation)),
+          shareUrl = `/${encodedAnimation}`;
+
+    console.log(shareUrl);
+  }
   new() {
     reset();
   }
@@ -91,6 +99,7 @@ export default class RightMenu extends React.Component {
 
     return (
       <div style={style.wrap}>
+        <RaisedButton label={t('menu.share')} onClick={this.share} primary style={style.button}/>
         <RaisedButton label={t('menu.new')} onClick={this.new} primary style={style.button}/>
         <RaisedButton label={t('menu.transfer')} onClick={this.transfer} primary style={style.button}/>
         {/*<FlatButton label="Save" icon={<FontIcon className=" fa fa-floppy-o"/>}/>

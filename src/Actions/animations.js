@@ -18,6 +18,8 @@ export const addNewAnimation = createAction('ADD_ANIMATION', (type: string) => (
   animation: { data: EMPTY_DATA, currentFrame: 0, frames: 1, length: 1 },
 }));
 
+export const addAnimation = createAction('ADD_ANIMATION', (animation: Animation) => animation);
+
 export const selectAnimation = createAction('SELECT_ANIMATION', (animation: Animation) => animation);
 
 export const updateAnimation = createAction('UPDATE_ANIMATION', (animation: Animation) => animation);

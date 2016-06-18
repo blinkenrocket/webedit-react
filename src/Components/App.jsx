@@ -47,11 +47,21 @@ reduxActions.createAction = (function(old) {
 }(reduxActions.createAction));
 
 const Webedit = require('./Webedit').default;
+const addAnimation = require('../Actions/animations').addAnimation;
 export default class App extends React.Component {
   static childContextTypes = {
     store: React.PropTypes.any,
   };
   getChildContext(): Object {
+    /* If an encoded animation is passed via the URL, try to decode and import
+     * it to the local application state
+     */
+    const encodedAnimation = this.props.params.encodedAnimation;
+    if (encodedAnimation) {
+      const decodedAnimation = JSON.parse(atob(encodedAnimation));
+      addAnimation(decodedAnimation);
+    }
+
     return {
       store,
     };

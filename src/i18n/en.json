@@ -24,6 +24,7 @@
     "previousFrame": "Previous Frame"
   },
   "menu": {
+    "share": "Share",
     "transfer": "Transfer",
     "new": "New",
     "addAnimation": "New Animation",

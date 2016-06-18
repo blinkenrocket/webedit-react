@@ -24,6 +24,7 @@
     "previousFrame": "Vorheriges Bild"
   },
   "menu": {
+    "share": "Teilen",
     "transfer": "Übertragen",
     "new": "Neu",
     "addAnimation": "Neue Animation",
