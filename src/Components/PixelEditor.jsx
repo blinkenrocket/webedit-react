@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Slider, FlatButton, LinearProgress } from 'material-ui';
+import { TextField, Slider, FlatButton } from 'material-ui';
 import { updateAnimation } from 'Actions/animations';
 import PixelPreview from './PixelPreview';
 import { autobind } from 'core-decorators';
@@ -10,7 +10,7 @@ import AvSkipPrevious from 'material-ui/svg-icons/av/skip-previous';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
 import { MAX_ANIMATION_FRAMES } from '../variables';
 import { List } from 'immutable';
-import { padStart, flatten, range } from 'lodash';
+import { range } from 'lodash';
 
 const style = {
   noShrink: {
@@ -92,7 +92,6 @@ export default class PixelEditor extends React.Component {
   @autobind
   handleNextFrame() {
     const { animation } = this.props;
-    console.log(animation);
     // check whether next frame would violate the MAX_ANIMATION_FRAMES limit
     if (animation.animation.currentFrame + 1 === MAX_ANIMATION_FRAMES - 1) {
       return;
@@ -164,8 +163,6 @@ export default class PixelEditor extends React.Component {
     const { animation } = this.props;
     // for safety reasons
     animation.animation.data = List(animation.animation.data);
-
-    console.log(`Someone clicked: x: ${x} y: ${y}!`);
 
     // this is just a number, make it binary:
     let column = animation.animation.data.get(8 * animation.animation.currentFrame + x);

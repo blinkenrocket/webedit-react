@@ -1,3 +1,5 @@
+import { List } from 'immutable';
+
 declare interface Animation {
   id: string,
   delay?: number,
@@ -7,5 +9,10 @@ declare interface Animation {
   text: string,
   creationDate: number,
   type: 'text'|'pixel',
-  animation: {length: number, currentFrame: number, frames: number, data: number[]},
+  animation: {
+    length: number,
+    currentFrame: number,
+    frames: number,
+    data: List<number>,
+  },
 }

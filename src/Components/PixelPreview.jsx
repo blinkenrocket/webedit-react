@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import { padStart, flatten, range } from 'lodash';
+import { padStart } from 'lodash';
 import DotColumn from './DotColumn';
 import React from 'react';
 
@@ -35,7 +35,7 @@ export default class PixelPreview extends React.Component {
   }
 
   updateColumns(props: Props) {
-    const { data, frame, callback } = props;
+    const { data, frame } = props;
 
     let frameData = data.slice(8 * frame, 8 * frame + 8);
 

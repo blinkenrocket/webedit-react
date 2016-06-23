@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import { t } from 'i18next';
 import { selectAnimation, removeAnimation } from 'Actions/animations';
 import Radium from 'radium';
-import { FontIcon, ListItem, Avatar } from 'material-ui';
+import { ListItem, Avatar } from 'material-ui';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
 import NotificationSms from 'material-ui/svg-icons/notification/sms';
 import NotificationMms from 'material-ui/svg-icons/notification/mms';
@@ -13,15 +13,7 @@ type Props = {
   selected: bool,
 }
 
-const style = {
-  root: {
-    backgroundColor: '#000',
-  },
-};
-
-/*::`*/
 @Radium
-/*::`*/
 export default class AnimationInMenu extends React.Component {
   props: Props;
   @autobind

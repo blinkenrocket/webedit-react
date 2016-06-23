@@ -3,7 +3,7 @@ import { createAction } from 'redux-actions';
 import UUID from 'uuid-js';
 import { t } from 'i18next';
 import { List } from 'immutable';
-import { padStart, flatten, range } from 'lodash';
+import { range } from 'lodash';
 
 const EMPTY_DATA = List(range(8).map(() => 0x00));
 

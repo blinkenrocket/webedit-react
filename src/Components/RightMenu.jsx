@@ -1,10 +1,15 @@
 /* @flow */
 import { autobind } from 'core-decorators';
 import { Dialog, RaisedButton, FlatButton } from 'material-ui';
+// $FlowFixMe
 import SocialShare from 'material-ui/svg-icons/social/share';
+// $FlowFixMe
 import ContentAdd from 'material-ui/svg-icons/content/add';
+// $FlowFixMe
 import ContentSend from 'material-ui/svg-icons/content/send';
+// $FlowFixMe
 import ContentLink from 'material-ui/svg-icons/content/link';
+// $FlowFixMe
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { range } from 'lodash';
 import { reset } from 'Actions/animations';

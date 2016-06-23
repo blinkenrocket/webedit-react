@@ -1,6 +1,6 @@
 /* @flow */
 import { connect } from 'react-redux';
-import { List, ListItem, Divider, Paper, Avatar, Drawer, AppBar } from 'material-ui';
+import { List, ListItem, Divider, Paper, Avatar } from 'material-ui';
 import Radium from 'radium';
 import React from 'react';
 import { autobind } from 'core-decorators';
@@ -12,8 +12,8 @@ import NotificationMms from 'material-ui/svg-icons/notification/mms';
 import { t } from 'i18next';
 
 type Props = {
-  animations: Map<string, Animation>,
-  selectedId: ?string,
+  animations?: Map<string, Animation>,
+  selectedId?: ?string,
 }
 
 const style = {
@@ -48,11 +48,14 @@ export default class Menu extends React.Component {
 
   render() {
     const { animations, selectedId } = this.props;
+    if (!animations) {
+      return null;
+    }
     return (
         <Paper style={style.wrap}>
               <List>
                 {
-                  animations.map((animation, index) => (
+                  animations.map((animation) => (
                     <AnimationInMenu selected={animation.id === selectedId} key={animation.creationDate} animation={animation}/>
                   )).toArray()
                 }

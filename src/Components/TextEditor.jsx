@@ -1,4 +1,4 @@
-import { TextField, Slider, Toggle, Paper, Divider } from 'material-ui';
+import { TextField, Slider, Toggle, Divider } from 'material-ui';
 import { updateAnimation } from 'Actions/animations';
 import React from 'react';
 import TextPreview from './TextPreview';

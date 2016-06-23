@@ -10,19 +10,16 @@ src/
 
 [libs]
 _Interfaces/
-node_modules/iflow-radium/index.js.flow
+flow-typed/
 node_modules/iflow-bluebird/index.js.flow
 node_modules/iflow-react-redux/index.js.flow
 node_modules/iflow-react-router/index.js.flow
 node_modules/iflow-redux-actions/index.js.flow
 node_modules/iflow-immutable/index.js.flow
-node_modules/iflow-immutable/devtools.js.flow
 node_modules/iflow-lodash/index.js.flow
-node_modules/iflow-audiocontext/index.js.flow
 node_modules/iflow-i18next/index.js.flow
 node_modules/iflow-material-ui/index.js.flow
 node_modules/iflow-core-decorators/index.js.flow
-node_modules/iflow-uuid-js/index.js.flow
 
 [options]
 traces=5

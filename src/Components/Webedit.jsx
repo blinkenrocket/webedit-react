@@ -1,5 +1,4 @@
 /* @flow */
-import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { AppBar, Drawer } from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -10,7 +9,7 @@ import Menu from './Menu';
 import Radium from 'radium';
 import React from 'react';
 import RightMenu from './RightMenu';
-import withWidth, { SMALL, MEDIUM, LARGE } from 'material-ui/utils/withWidth';
+import withWidth from 'material-ui/utils/withWidth';
 
 const style = {
   appRight: {
