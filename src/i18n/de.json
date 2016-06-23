@@ -24,12 +24,13 @@
     "previousFrame": "Vorheriges Bild"
   },
   "menu": {
+    "share": "Teilen",
     "transfer": "Übertragen",
     "new": "Neu",
     "addAnimation": "Neue Animation",
     "addText": "Neuer Text"
   },
-  "dialog": {
+  "transfer_dialog": {
     "cancel": "Abbrechen",
     "transfer": "Übertragen",
     "submit": "Übertragen",
@@ -38,5 +39,11 @@
     "instructions1": "Verbinde das Audio-Kabel mit deinem Computer und deiner BlinkenRocket",
     "instructions2": "Stelle die Lautstärke auf das Maxmimum!",
     "instructions3": "Drücke auf den Übertragen-Button"
+  },
+  "share_dialog": {
+    "title": "Animation teilen",
+    "instructions": "Gebe diesen Link weiter, um deine Animation zu teilen. Beim Aufrufen des Links wird diese automatisch importiert.",
+    "link": "klickediklick",
+    "close": "Schließen"
   }
 }

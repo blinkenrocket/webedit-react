@@ -69,7 +69,7 @@ class Webedit extends React.Component {
             </Drawer>
             <Editor/>
           </div>
-      </div>
+        </div>
       </MuiThemeProvider>
     );
   }
