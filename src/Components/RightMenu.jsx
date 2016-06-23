@@ -1,14 +1,20 @@
 /* @flow */
 import { autobind } from 'core-decorators';
 import { Dialog, RaisedButton, FlatButton } from 'material-ui';
+import SocialShare from 'material-ui/svg-icons/social/share';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentSend from 'material-ui/svg-icons/content/send';
+import ContentLink from 'material-ui/svg-icons/content/link';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { range } from 'lodash';
 import { reset } from 'Actions/animations';
 import { t } from 'i18next';
 import { transfer } from 'Services/flash';
-import InlineSVG from 'svg-inline-react';
+//import InlineSVG from 'svg-inline-react';
 import Radium from 'radium';
 import React from 'react';
-import transferSvg from './transfer.svg';
+import { Link } from 'react-router';
+//import transferSvg from './transfer.svg';
 
 const style = {
   button: {
@@ -37,7 +43,9 @@ const style = {
 };
 
 type State = {
-  isOpen: bool,
+  transferWidgetOpen: bool,
+  shareWidgetOpen: bool,
+  shareString: string,
 }
 
 /*::`*/
@@ -45,7 +53,9 @@ type State = {
 /*::`*/
 export default class RightMenu extends React.Component {
   state: State = {
-    isOpen: false,
+    transferWidgetOpen: false,
+    shareWidgetOpen: false,
+    shareString: '',
   };
   static contextTypes = {
     store: React.PropTypes.object.isRequired,
@@ -54,7 +64,7 @@ export default class RightMenu extends React.Component {
   transfer() {
     if (this.context.store.getState().animations.size > 0){
       this.setState({
-        isOpen: true,
+        transferWidgetOpen: true,
       });
     }
   }
@@ -62,65 +72,104 @@ export default class RightMenu extends React.Component {
   confirmTransfer() {
     transfer(this.context.store.getState().animations);
     this.setState({
-      isOpen: false,
+      transferWidgetOpen: false,
     });
   }
   @autobind
   cancelTransfer() {
     this.setState({
-      isOpen: false,
+      transferWidgetOpen: false,
     });
   }
+
   @autobind
   share() {
     const selectedAnimation = this.context.store.getState().selectedAnimation,
           encodedAnimation = btoa(JSON.stringify(selectedAnimation)),
-          shareUrl = `/${encodedAnimation}`;
+          shareUrl = encodedAnimation;
 
-    console.log(shareUrl);
+    if (!selectedAnimation) {
+      return;
+    }
+
+    if (this.context.store.getState().animations.size > 0) {
+      this.setState({
+        shareWidgetOpen: true,
+        shareString: shareUrl,
+      });
+    }
   }
+
+  @autobind
+  closeShare() {
+    this.setState({
+      shareWidgetOpen: false,
+    });
+  }
+
   new() {
     reset();
   }
   render() {
-    const actions = [
+    const transferActions = [
       <FlatButton
-        label={t('dialog.cancel')}
+        label={t('transfer_dialog.cancel')}
         secondary
-        onTouchTap={this.cancelTransfer}/>,
+        onTouchTap={this.cancelTransfer}
+        icon={<NavigationClose/>}/>,
       <FlatButton
-        label={t('dialog.transfer')}
+        label={t('transfer_dialog.transfer')}
         primary
         keyboardFocused
-        onTouchTap={this.confirmTransfer}/>,
+        onTouchTap={this.confirmTransfer}
+        icon={<ContentSend/>}/>,
     ];
 
-    const flashInstructions = range(4).map(i => `${i + 1}. ${t(`dialog.instructions${i}`)}`);
+    const shareActions = [
+      <FlatButton
+        label={t('share_dialog.close')}
+        primary
+        onTouchTap={this.closeShare}
+        icon={<NavigationClose/>}/>,
+    ];
+
+    const flashInstructions = range(4).map(i => `${i + 1}. ${t(`transfer_dialog.instructions${i}`)}`);
 
     return (
       <div style={style.wrap}>
-        <RaisedButton label={t('menu.share')} onClick={this.share} primary style={style.button}/>
-        <RaisedButton label={t('menu.new')} onClick={this.new} primary style={style.button}/>
-        <RaisedButton label={t('menu.transfer')} onClick={this.transfer} primary style={style.button}/>
-        {/*<FlatButton label="Save" icon={<FontIcon className=" fa fa-floppy-o"/>}/>
-      <FlatButton label="Load" icon={<FontIcon className=" fa fa-folder-open"/>}/>*/}
-      <Dialog
-        title={t('dialog.title')}
-        actions={actions}
-        modal
-        autoScrollBodyContent
-        open={this.state.isOpen}>
-        {/*<div style={style.instructions}>
-          <InlineSVG src={transferSvg}/>
-        </div>*/}
-        <ul style={style.instructionList}>{
-            flashInstructions.map(instruction => (
-              <li key={instruction}>{instruction}</li>
-            ))
-          }
-        </ul>
-      </Dialog>
-    </div>
-  );
-}
+        <RaisedButton label={t('menu.share')} onClick={this.share} primary style={style.button} icon={<SocialShare/>}/>
+        <RaisedButton label={t('menu.new')} onClick={this.new} primary style={style.button} icon={<ContentAdd/>}/>
+        <RaisedButton label={t('menu.transfer')} onClick={this.transfer} primary style={style.button} icon={<ContentSend/>}/>
+
+        <Dialog
+          title={t('transfer_dialog.title')}
+          actions={transferActions}
+          modal
+          autoScrollBodyContent
+          open={this.state.transferWidgetOpen}>
+          {/*<div style={style.instructions}>
+            <InlineSVG src={transferSvg}/>
+          </div>*/}
+          <ul style={style.instructionList}>{
+              flashInstructions.map(instruction => (
+                <li key={instruction}>{instruction}</li>
+              ))
+            }
+          </ul>
+        </Dialog>
+
+        <Dialog
+          title={t('share_dialog.title')}
+          actions={shareActions}
+          modal
+          autoScrollBodyContent
+          open={this.state.shareWidgetOpen}>
+          <p>{t('share_dialog.instructions')}</p>
+          <Link to={{ pathname: '/', query: { s: this.state.shareString } }}>
+            <RaisedButton label={t('share_dialog.link')} primary keyboardFocused icon={<ContentLink/>}/>
+          </Link>
+        </Dialog>
+      </div>
+    );
+  }
 }

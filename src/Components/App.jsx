@@ -56,7 +56,7 @@ export default class App extends React.Component {
     /* If an encoded animation is passed via the URL, try to decode and import
      * it to the local application state
      */
-    const encodedAnimation = this.props.params.encodedAnimation;
+    const encodedAnimation = this.props.location.query.s;
     if (encodedAnimation) {
       const decodedAnimation = JSON.parse(atob(encodedAnimation));
       addAnimation(decodedAnimation);

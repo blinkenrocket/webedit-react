@@ -30,7 +30,7 @@
     "addAnimation": "New Animation",
     "addText": "New Text"
   },
-  "dialog": {
+  "transfer_dialog": {
     "cancel": "Cancel",
     "transfer": "Transfer",
     "submit": "Submit",
@@ -39,5 +39,11 @@
     "instructions1": "Connect the audio cable to the computer and your BlinkenRocket",
     "instructions2": "Turn up the volume to maximum!",
     "instructions3": "Click the transfer button"
+  },
+  "share_dialog": {
+    "title": "Share",
+    "instructions": "Using this link you can share your animation. It'll be automatically imported when opening the link.",
+    "link": "clickediclick",
+    "close": "Close"
   }
 }
