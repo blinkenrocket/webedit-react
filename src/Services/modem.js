@@ -100,7 +100,7 @@ export default class Modem {
 
   _animationHeader(animation: Animation): number[] {
     if (animation.speed == null || animation.delay == null || animation.repeat == null) {
-      throw new Error('Missing Speed or Delay');
+      throw new Error('Missing Speed, Delay or Repeat');
     }
     return [animation.speed, animation.delay << 4 | animation.repeat ];
   }

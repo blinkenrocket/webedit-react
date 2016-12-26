@@ -12,7 +12,7 @@
     "title": "Text Editor",
     "speed": "Scroll Speed",
     "delay": "Delay in Seconds",
-    "repeat": "Number of loops (15=infinite)",
+    "repeat": "Number of loops (0=infinite)",
     "rtl": "right To left",
     "livePreview": "live Preview"
   },
@@ -21,7 +21,7 @@
     "title": "Animation Editor",
     "speed": "Animation Speed",
     "delay": "Delay in Seconds",
-    "repeat": "Number of loops (15=infinite)",
+    "repeat": "Number of loops (0=infinite)",
     "nextFrame": "Next Frame",
     "previousFrame": "Previous Frame"
   },

@@ -112,7 +112,7 @@ export default class TextEditor extends React.Component {
           {animation.delay}
         </div>
         <div style={[style.sliderContainer, style.noShrink]}>
-          <Slider description={t('textEditor.repeat')} style={style.slider} value={animation.repeat} step={1} min={1} max={15} onChange={this.handleRepeatChange}/>
+          <Slider description={t('textEditor.repeat')} style={style.slider} value={animation.repeat} step={1} min={0} max={15} onChange={this.handleRepeatChange}/>
           {animation.repeat}
         </div>
         <div style={[style.sliderContainer, style.noShrink]}>

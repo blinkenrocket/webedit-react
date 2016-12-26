@@ -234,7 +234,7 @@ export default class PixelEditor extends React.Component {
         </div>
         <div style={[style.sliderContainer, style.noShrink]}>
           {t('pixelEditor.repeat')}
-          <Slider style={style.slider} value={animation.repeat} step={1} min={1} max={15} onChange={this.handleRepeatChange}/>
+          <Slider style={style.slider} value={animation.repeat} step={1} min={0} max={15} onChange={this.handleRepeatChange}/>
           {animation.repeat}
         </div>
       </div>
