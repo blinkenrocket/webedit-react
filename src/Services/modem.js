@@ -26,26 +26,26 @@ var slowshort = [];
 console.log('slowshort');
 var a=0;
 for(var j = 0; j < 36*2; j += 1) {
-	a=Math.sin(Math.radians(j*10))*0.4;
+	a=Math.sin(Math.radians(j*10))*0.8;
 	//console.log(a);
     slowshort.push(a);
 }
 var slowlong = [];
 for(var j = 0; j < 36*4; j += 1) {
-	a=Math.sin(Math.radians(j*10))*0.4;
+	a=Math.sin(Math.radians(j*10))*0.8;
 	//console.log(a);
     slowlong.push(a);
 }
 
 var fastshort = [];
 for(var j = 0; j < 36*2; j += 1) {
-	a=Math.sin(Math.radians(j*30))*0.9;
+	a=Math.sin(Math.radians(j*30))*1.5;
 	//console.log(a);
     fastshort.push(a);
 }
 var fastlong = [];
 for(var j = 0; j < 36*4; j += 1) {
-	a=Math.sin(Math.radians(j*30))*0.9;
+	a=Math.sin(Math.radians(j*30))*1.5;
 	//console.log(a);
     fastlong.push(a);
 }
