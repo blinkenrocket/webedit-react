@@ -4,24 +4,62 @@
 import _ from 'lodash';
 import { List, Map } from 'immutable';
 
-const STARTCODE = 0x99;
-const PATTERNCODE = 0xA9;
+const STARTCODE1 = 0xa5;
+const STARTCODE2 = 0x5a;
+const PATTERNCODE1 = 0x0f;
+const PATTERNCODE2 = 0xf0;
 const ENDCODE = 0x84;
 
-const HI = 1;
-const LOW = -1;
+const HI = 0.2;
+const LOW = -0.2;
 
 const sync = [
-  _.range(17).map(() => LOW),
-  _.range(17).map(() => HI),
+  _.range(70).map(() => HI),
+  _.range(70).map(() => LOW),
 ];
-const bits = [
+
+Math.radians = function(degrees) {
+  return degrees * Math.PI / 180;
+};
+
+var slowshort = [];
+console.log('slowshort');
+var a=0;
+for(var j = 0; j < 36*2; j += 1) {
+	a=Math.sin(Math.radians(j*10))*0.4;
+	//console.log(a);
+    slowshort.push(a);
+}
+var slowlong = [];
+for(var j = 0; j < 36*4; j += 1) {
+	a=Math.sin(Math.radians(j*10))*0.4;
+	//console.log(a);
+    slowlong.push(a);
+}
+
+var fastshort = [];
+for(var j = 0; j < 36*2; j += 1) {
+	a=Math.sin(Math.radians(j*30))*0.9;
+	//console.log(a);
+    fastshort.push(a);
+}
+var fastlong = [];
+for(var j = 0; j < 36*4; j += 1) {
+	a=Math.sin(Math.radians(j*30))*0.9;
+	//console.log(a);
+    fastlong.push(a);
+}
+
+
+var bits = [
   [
-    _.range(3).map(() => LOW),
-    _.range(5).map(() => LOW),
+	slowshort,slowlong,
+//    _.range(3).map(() => LOW),
+//    _.range(5).map(() => LOW),
   ], [
-    _.range(3).map(() => HI),
-    _.range(5).map(() => HI),
+    fastshort,fastlong,
+//    _.range(3).map(() => HI),
+//    _.range(5).map(() => HI),
   ],
 ];
 
@@ -50,10 +88,10 @@ export default class Modem {
   }
 
   _textHeader(animation: Animation): number[] {
-    if (animation.speed == null || animation.delay == null || animation.direction == null) {
-      throw new Error('Missing Speed, Delay or Direction');
+    if (animation.speed == null || animation.delay == null || animation.direction == null || animation.repeat == null) {
+      throw new Error('Missing Speed, Delay, Repeat or Direction');
     }
-    return [animation.speed << 4 | (animation.delay * 2), animation.direction << 4 | 0x00];
+    return [animation.speed << 4 | (animation.delay * 2), animation.direction << 4 | animation.repeat];
   }
 
   _animationFrameHeader(animation: Animation): number[] {
@@ -61,15 +99,15 @@ export default class Modem {
   }
 
   _animationHeader(animation: Animation): number[] {
-    if (animation.speed == null || animation.delay == null) {
+    if (animation.speed == null || animation.delay == null || animation.repeat == null) {
       throw new Error('Missing Speed or Delay');
     }
-    return [animation.speed, animation.delay];
+    return [animation.speed, animation.delay << 4 | animation.repeat ];
   }
 
   setData(animations: Map<string, Animation>) {
     const data = _.flatten(animations.toList().map(animation => {
-      let d = [PATTERNCODE, PATTERNCODE];
+      let d = [PATTERNCODE1, PATTERNCODE2];
       console.log(animation);
       if (animation.type === 'text') {
         d = d.concat(this._textFrameHeader(animation));
@@ -82,7 +120,7 @@ export default class Modem {
       }
       return d;
     }).toArray());
-    this.data = [STARTCODE, STARTCODE, ...data, ENDCODE, ENDCODE];
+    this.data = [STARTCODE1, STARTCODE1, STARTCODE1, STARTCODE2, ...data, ENDCODE, ENDCODE, ENDCODE];
     console.log(this.data);
   }
 
@@ -107,7 +145,7 @@ export default class Modem {
   hamming(first: number, second: number): number {
     return this._hamming2416(first, second);
   }
-
+  
   generateAudio(): Float32Array {
     if (this.data.length % 2 !== 0) {
       this.data.push(0);
@@ -117,21 +155,21 @@ export default class Modem {
       const second = this.data[index + 1];
       return [first, second, this.hamming(first, second)];
     }));
-
-    let sound = this.generateSyncSignal(5000);
+  
+    let sound = this.generateSyncSignal(70);
     // let sound = [];
     let count = 0;
     const t = {};
     this.data.forEach(byte => {
       sound = sound.concat(this.modemCode(byte));
       t[byte] = this.modemCode(byte);
-      count += 1;
-      if (count === 9) {
-        sound = sound.concat(this.generateSyncSignal(4));
-        count = 0;
-      }
+       count += 1;
+      // if (count === 9) {
+      //  sound = sound.concat(this.generateSyncSignal(4));
+      //  count = 0;
+      //}
     });
-    sound = sound.concat(this.generateSyncSignal(4));
+    sound = sound.concat(this.generateSyncSignal(200));
     return Float32Array.from(sound);
   }
 }

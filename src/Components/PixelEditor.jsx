@@ -20,8 +20,8 @@ const style = {
     display: 'inline-flex',
     flex: '1 1 0',
     flexDirection: 'column',
-    overflowX: 'hidden',
-    overfowY: 'auto',
+    overflowX: 'auto',
+    overflowY: 'auto',
     padding: 20,
   },
   buttonWrapper: {
@@ -86,6 +86,13 @@ export default class PixelEditor extends React.Component {
     const { animation } = this.props;
     updateAnimation(Object.assign({}, animation, {
       delay: value,
+    }));
+  }
+  @autobind
+  handleRepeatChange(e: SyntheticEvent, value: number) {
+    const { animation } = this.props;
+    updateAnimation(Object.assign({}, animation, {
+      repeat: value,
     }));
   }
 
@@ -224,6 +231,11 @@ export default class PixelEditor extends React.Component {
           {t('pixelEditor.delay')}
           <Slider style={style.slider} value={animation.delay} step={0.5} min={0} max={7.5} onChange={this.handleDelayChange}/>
           {animation.delay}
+        </div>
+        <div style={[style.sliderContainer, style.noShrink]}>
+          {t('pixelEditor.repeat')}
+          <Slider style={style.slider} value={animation.repeat} step={1} min={1} max={15} onChange={this.handleRepeatChange}/>
+          {animation.repeat}
         </div>
       </div>
     );

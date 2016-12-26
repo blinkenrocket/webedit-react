@@ -3,6 +3,7 @@ import { List } from 'immutable';
 declare interface Animation {
   id: string,
   delay?: number,
+  repeat?: number,
   direction?: 0|1,
   name: string,
   speed?: number,

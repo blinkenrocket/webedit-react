@@ -12,5 +12,5 @@ export function transfer(animations: Map<string, Animation>) {
   source.buffer = buffer;
   source.connect(audioCtx.destination);
   source.start();
-  setTimeout(() => audioCtx.close(), 2000);
+  setTimeout(() => audioCtx.close(), 100000);
 }

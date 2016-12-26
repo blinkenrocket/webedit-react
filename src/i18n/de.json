@@ -12,6 +12,7 @@
     "title": "Text Editor",
     "speed": "Geschwindigkeit",
     "delay": "Wartezeit am Ende",
+    "repeat": "Anzahl der Wiederholungen (15=unendlich)",
     "rtl": "Rechts-nach-Links",
     "livePreview": "Simulation"
   },
@@ -20,6 +21,7 @@
     "title": "Animations Editor",
     "speed": "Geschwindigkeit",
     "delay": "Wartezeit am Ende",
+    "repeat": "Anzahl der Wiederholungen (15=unendlich)",
     "nextFrame": "Nächstes Bild",
     "previousFrame": "Vorheriges Bild"
   },
