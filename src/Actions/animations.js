@@ -9,7 +9,7 @@ const EMPTY_DATA = List(range(8).map(() => 0x00));
 
 export const addNewAnimation = createAction('ADD_ANIMATION', (type: string) => ({
   delay: 0,
-  repeat: 1,
+  repeat: 0,
   direction: 0,
   id: UUID.create().toString(),
   name: t('animation.new', { type: t(`animation.${type}`) }),
