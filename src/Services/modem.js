@@ -10,8 +10,8 @@ const PATTERNCODE1 = 0x0f;
 const PATTERNCODE2 = 0xf0;
 const ENDCODE = 0x84;
 
-const HI = 0.2;
-const LOW = -0.2;
+const HI = 0;
+const LOW = 0;
 
 const sync = [
   _.range(70).map(() => HI),
@@ -23,32 +23,23 @@ Math.radians = function(degrees) {
 };
 
 var slowshort = [];
-console.log('slowshort');
-var a=0;
-for(var j = 0; j < 36*2; j += 1) {
-	a=Math.sin(Math.radians(j*10))*0.8;
-	//console.log(a);
-    slowshort.push(a);
+for(var j = 0; j < 72; j += 1) {
+    slowshort.push(0);
 }
 var slowlong = [];
-for(var j = 0; j < 36*4; j += 1) {
-	a=Math.sin(Math.radians(j*10))*0.8;
-	//console.log(a);
-    slowlong.push(a);
+for(var j = 0; j < 144; j += 1) {
+    slowlong.push(0);
 }
 
 var fastshort = [];
-for(var j = 0; j < 36*2; j += 1) {
-	a=Math.sin(Math.radians(j*30))*1.5;
-	//console.log(a);
-    fastshort.push(a);
-}
+for(var j = 0; j < 18; j += 1) fastshort.push(j*Math.sin(Math.radians(j*10)));
+for(var j = 0; j < 36; j += 1) fastshort.push(18*Math.sin(Math.radians((j+18)*10)));
+for(var j = 0; j < 18; j += 1) fastshort.push((18-j)*Math.sin(Math.radians((j+54)*10)));
+
 var fastlong = [];
-for(var j = 0; j < 36*4; j += 1) {
-	a=Math.sin(Math.radians(j*30))*1.5;
-	//console.log(a);
-    fastlong.push(a);
-}
+for(var j = 0; j < 18; j += 1) fastlong.push(j*Math.sin(Math.radians(j*10)));
+for(var j = 0; j < 108; j += 1) fastlong.push(18*Math.sin(Math.radians((j+18)*10)));
+for(var j = 0; j < 18; j += 1) fastlong.push((18-j)*Math.sin(Math.radians((j+126)*10)));
 
 
 var bits = [
