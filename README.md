@@ -4,9 +4,9 @@
 
 * install node: https://nodejs.org/en/download/
 * in folder \webedit-react run: 
-   npm install
-   npm install webpack-dev-server
-   npm run build; webpack
+   npm install  
+   npm install webpack-dev-server  
+   npm run build; webpack  
 
 ##to run:
 
