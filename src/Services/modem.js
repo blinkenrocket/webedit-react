@@ -107,7 +107,12 @@ export default class Modem {
       }else if (animation.type === 'pixel') {
         d = d.concat(this._animationFrameHeader(animation));
         d = d.concat(this._animationHeader(animation));
-        d = d.concat(animation.animation.data.toArray());
+		console.log('before');
+		var 
+			d0 = animation.animation.data, 
+			parsed = Array.isArray(d0) ? d0 : d0.toArray();
+        d = d.concat(parsed);
+		console.log('after');
       }
       return d;
     }).toArray());
