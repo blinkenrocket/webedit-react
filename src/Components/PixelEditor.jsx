@@ -8,6 +8,7 @@ import Radium from 'radium';
 import AvSkipNext from 'material-ui/svg-icons/av/skip-next';
 import AvSkipPrevious from 'material-ui/svg-icons/av/skip-previous';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
+import ContentContentCopy from 'material-ui/svg-icons/content/content-copy';
 import { MAX_ANIMATION_FRAMES } from '../variables';
 import { List } from 'immutable';
 import { range } from 'lodash';
@@ -159,6 +160,34 @@ export default class PixelEditor extends React.Component {
   }
 
   @autobind
+  handleCopyFrame() {
+    const { animation } = this.props;
+    // check whether another frame would violate the MAX_ANIMATION_FRAMES limit
+    if (animation.animation.currentFrame + 1 === MAX_ANIMATION_FRAMES - 1) {
+      return;
+    }
+
+    // 1. get current frame data
+    const currentFrameData = animation.animation.data.slice(8 * animation.animation.currentFrame, 8 * animation.animation.currentFrame + 8);
+
+    // 2. add everything up including the current frame
+    let newdata = animation.animation.data.slice(0, 8 * animation.animation.currentFrame + 8);
+
+    // 3. add current frame data and everything until the end
+    newdata = newdata.concat(currentFrameData, animation.animation.data.skip(8 * animation.animation.currentFrame + 8));
+
+    updateAnimation(Object.assign({}, animation, {
+      animation: {
+        data: newdata,
+        currentFrame: animation.animation.currentFrame + 1,
+        length: animation.animation.length + 1,
+        frames: animation.animation.frames + 1,
+      },
+    }));
+
+  }
+
+  @autobind
   updateAnimationPoint(y, x) {
     const { animation } = this.props;
     // for safety reasons
@@ -205,6 +234,11 @@ export default class PixelEditor extends React.Component {
             onClick={this.handleDeleteFrame}
             style={style.buttons}
             icon={<ActionDeleteForever />} />
+          <FlatButton
+            primary
+            onClick={this.handleCopyFrame}
+            style={style.buttons}
+            icon={<ContentContentCopy />} />
           <FlatButton
             label={t('pixelEditor.nextFrame')}
             labelPosition="before"
