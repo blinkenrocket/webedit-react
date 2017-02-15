@@ -10,12 +10,9 @@ const PATTERNCODE1 = 0x0f;
 const PATTERNCODE2 = 0xf0;
 const ENDCODE = 0x84;
 
-const HI = 0;
-const LOW = 0;
-
 const sync = [
-  _.range(70).map(() => HI),
-  _.range(70).map(() => LOW),
+  _.range(70).map(() => 0),
+  _.range(70).map(() => 0),
 ];
 
 Math.radians = function(degrees) {
@@ -43,15 +40,8 @@ for(var j = 0; j < 18; j += 1) fastlong.push((18-j)*Math.sin(Math.radians((j+126
 
 
 var bits = [
-  [
-	slowshort,slowlong,
-//    _.range(3).map(() => LOW),
-//    _.range(5).map(() => LOW),
-  ], [
-    fastshort,fastlong,
-//    _.range(3).map(() => HI),
-//    _.range(5).map(() => HI),
-  ],
+  [	slowshort,slowlong,], 
+  [ fastshort,fastlong,],
 ];
 
 const supportedFrequencies = [16000, 22050, 24000, 32000, 44100, 48000];
@@ -151,17 +141,10 @@ export default class Modem {
     }));
   
     let sound = this.generateSyncSignal(70);
-    // let sound = [];
-    let count = 0;
     const t = {};
     this.data.forEach(byte => {
       sound = sound.concat(this.modemCode(byte));
       t[byte] = this.modemCode(byte);
-       count += 1;
-      // if (count === 9) {
-      //  sound = sound.concat(this.generateSyncSignal(4));
-      //  count = 0;
-      //}
     });
     sound = sound.concat(this.generateSyncSignal(200));
     return Float32Array.from(sound);
