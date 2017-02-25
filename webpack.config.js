@@ -17,7 +17,7 @@ if (fs.existsSync(`config.${node_env}.js`)) {
 var plugins = [
   new webpack.NoErrorsPlugin(),
   new HtmlWebpackPlugin({
-    template: 'html!./src/index.html',
+    template: 'html-loader!./src/index.html',
     title: 'Webedit',
     minify: {},
     inject: 'body',
@@ -42,15 +42,10 @@ if (node_env === 'production') {
 
 module.exports = {
   devtool: node_env === 'production' ? undefined : 'cheap-module-source-map',
-  eslint: {
-    configFile: './src/.eslintrc',
-    failOnWarning: false,
-    failOnError: true
-  },
   context: __dirname,
   resolve: {
-    root: path.resolve('src'),
-    extensions: ['', '.jsx', '.js', '.json'],
+    modules: [path.join(__dirname, 'src'), "node_modules"],
+    extensions: ['.jsx', '.js', '.json'],
     alias: {
       'bluebird': 'bluebird/js/browser/bluebird.min.js',
       'bonsai': 'bonsai/src/bootstrapper/_build/common.js',
@@ -65,24 +60,24 @@ module.exports = {
     publicPath: ''
   },
   module: {
-    loaders: [
-      { test: /\.css$/, loader: 'style!css' },
+    rules: [
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
       { test: /.*\.CSS\.js$/,
-        loader: 'inline-css!babel!eslint',
+        loader: 'inline-css-loader!babel-loader!eslint-loader',
         exclude: /(node_modules)/,
         include: /src/,
       },
       { test: /^((?!CSS\.js$).)*\.jsx?$/,
         exclude: /(node_modules)/,
         include: /src/,
-        loader: 'babel!eslint',
+        loader: 'babel-loader!eslint-loader',
       },
       { test: /\.(jpg|png|gif)$/, loader: 'file!image' },
-      { test: /\.svg/, loader: 'url', include: /node_modules\/font-awesome/ },
-      { test: /\.woff2?(\?v=.*)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
-      { test: /\.(eot|ttf|otf)(\?v=.*)?$/, loader: 'url' },
-      { test: /\.json$/, loader: 'json' },
-      { test: /\.svg$/, loader: 'svg-inline' }
+      { test: /\.svg/, loader: 'url-loader', include: /node_modules\/font-awesome/ },
+      { test: /\.woff2?(\?v=.*)?$/, loader: 'url-loader?limit=10000&minetype=application/font-woff' },
+      { test: /\.(eot|ttf|otf)(\?v=.*)?$/, loader: 'url-loader' },
+      { test: /\.json$/, loader: 'json-loader' },
+      { test: /\.svg$/, loader: 'svg-inline-loader' }
     ],
   },
   plugins,
