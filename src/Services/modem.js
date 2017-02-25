@@ -1,6 +1,22 @@
 // @flow
 /* eslint no-bitwise: 0 */
 /* eslint-disable */
+
+
+/* new modem function, 
+ *  cures transfer problems with different audio hardware
+ *  (old class moved to modemLegacy.js)
+ * 
+ *  main differences to old transfer protocol:
+ *    - faded sine waves are used for bit encoding instead of rectangles
+ *    - transfer protocol and state machine modified
+ *    - sync signal is not necessary anymore (replaced by silence)
+ *
+ *  see firmware implementation, blinkenrocket-firmware repository,
+ *    /doc/blinkenrocket_debugging.pdf 
+*/
+
+
 import _ from 'lodash';
 import { List, Map } from 'immutable';
 
@@ -10,6 +26,7 @@ const PATTERNCODE1 = 0x0f;
 const PATTERNCODE2 = 0xf0;
 const ENDCODE = 0x84;
 
+// silence is used as sync signal in new transfer protocol
 const sync = [
   _.range(70).map(() => 0),
   _.range(70).map(() => 0),
@@ -19,29 +36,34 @@ Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
 };
 
-var slowshort = [];
+// silence, short duration (low activity for bit encoding) 
+var lowShort = [];
 for(var j = 0; j < 72; j += 1) {
-    slowshort.push(0);
+    lowShort.push(0);
 }
-var slowlong = [];
+// silence, long duration (low activity for bit encoding) 
+var lowLong = [];
 for(var j = 0; j < 144; j += 1) {
-    slowlong.push(0);
+    lowLong.push(0);
 }
 
-var fastshort = [];
-for(var j = 0; j < 18; j += 1) fastshort.push(j*Math.sin(Math.radians(j*10)));
-for(var j = 0; j < 36; j += 1) fastshort.push(18*Math.sin(Math.radians((j+18)*10)));
-for(var j = 0; j < 18; j += 1) fastshort.push((18-j)*Math.sin(Math.radians((j+54)*10)));
 
-var fastlong = [];
-for(var j = 0; j < 18; j += 1) fastlong.push(j*Math.sin(Math.radians(j*10)));
-for(var j = 0; j < 108; j += 1) fastlong.push(18*Math.sin(Math.radians((j+18)*10)));
-for(var j = 0; j < 18; j += 1) fastlong.push((18-j)*Math.sin(Math.radians((j+126)*10)));
+// faded sine wave, short duration (high activity for bit encoding) 
+var highShort = [];
+for(var j = 0; j < 18; j += 1) highShort.push(j*Math.sin(Math.radians(j*10)));
+for(var j = 0; j < 36; j += 1) highShort.push(18*Math.sin(Math.radians((j+18)*10)));
+for(var j = 0; j < 18; j += 1) highShort.push((18-j)*Math.sin(Math.radians((j+54)*10)));
+
+// faded sine wave, long duration (high activity for bit encoding) 
+var highLong = [];
+for(var j = 0; j < 18; j += 1) highLong.push(j*Math.sin(Math.radians(j*10)));
+for(var j = 0; j < 108; j += 1) highLong.push(18*Math.sin(Math.radians((j+18)*10)));
+for(var j = 0; j < 18; j += 1) highLong.push((18-j)*Math.sin(Math.radians((j+126)*10)));
 
 
 var bits = [
-  [	slowshort,slowlong,], 
-  [ fastshort,fastlong,],
+  [	lowShort,lowLong,], 
+  [ highShort,highLong,],
 ];
 
 const supportedFrequencies = [16000, 22050, 24000, 32000, 44100, 48000];
@@ -102,12 +124,16 @@ export default class Modem {
         d = d.concat(this._animationFrameHeader(animation));
         d = d.concat(this._animationHeader(animation));
         // d = d.concat(animation.animation.data.toArray());
+        // this caused problem when animation window was not 
+        // displayed before transfer...  below a quick fix:
     		var d0 = animation.animation.data, 
     		parsed = Array.isArray(d0) ? d0 : d0.toArray();
         d = d.concat(parsed);
       }
       return d;
     }).toArray());
+
+    // build frames using new transfer protocol, for details see blinkenrocket-firmware
     this.data = [STARTCODE1, STARTCODE1, STARTCODE1, STARTCODE2, ...data, ENDCODE, ENDCODE, ENDCODE];
     console.log(this.data);
   }
