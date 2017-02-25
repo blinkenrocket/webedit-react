@@ -68,10 +68,15 @@ export default class ModemLegacy {
   }
 
   setData(animations: Map<string, Animation>) {
+
     const data = _.flatten(animations.toList().map(animation => {
       let d = [PATTERNCODE, PATTERNCODE];
       console.log(animation);
       if (animation.type === 'text') {
+        if (!animation.text) {
+          console.warn("Animation has no text");
+          return d;
+        }
         d = d.concat(this._textFrameHeader(animation));
         d = d.concat(this._textHeader(animation));
         d = d.concat(_.map(animation.text, char => char.charCodeAt(0)));

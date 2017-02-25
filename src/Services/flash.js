@@ -4,6 +4,7 @@ import ModemLegacy from './modemLegacy';
 import Modem from './modem';
 
 export function transfer(animations: Map<string, Animation>) {
+  // First, send data signals for the legacy firmware
   const modem = new ModemLegacy(animations);
   const data = modem.generateAudio();
   const audioCtx = new AudioContext();
@@ -12,6 +13,8 @@ export function transfer(animations: Map<string, Animation>) {
   const source = audioCtx.createBufferSource();
   source.buffer = buffer;
   source.connect(audioCtx.destination);
+
+  // Afterwards, send data signals for the v2 firmware
   source.onended = function() {
     const modem2 = new Modem(animations);
     const data2 = modem2.generateAudio();

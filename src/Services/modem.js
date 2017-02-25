@@ -91,6 +91,10 @@ export default class Modem {
       let d = [PATTERNCODE1, PATTERNCODE2];
       console.log(animation);
       if (animation.type === 'text') {
+        if (!animation.text) {
+          console.warn("Animation has no text");
+          return d;
+        }
         d = d.concat(this._textFrameHeader(animation));
         d = d.concat(this._textHeader(animation));
         d = d.concat(_.map(animation.text, char => char.charCodeAt(0)));

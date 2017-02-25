@@ -24,3 +24,4 @@ Now you can access the web interface via http://127.0.0.1:8080
 ## Notes
 
 * if you want to test the interface from other devices use `webpack-dev-server --host <ip-adress-of-your-computer>`
+* See [github.com/ChrisVeigl/blinkenrocket-firmware/docs](https://github.com/ChrisVeigl/blinkenrocket-firmware/tree/master/docs) for more infos about the v2 firmware

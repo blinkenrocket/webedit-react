@@ -24,6 +24,7 @@ const style = {
     overflowX: 'auto',
     overflowY: 'auto',
     padding: 20,
+    cursor: 'default',
   },
   buttonWrapper: {
     display: 'flex',
@@ -44,9 +45,16 @@ const style = {
   },
 };
 
+const MOUSE_MODE_NOTHING = 'MOUSE_MODE_NOTHING';
+const MOUSE_MODE_PAINT = 'MOUSE_MODE_PAINT';
+const MOUSE_MODE_ERASE = 'MOUSE_MODE_ERASE';
 
 type Props = {
   animation: Animation,
+}
+
+type State = {
+  mouseMode: string,  
 }
 
 const EMPTY_DATA = List(range(8).map(() => 0x00));
@@ -56,6 +64,10 @@ const EMPTY_DATA = List(range(8).map(() => 0x00));
 /*::`*/
 export default class PixelEditor extends React.Component {
   props: Props;
+
+  state: State = {
+    mouseMode: MOUSE_MODE_NOTHING,
+  };
 
   componentWillMount() {
     const { animation } = this.props;
@@ -194,19 +206,56 @@ export default class PixelEditor extends React.Component {
 
   }
 
+  /*eslint-disable no-unused-vars */
   @autobind
-  updateAnimationPoint(y, x) {
+  mouseDown(y, x) {
+    // console.log('mouseDown', y, x);
+    const isOn = this.animationPointIsOn(y, x);
+
+    // If current point is (was) on, set to erase mode
+    this.state.mouseMode = isOn ? MOUSE_MODE_ERASE : MOUSE_MODE_PAINT;
+
+    // console.log('mouseMode:', this.state.mouseMode);
+    this.setAnimationPoint(y, x, !isOn);
+  }
+
+  @autobind
+  mouseUp(y, x) {
+    // console.log('mouseUpX', y, x);
+    this.state.mouseMode = MOUSE_MODE_NOTHING;
+  }
+
+  @autobind
+  mouseOver(y, x) {
+    // console.log('mouseOver', y, x, this.state.mouseMode);
+    if (this.state.mouseMode !== MOUSE_MODE_NOTHING) {
+      this.setAnimationPoint(y, x, this.state.mouseMode === MOUSE_MODE_PAINT);
+    }
+  }
+
+  animationPointIsOn(y, x) {
     const { animation } = this.props;
-    // for safety reasons
     animation.animation.data = List(animation.animation.data);
+    const column = animation.animation.data.get(8 * animation.animation.currentFrame + x);
+    const bitIndex = 7 - y;
+    // console.log('bitIndex:', bitIndex);
+    /*eslint-disable no-bitwise */
+    const wasOn = column & 1 << bitIndex;
+    // console.log('isOnBefore:', wasOn);
+    return wasOn;
+  }
 
-    // this is just a number, make it binary:
+  setAnimationPoint(y, x, isOn) {
+    const { animation } = this.props;
+    animation.animation.data = List(animation.animation.data);
     let column = animation.animation.data.get(8 * animation.animation.currentFrame + x);
+    const bitIndex = 7 - y;
 
-    /*eslint no-bitwise: ["error", { "allow": ["^=","~"] }] */
-    /* this is a little magic, bitwise XOR the column with 2^(7 - y)
-       the 7-y because it is the other way round */
-    column ^= Math.pow(2, 7 - y);
+    if (isOn) {
+      column |= (1 << bitIndex);
+    } else {
+      column &= ~(1 << bitIndex);
+    }
 
     animation.animation.data = animation.animation.data.set(8 * animation.animation.currentFrame + x, column);
 
@@ -218,6 +267,7 @@ export default class PixelEditor extends React.Component {
         frames: animation.animation.frames,
       },
     }));
+
   }
 
   render() {
@@ -225,9 +275,12 @@ export default class PixelEditor extends React.Component {
 
     return (
       <div style={style.wrapper}>
+          Frame {animation.animation.currentFrame + 1} / {animation.animation.frames}
         <PixelPreview data={animation.animation.data}
           frame={animation.animation.currentFrame}
-          callback={this.updateAnimationPoint.bind(this)}/>
+          mouseDownCallback={this.mouseDown.bind(this)}
+          mouseUpCallback={this.mouseUp.bind(this)}
+          mouseOverCallback={this.mouseOver.bind(this)} />
         <div style={style.buttonWrapper}>
           <FlatButton
             label={t('pixelEditor.previousFrame')}

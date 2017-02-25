@@ -99,10 +99,10 @@ export default class TextEditor extends React.Component {
       <div style={style.wrapper}>
         <TextPreview delay={animation.delay} repeat={animation.repeat} rtl={animation.direction === 1} livePreview={livePreview} text={animation.text} speed={animation.speed}/>
         <Divider />
-        <TextField style={style.noShrink} id="name" ref="name" value={animation.name} onChange={this.handleChange.bind(this, 'name')}
-          floatingLabelText={t('textEditor.name')} placeholder={t('textEditor.name')} floatingLabelFixed/>
         <TextField style={style.noShrink} id="text" ref="text" value={animation.text || ' '} onChange={this.handleChange.bind(this, 'text')}
           floatingLabelText={t('textEditor.textPlaceholder')} placeholder={t('textEditor.textPlaceholder')} floatingLabelFixed/>
+        <TextField style={style.noShrink} id="name" ref="name" value={animation.name} onChange={this.handleChange.bind(this, 'name')}
+          floatingLabelText={t('textEditor.name')} placeholder={t('textEditor.name')} floatingLabelFixed/>
         <div style={[style.sliderContainer, style.noShrink]}>
           <Slider description={t('textEditor.speed')} style={style.slider} value={animation.speed} step={1} min={0} max={15} onChange={this.handleSpeedChange}/>
           {animation.speed}

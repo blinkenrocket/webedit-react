@@ -5,6 +5,10 @@ import React from 'react';
 
 type Props = {
   data: number[],
+  frame: number,
+  mouseUpCallback: void,
+  mouseDownCallback: void,
+  mouseOverCallback: void,
 }
 
 type State = {
@@ -62,7 +66,7 @@ export default class PixelPreview extends React.Component {
           <rect height="205" width={width} x="0" y="0" fill="black"/>
           {
             cols && cols.map((col, i) => (
-              <DotColumn key={i} column={col} row={i} callback={this.props.callback}/>
+              <DotColumn key={i} column={col} row={i} mouseDownCallback={this.props.mouseDownCallback} mouseUpCallback={this.props.mouseUpCallback} mouseOverCallback={this.props.mouseOverCallback} />
             ))
           }
         </svg>
