@@ -61,7 +61,7 @@ export default class PixelPreview extends React.Component {
     const width = cols.size * 25 + 5;
 
     return (
-      <div style={style}>
+      <div style={style} onMouseUp={this.props.mouseUpCallback.bind(this)} onMouseLeave={this.props.mouseUpCallback.bind(this)}>
         <svg height="205" width={width}>
           <rect height="205" width={width} x="0" y="0" fill="black"/>
           {
