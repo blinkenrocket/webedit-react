@@ -57,7 +57,14 @@ export default class ModemLegacy {
   }
 
   _animationFrameHeader(animation: Animation): number[] {
-    return [0x02 << 4 | animation.animation.data.size >> 8, animation.animation.data.size & 0xFF];
+    // return [0x02 << 4 | animation.animation.data.size >> 8, animation.animation.data.size & 0xFF];
+    // this caused problem when animation window was not 
+    // displayed before transfer (type of data already array)  
+    // below a quick fix:
+ 		var d0 = animation.animation.data, 
+ 		parsed = Array.isArray(d0) ? d0 : d0.toArray();
+    return [0x02 << 4 | parsed.length >> 8, parsed.length & 0xFF];
+
   }
 
   _animationHeader(animation: Animation): number[] {
@@ -84,6 +91,9 @@ export default class ModemLegacy {
         d = d.concat(this._animationFrameHeader(animation));
         d = d.concat(this._animationHeader(animation));
         // d = d.concat(animation.animation.data.toArray());
+        // this caused problem when animation window was not 
+        // displayed before transfer (type of data already array)  
+        // below a quick fix:
         var d0 = animation.animation.data, 
         parsed = Array.isArray(d0) ? d0 : d0.toArray();
         d = d.concat(parsed);

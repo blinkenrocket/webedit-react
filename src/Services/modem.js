@@ -98,7 +98,13 @@ export default class Modem {
   }
 
   _animationFrameHeader(animation: Animation): number[] {
-    return [0x02 << 4 | animation.animation.data.size >> 8, animation.animation.data.size & 0xFF];
+    // return [0x02 << 4 | animation.animation.data.size >> 8, animation.animation.data.size & 0xFF];
+    // this caused problem when animation window was not 
+    // displayed before transfer (type of data already array)  
+    // below a quick fix:
+ 		var d0 = animation.animation.data, 
+ 		parsed = Array.isArray(d0) ? d0 : d0.toArray();
+    return [0x02 << 4 | parsed.length >> 8, parsed.length & 0xFF];
   }
 
   _animationHeader(animation: Animation): number[] {
@@ -115,7 +121,7 @@ export default class Modem {
       if (animation.type === 'text') {
         if (!animation.text) {
           console.warn("Animation has no text");
-          return d;
+          animation.text=" ";
         }
         d = d.concat(this._textFrameHeader(animation));
         d = d.concat(this._textHeader(animation));
@@ -125,7 +131,8 @@ export default class Modem {
         d = d.concat(this._animationHeader(animation));
         // d = d.concat(animation.animation.data.toArray());
         // this caused problem when animation window was not 
-        // displayed before transfer...  below a quick fix:
+        // displayed before transfer (type of data already array)  
+        // below a quick fix:
     		var d0 = animation.animation.data, 
     		parsed = Array.isArray(d0) ? d0 : d0.toArray();
         d = d.concat(parsed);
