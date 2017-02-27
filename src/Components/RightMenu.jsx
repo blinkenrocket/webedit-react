@@ -76,10 +76,10 @@ export default class RightMenu extends React.Component {
   }
   @autobind
   confirmTransfer() {
-    transfer(this.context.store.getState().animations);
     this.setState({
       transferWidgetOpen: false,
     });
+    transfer(this.context.store.getState().animations);
   }
   @autobind
   cancelTransfer() {

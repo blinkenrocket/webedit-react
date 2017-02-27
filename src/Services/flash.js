@@ -3,7 +3,13 @@ import type { Map } from 'immutable';
 import ModemLegacy from './modemLegacy';
 import Modem from './modem';
 
+let transferActive = 0;
+
 export function transfer(animations: Map<string, Animation>) {
+  if (transferActive === 1) {
+     return; 
+  }
+  transferActive = 1;
   // First, send data signals for the legacy firmware
   const modem = new ModemLegacy(animations);
   const data = modem.generateAudio();
@@ -25,6 +31,7 @@ export function transfer(animations: Map<string, Animation>) {
     source2.connect(audioCtx.destination);
     source2.onended = function() {
       audioCtx.close();
+      transferActive = 0;
     };
     source2.start();
   };
