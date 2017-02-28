@@ -159,19 +159,33 @@ export default class PixelEditor extends React.Component {
   @autobind
   handleDeleteFrame() {
     const { animation } = this.props;
-    // check whether we would remove the last frame
-    if (animation.animation.currentFrame === 0) {
-      return;
+    let newdata;
+
+    // If user removes the first frame and it is the only frame
+    if (animation.animation.currentFrame === 0 && animation.animation.frames === 1) {
+      newdata = animation.animation.data = EMPTY_DATA;
+      updateAnimation(Object.assign({}, animation, {
+          animation: {
+            data: newdata,
+            currentFrame: 0,
+            length: animation.animation.length,
+            frames: animation.animation.frames,
+          },
+        }));
+        return;
     }
+  
     // create new data:
     // 1. everything up to current Frame:
-    let newdata = animation.animation.data.slice(0, 8 * animation.animation.currentFrame);
+    newdata = animation.animation.data.slice(0, 8 * animation.animation.currentFrame);
     // 2. add everything to until the end
     newdata = newdata.concat(animation.animation.data.skip(8 * animation.animation.currentFrame + 8));
+
+    const newCurrentFrame = (animation.animation.currentFrame === 0) ? 0 : animation.animation.currentFrame - 1;
     updateAnimation(Object.assign({}, animation, {
         animation: {
           data: newdata,
-          currentFrame: animation.animation.currentFrame - 1,
+          currentFrame: newCurrentFrame,
           length: animation.animation.length - 1,
           frames: animation.animation.frames - 1,
         },
