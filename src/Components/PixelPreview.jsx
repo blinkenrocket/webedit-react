@@ -19,6 +19,14 @@ type State = {
 const style = {
   flexShrink: 0,
   overflow: 'auto',
+
+  // avoid dragging the whole preview in FireFox
+  'user-drag': 'none',
+  'user-select': 'none',
+  '-moz-user-select': 'none',
+  '-webkit-user-drag': 'none',
+  '-webkit-user-select': 'none',
+  '-ms-user-select': 'none',
 };
 
 
