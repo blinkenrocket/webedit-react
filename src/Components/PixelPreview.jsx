@@ -19,14 +19,12 @@ type State = {
 const style = {
   flexShrink: 0,
   overflow: 'auto',
+  cursor: 'default',
 
   // avoid dragging the whole preview in FireFox
-  'user-drag': 'none',
-  'user-select': 'none',
-  '-moz-user-select': 'none',
-  '-webkit-user-drag': 'none',
-  '-webkit-user-select': 'none',
-  '-ms-user-select': 'none',
+  UserSelect: 'none',
+  MozUserSelect: 'none',
+  WebkitUserSelect: 'none',
 };
 
 
@@ -48,7 +46,6 @@ export default class PixelPreview extends React.Component {
 
   updateColumns(props: Props) {
     const { data, frame } = props;
-
     let frameData = data.slice(8 * frame, 8 * frame + 8);
 
     frameData = frameData.map((hexColumn: number) => padStart(hexColumn.toString(2), 8, '0'));
@@ -62,14 +59,15 @@ export default class PixelPreview extends React.Component {
     });
 
   }
-
+  
   render() {
     const { columns } = this.state;
     const cols = List(columns);
     const width = cols.size * 25 + 5;
+    const currentStyle = { ...style, cursor: this.props.cursor };
 
     return (
-      <div style={style} onMouseUp={this.props.mouseUpCallback.bind(this)} onMouseLeave={this.props.mouseUpCallback.bind(this)}>
+      <div style={currentStyle} onMouseUp={this.props.mouseUpCallback.bind(this)} onMouseLeave={this.props.mouseUpCallback.bind(this)} draggable="false">
         <svg height="205" width={width}>
           <rect height="205" width={width} x="0" y="0" fill="black"/>
           {

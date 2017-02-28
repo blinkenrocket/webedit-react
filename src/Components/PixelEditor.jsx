@@ -213,7 +213,7 @@ export default class PixelEditor extends React.Component {
     const isOn = this.animationPointIsOn(y, x);
 
     // If current point is (was) on, set to erase mode
-    this.state.mouseMode = isOn ? MOUSE_MODE_ERASE : MOUSE_MODE_PAINT;
+    this.setState({ mouseMode: isOn ? MOUSE_MODE_ERASE : MOUSE_MODE_PAINT });
 
     // console.log('mouseMode:', this.state.mouseMode);
     this.setAnimationPoint(y, x, !isOn);
@@ -222,7 +222,7 @@ export default class PixelEditor extends React.Component {
   @autobind
   mouseUp(y, x) {
     // console.log('mouseUpX', y, x);
-    this.state.mouseMode = MOUSE_MODE_NOTHING;
+    this.setState({ mouseMode: MOUSE_MODE_NOTHING });
   }
 
   @autobind
@@ -273,10 +273,19 @@ export default class PixelEditor extends React.Component {
   render() {
     const { animation } = this.props;
 
+    let pixelPreviewCursor = 'auto';
+    if (this.state.mouseMode === MOUSE_MODE_PAINT) {
+      pixelPreviewCursor = 'pointer';
+    } else if (this.state.mouseMode === MOUSE_MODE_ERASE) {
+      pixelPreviewCursor = 'crosshair';
+    }
+
     return (
       <div style={style.wrapper}>
           Frame {animation.animation.currentFrame + 1} / {animation.animation.frames}
-        <PixelPreview data={animation.animation.data}
+        <PixelPreview 
+          cursor={pixelPreviewCursor}
+          data={animation.animation.data}
           frame={animation.animation.currentFrame}
           mouseDownCallback={this.mouseDown.bind(this)}
           mouseUpCallback={this.mouseUp.bind(this)}
