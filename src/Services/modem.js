@@ -50,15 +50,15 @@ for(var j = 0; j < 144; j += 1) {
 
 // faded sine wave, short duration (high activity for bit encoding) 
 var highShort = [];
-for(var j = 0; j < 18; j += 1) highShort.push(j*Math.sin(Math.radians(j*10)));
-for(var j = 0; j < 36; j += 1) highShort.push(18*Math.sin(Math.radians((j+18)*10)));
-for(var j = 0; j < 18; j += 1) highShort.push((18-j)*Math.sin(Math.radians((j+54)*10)));
+for(var j = 0; j < 18; j += 1) highShort.push(j/18.0*Math.sin(Math.radians(j*10)));
+for(var j = 0; j < 36; j += 1) highShort.push(Math.sin(Math.radians((j+18)*10)));
+for(var j = 0; j < 18; j += 1) highShort.push((18-j)/18.0*Math.sin(Math.radians((j+54)*10)));
 
 // faded sine wave, long duration (high activity for bit encoding) 
 var highLong = [];
-for(var j = 0; j < 18; j += 1) highLong.push(j*Math.sin(Math.radians(j*10)));
-for(var j = 0; j < 108; j += 1) highLong.push(18*Math.sin(Math.radians((j+18)*10)));
-for(var j = 0; j < 18; j += 1) highLong.push((18-j)*Math.sin(Math.radians((j+126)*10)));
+for(var j = 0; j < 18; j += 1) highLong.push(j/18.0*Math.sin(Math.radians(j*10)));
+for(var j = 0; j < 108; j += 1) highLong.push(Math.sin(Math.radians((j+18)*10)));
+for(var j = 0; j < 18; j += 1) highLong.push((18-j)/18.0*Math.sin(Math.radians((j+126)*10)));
 
 
 var bits = [
