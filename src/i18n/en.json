@@ -7,19 +7,21 @@
     "pixel": "Animation"
   },
   "textEditor": {
-    "name": "Text Name",
+    "name": "Label",
     "textPlaceholder": "Text to display",
     "title": "Text Editor",
     "speed": "Scroll Speed",
     "delay": "Delay in Seconds",
+    "repeat": "Number of loops (0=infinite)",
     "rtl": "right To left",
     "livePreview": "live Preview"
   },
   "pixelEditor": {
-    "name": "Animation Name",
+    "name": "Label",
     "title": "Animation Editor",
     "speed": "Animation Speed",
     "delay": "Delay in Seconds",
+    "repeat": "Number of loops (0=infinite)",
     "nextFrame": "Next Frame",
     "previousFrame": "Previous Frame"
   },

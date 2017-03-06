@@ -1,69 +1,28 @@
 // @flow
 /* eslint no-bitwise: 0 */
 /* eslint-disable */
-
-
-/* new modem function, 
- *  cures transfer problems with different audio hardware
- *  (old class moved to modemLegacy.js)
- * 
- *  main differences to old transfer protocol:
- *    - faded sine waves are used for bit encoding instead of rectangles
- *    - transfer protocol and state machine modified
- *    - sync signal is not necessary anymore (replaced by silence)
- *
- *  see firmware implementation, blinkenrocket-firmware repository,
- *    /doc/blinkenrocket_debugging.pdf 
-*/
-
-
 import _ from 'lodash';
 import { List, Map } from 'immutable';
 
-const STARTCODE1 = 0xa5;
-const STARTCODE2 = 0x5a;
-const PATTERNCODE1 = 0x0f;
-const PATTERNCODE2 = 0xf0;
+const STARTCODE = 0x99;
+const PATTERNCODE = 0xA9;
 const ENDCODE = 0x84;
 
-// silence is used as sync signal in new transfer protocol
+const HI = 1;
+const LOW = -1;
+
 const sync = [
-  _.range(70).map(() => 0),
-  _.range(70).map(() => 0),
+  _.range(17).map(() => LOW),
+  _.range(17).map(() => HI),
 ];
-
-Math.radians = function(degrees) {
-  return degrees * Math.PI / 180;
-};
-
-// silence, short duration (low activity for bit encoding) 
-var lowShort = [];
-for(var j = 0; j < 72; j += 1) {
-    lowShort.push(0);
-}
-// silence, long duration (low activity for bit encoding) 
-var lowLong = [];
-for(var j = 0; j < 144; j += 1) {
-    lowLong.push(0);
-}
-
-
-// faded sine wave, short duration (high activity for bit encoding) 
-var highShort = [];
-for(var j = 0; j < 18; j += 1) highShort.push(j/18.0*Math.sin(Math.radians(j*10)));
-for(var j = 0; j < 36; j += 1) highShort.push(Math.sin(Math.radians((j+18)*10)));
-for(var j = 0; j < 18; j += 1) highShort.push((18-j)/18.0*Math.sin(Math.radians((j+54)*10)));
-
-// faded sine wave, long duration (high activity for bit encoding) 
-var highLong = [];
-for(var j = 0; j < 18; j += 1) highLong.push(j/18.0*Math.sin(Math.radians(j*10)));
-for(var j = 0; j < 108; j += 1) highLong.push(Math.sin(Math.radians((j+18)*10)));
-for(var j = 0; j < 18; j += 1) highLong.push((18-j)/18.0*Math.sin(Math.radians((j+126)*10)));
-
-
-var bits = [
-  [	lowShort,lowLong,], 
-  [ highShort,highLong,],
+const bits = [
+  [
+    _.range(3).map(() => LOW),
+    _.range(5).map(() => LOW),
+  ], [
+    _.range(3).map(() => HI),
+    _.range(5).map(() => HI),
+  ],
 ];
 
 const supportedFrequencies = [16000, 22050, 24000, 32000, 44100, 48000];
@@ -71,7 +30,7 @@ const supportedFrequencies = [16000, 22050, 24000, 32000, 44100, 48000];
 const _hammingCalculateParityLowNibble = [0, 3, 5, 6, 6, 5, 3, 0, 7, 4, 2, 1, 1, 2, 4, 7];
 const _hammingCalculateParityHighNibble = [0, 9, 10, 3, 11, 2, 1, 8, 12, 5, 6, 15, 7, 14, 13, 4];
 
-export default class Modem {
+export default class ModemLegacy {
   hilo: 0|1 = 0;
   data: number[];
   rawData: List<Animation>;
@@ -91,10 +50,10 @@ export default class Modem {
   }
 
   _textHeader(animation: Animation): number[] {
-    if (animation.speed == null || animation.delay == null || animation.direction == null || animation.repeat == null) {
-      throw new Error('Missing Speed, Delay, Repeat or Direction');
+    if (animation.speed == null || animation.delay == null || animation.direction == null) {
+      throw new Error('Missing Speed, Delay or Direction');
     }
-    return [animation.speed << 4 | (animation.delay * 2), animation.direction << 4 | animation.repeat];
+    return [animation.speed << 4 | (animation.delay * 2), animation.direction << 4 | 0x00];
   }
 
   _animationFrameHeader(animation: Animation): number[] {
@@ -105,23 +64,25 @@ export default class Modem {
  		var d0 = animation.animation.data, 
  		parsed = Array.isArray(d0) ? d0 : d0.toArray();
     return [0x02 << 4 | parsed.length >> 8, parsed.length & 0xFF];
+
   }
 
   _animationHeader(animation: Animation): number[] {
-    if (animation.speed == null || animation.delay == null || animation.repeat == null) {
-      throw new Error('Missing Speed, Delay or Repeat');
+    if (animation.speed == null || animation.delay == null) {
+      throw new Error('Missing Speed or Delay');
     }
-    return [animation.speed, animation.delay << 4 | animation.repeat ];
+    return [animation.speed, animation.delay];
   }
 
   setData(animations: Map<string, Animation>) {
+
     const data = _.flatten(animations.toList().map(animation => {
-      let d = [PATTERNCODE1, PATTERNCODE2];
+      let d = [PATTERNCODE, PATTERNCODE];
       console.log(animation);
       if (animation.type === 'text') {
         if (!animation.text) {
           console.warn("Animation has no text");
-          animation.text=" ";
+          return d;
         }
         d = d.concat(this._textFrameHeader(animation));
         d = d.concat(this._textHeader(animation));
@@ -133,15 +94,13 @@ export default class Modem {
         // this caused problem when animation window was not 
         // displayed before transfer (type of data already array)  
         // below a quick fix:
-    		var d0 = animation.animation.data, 
-    		parsed = Array.isArray(d0) ? d0 : d0.toArray();
+        var d0 = animation.animation.data, 
+        parsed = Array.isArray(d0) ? d0 : d0.toArray();
         d = d.concat(parsed);
       }
       return d;
     }).toArray());
-
-    // build frames using new transfer protocol, for details see blinkenrocket-firmware
-    this.data = [STARTCODE1, STARTCODE1, STARTCODE1, STARTCODE2, ...data, ENDCODE, ENDCODE, ENDCODE];
+    this.data = [STARTCODE, STARTCODE, ...data, ENDCODE, ENDCODE];
     console.log(this.data);
   }
 
@@ -166,7 +125,7 @@ export default class Modem {
   hamming(first: number, second: number): number {
     return this._hamming2416(first, second);
   }
-  
+
   generateAudio(): Float32Array {
     if (this.data.length % 2 !== 0) {
       this.data.push(0);
@@ -176,14 +135,21 @@ export default class Modem {
       const second = this.data[index + 1];
       return [first, second, this.hamming(first, second)];
     }));
-  
-    let sound = this.generateSyncSignal(70);
+
+    let sound = this.generateSyncSignal(5000);
+    // let sound = [];
+    let count = 0;
     const t = {};
     this.data.forEach(byte => {
       sound = sound.concat(this.modemCode(byte));
       t[byte] = this.modemCode(byte);
+      count += 1;
+      if (count === 9) {
+        sound = sound.concat(this.generateSyncSignal(4));
+        count = 0;
+      }
     });
-    sound = sound.concat(this.generateSyncSignal(200));
+    sound = sound.concat(this.generateSyncSignal(4));
     return Float32Array.from(sound);
   }
 }
