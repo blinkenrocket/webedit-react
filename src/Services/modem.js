@@ -91,6 +91,7 @@ export default class Modem {
   }
 
   _textHeader(animation: Animation): number[] {
+    if (!animation.repeat) animation.repeat = 0;
     if (animation.speed == null || animation.delay == null || animation.direction == null || animation.repeat == null) {
       throw new Error('Missing Speed, Delay, Repeat or Direction');
     }
@@ -108,6 +109,7 @@ export default class Modem {
   }
 
   _animationHeader(animation: Animation): number[] {
+    if (!animation.repeat) animation.repeat = 0;
     if (animation.speed == null || animation.delay == null || animation.repeat == null) {
       throw new Error('Missing Speed, Delay or Repeat');
     }
