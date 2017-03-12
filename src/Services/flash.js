@@ -2,7 +2,7 @@
 import type { Map } from 'immutable';
 import ModemLegacy from './modemLegacy';
 import Modem from './modem';
-
+import { Waud, WaudSound } from 'waud.js';
 let transferActive = 0;
 
 export function transfer(animations: Map<string, Animation>) {
@@ -11,9 +11,23 @@ export function transfer(animations: Map<string, Animation>) {
   }
   transferActive = 1;
   // First, send data signals for the legacy firmware
+  console.log('waud', Waud);
+  Waud.init();
+  //const audioCtx = new AudioContext();
+
+  console.log('hop', Waud);
+ const snd = new WaudSound('https://raw.githubusercontent.com/waud/waud/dev/sample/assets/bell.mp3', { autoplay: false, loop: false, volume: 0.99, onload: playSound });
+  // const snd = new WaudSound('data:audio/wave;base64,UklGRjIAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAAABmYWN0BAAAAAAAAABkYXRhAAAAAA==', { autoplay: false, loop: false, volume: 0.5, onload: playSound });  
+  function playSound() {
+    console.log('playsnd', Waud);
+    snd.play();
+    transferActive = 0;
+    window.document.createElement('audio');
+
+  const audioCtx = Waud.audioManager.audioContext;
+
   const modem = new ModemLegacy(animations);
   const data = modem.generateAudio();
-  const audioCtx = new AudioContext();
   const buffer = audioCtx.createBuffer(1, data.length, 48000);
   buffer.copyToChannel(data, 0);
   const source = audioCtx.createBufferSource();
@@ -30,10 +44,11 @@ export function transfer(animations: Map<string, Animation>) {
     source2.buffer = buffer2;    
     source2.connect(audioCtx.destination);
     source2.onended = function() {
-      audioCtx.close();
+      // audioCtx.close();
       transferActive = 0;
     };
     source2.start();
   };
   source.start();
+  }
 }
