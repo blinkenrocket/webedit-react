@@ -140,6 +140,7 @@ export default class ModemLegacy {
     // let sound = [];
     let count = 0;
     const t = {};
+
     this.data.forEach(byte => {
       sound = sound.concat(this.modemCode(byte));
       t[byte] = this.modemCode(byte);
@@ -150,6 +151,16 @@ export default class ModemLegacy {
       }
     });
     sound = sound.concat(this.generateSyncSignal(4));
-    return Float32Array.from(sound);
+
+    //  the next lines are a workaround because
+    //    return Float32Array.from(sound);
+    //  did not work on iOS ...
+    let dummy = new Float32Array(sound.length);
+    let i=0;
+    sound.forEach(num => { 
+      dummy[i] = num;
+      i += 1;
+    });
+    return dummy;
   }
 }
