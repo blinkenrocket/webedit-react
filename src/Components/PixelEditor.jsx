@@ -27,8 +27,6 @@ const style = {
     cursor: 'default',
   },
   buttonWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
     marginBottom: 15,
   },
   sliderContainer: {
