@@ -171,7 +171,7 @@ export default class RightMenu extends React.Component {
           autoScrollBodyContent
           open={this.state.shareWidgetOpen}>
           <p>{t('share_dialog.instructions')}</p>
-          <Link to={{ pathname: '/', query: { s: this.state.shareString } }}>
+          <Link to={{ pathname: BASE_URL, query: { s: this.state.shareString } }}>
             <RaisedButton label={t('share_dialog.link')} primary keyboardFocused icon={<ContentLink/>}/>
           </Link>
         </Dialog>
