@@ -91,6 +91,7 @@ export default class Modem {
   }
 
   _textHeader(animation: Animation): number[] {
+    if (!animation.repeat) animation.repeat = 0;
     if (animation.speed == null || animation.delay == null || animation.direction == null || animation.repeat == null) {
       throw new Error('Missing Speed, Delay, Repeat or Direction');
     }
@@ -108,6 +109,7 @@ export default class Modem {
   }
 
   _animationHeader(animation: Animation): number[] {
+    if (!animation.repeat) animation.repeat = 0;
     if (animation.speed == null || animation.delay == null || animation.repeat == null) {
       throw new Error('Missing Speed, Delay or Repeat');
     }
@@ -184,6 +186,16 @@ export default class Modem {
       t[byte] = this.modemCode(byte);
     });
     sound = sound.concat(this.generateSyncSignal(200));
-    return Float32Array.from(sound);
+
+    //  the next lines are a workaround because
+    //    return Float32Array.from(sound);
+    //  did not work on iOS ...
+    let dummy = new Float32Array(sound.length);
+    let i=0;
+    sound.forEach(num => { 
+      dummy[i] = num;
+      i += 1;
+    });
+    return dummy;
   }
 }

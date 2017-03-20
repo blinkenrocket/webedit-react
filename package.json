@@ -6,7 +6,7 @@
     "test": "npm run build && npm run lint && flow",
     "gh-pages": "NODE_ENV=production BASE_URL=webedit-react/ webpack",
     "start": "BABEL_ENV=hot webpack-dev-server --host 0.0.0.0 --hot --inline --progress --history-api-fallback --content-base www",
-    "dev": "webpack-dev-server --inline --progress --history-api-fallback --content-base www",
+    "dev": "webpack-dev-server --host 0.0.0.0 --inline --progress --history-api-fallback --content-base www",
     "lint": "eslint src/**/*.js && eslint src/**/*.jsx",
     "build": "webpack"
   },
@@ -91,6 +91,7 @@
     "redux-actions": "0.10.0",
     "redux-promise": "^0.5.3",
     "svg-inline-react": "^1.0.1",
-    "uuid-js": "^0.7.5"
+    "uuid-js": "^0.7.5",
+    "waud.js": "^0.9.8"
   }
 }
