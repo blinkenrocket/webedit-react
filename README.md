@@ -1,5 +1,7 @@
 # webedit-react  Blinkenrocket WebInterface
 
+[![Build Status](https://travis-ci.org/blinkenrocket/webedit-react.svg?branch=master)](https://travis-ci.org/blinkenrocket/webedit-react)
+
 [blinkenrocket.de](http://blinkenrocket.de/)
 
 
