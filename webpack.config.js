@@ -63,7 +63,7 @@ module.exports = {
   },
   entry: ['babel-polyfill', './src/index.js'],
   output: {
-    path: path.resolve('www'),
+    path: path.resolve('public'),
     filename: 'app-[hash].js',
     publicPath: `/${process.env.BASE_URL || ''}`,
   },
