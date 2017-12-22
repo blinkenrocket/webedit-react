@@ -1,4 +1,5 @@
 // @flow
+import { connect } from 'react-redux';
 import { FlatButton, Slider, TextField } from 'material-ui';
 import { List } from 'immutable';
 import { MAX_ANIMATION_FRAMES } from '../variables';
@@ -51,6 +52,7 @@ const MOUSE_MODE_ERASE = 'MOUSE_MODE_ERASE';
 
 type Props = {
   animation: Animation,
+  updateAnimationAction: typeof updateAnimation,
 };
 
 type State = {
@@ -60,7 +62,7 @@ type State = {
 const EMPTY_DATA = List(range(8).map(() => 0x00));
 
 @Radium
-export default class PixelEditor extends React.Component<Props, State> {
+class PixelEditor extends React.Component<Props, State> {
   state: State = {
     mouseMode: MOUSE_MODE_NOTHING,
   };
@@ -68,7 +70,7 @@ export default class PixelEditor extends React.Component<Props, State> {
   componentWillMount() {
     const { animation } = this.props;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         animation: {
           data: List(animation.animation.data),
@@ -83,7 +85,7 @@ export default class PixelEditor extends React.Component<Props, State> {
   handleChange = (prop: string, e: SyntheticKeyboardEvent<*>) => {
     const { animation } = this.props;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         // $FlowFixMe
         [prop]: e.target.value,
@@ -93,7 +95,7 @@ export default class PixelEditor extends React.Component<Props, State> {
   handleSpeedChange = (e: SyntheticEvent<*>, value: number) => {
     const { animation } = this.props;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         speed: value,
       })
@@ -102,7 +104,7 @@ export default class PixelEditor extends React.Component<Props, State> {
   handleDelayChange = (e: SyntheticEvent<*>, value: number) => {
     const { animation } = this.props;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         delay: value,
       })
@@ -111,7 +113,7 @@ export default class PixelEditor extends React.Component<Props, State> {
   handleRepeatChange = (e: SyntheticEvent<*>, value: number) => {
     const { animation } = this.props;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         repeat: value,
       })
@@ -127,7 +129,7 @@ export default class PixelEditor extends React.Component<Props, State> {
     }
     // check whether the next frame would cross boundary
     if (animation.animation.currentFrame + 1 >= animation.animation.frames) {
-      updateAnimation(
+      this.props.updateAnimationAction(
         Object.assign({}, animation, {
           animation: {
             data: animation.animation.data.concat(EMPTY_DATA),
@@ -139,7 +141,7 @@ export default class PixelEditor extends React.Component<Props, State> {
       );
     } else {
       // boundary not crossed, just forward the frame
-      updateAnimation(
+      this.props.updateAnimationAction(
         Object.assign({}, animation, {
           animation: {
             data: animation.animation.data,
@@ -159,7 +161,7 @@ export default class PixelEditor extends React.Component<Props, State> {
     if (animation.animation.currentFrame - 1 < 0) {
       return;
     }
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         animation: {
           data: animation.animation.data,
@@ -178,7 +180,7 @@ export default class PixelEditor extends React.Component<Props, State> {
     // If user removes the first frame and it is the only frame
     if (animation.animation.currentFrame === 0 && animation.animation.frames === 1) {
       newdata = animation.animation.data = EMPTY_DATA;
-      updateAnimation(
+      this.props.updateAnimationAction(
         Object.assign({}, animation, {
           animation: {
             data: newdata,
@@ -200,7 +202,7 @@ export default class PixelEditor extends React.Component<Props, State> {
 
     const newCurrentFrame = animation.animation.currentFrame === 0 ? 0 : animation.animation.currentFrame - 1;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         animation: {
           data: newdata,
@@ -232,7 +234,7 @@ export default class PixelEditor extends React.Component<Props, State> {
     // 3. add current frame data and everything until the end
     newdata = newdata.concat(currentFrameData, animation.animation.data.skip(8 * animation.animation.currentFrame + 8));
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         animation: {
           data: newdata,
@@ -300,7 +302,7 @@ export default class PixelEditor extends React.Component<Props, State> {
 
     animation.animation.data = animation.animation.data.set(8 * animation.animation.currentFrame + x, column);
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         animation: {
           data: animation.animation.data,
@@ -402,3 +404,7 @@ export default class PixelEditor extends React.Component<Props, State> {
     );
   }
 }
+
+export default connect(null, {
+  updateAnimationAction: updateAnimation,
+})(PixelEditor);

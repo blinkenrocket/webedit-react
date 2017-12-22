@@ -40,7 +40,7 @@ export default class App extends React.Component<any> {
     if (encodedAnimation) {
       const decodedAnimation = JSON.parse(atob(encodedAnimation));
 
-      addAnimation(decodedAnimation);
+      store.dispatch(addAnimation(decodedAnimation));
     }
 
     return {

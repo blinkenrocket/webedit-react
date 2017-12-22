@@ -1,4 +1,5 @@
 /* @flow */
+import { connect } from 'react-redux';
 import { Dialog, FlatButton, RaisedButton } from 'material-ui';
 import { Link } from 'react-router';
 import { range } from 'lodash';
@@ -40,6 +41,10 @@ const style = {
   },
 };
 
+type Props = {
+  resetAction: typeof reset,
+};
+
 type State = {
   transferWidgetOpen: boolean,
   shareWidgetOpen: boolean,
@@ -47,7 +52,7 @@ type State = {
 };
 
 @Radium
-export default class RightMenu extends React.Component<{}, State> {
+class RightMenu extends React.Component<Props, State> {
   state: State = {
     transferWidgetOpen: false,
     shareWidgetOpen: false,
@@ -100,9 +105,9 @@ export default class RightMenu extends React.Component<{}, State> {
     });
   };
 
-  new() {
-    reset();
-  }
+  new = () => {
+    this.props.resetAction();
+  };
   render() {
     const transferActions = [
       <FlatButton
@@ -138,15 +143,15 @@ export default class RightMenu extends React.Component<{}, State> {
       <div style={style.wrap}>
         <RaisedButton
           label={t('menu.share')}
-          onClick={this.share}
+          onTouchTap={this.share}
           primary
           style={style.button}
           icon={<SocialShare />}
         />
-        <RaisedButton label={t('menu.new')} onClick={this.new} primary style={style.button} icon={<ContentAdd />} />
+        <RaisedButton label={t('menu.new')} onTouchTap={this.new} primary style={style.button} icon={<ContentAdd />} />
         <RaisedButton
           label={t('menu.transfer')}
-          onClick={this.transfer}
+          onTouchTap={this.transfer}
           primary
           style={style.button}
           icon={<ContentSend />}
@@ -183,3 +188,7 @@ export default class RightMenu extends React.Component<{}, State> {
     );
   }
 }
+
+export default connect(null, {
+  resetAction: reset,
+})(RightMenu);

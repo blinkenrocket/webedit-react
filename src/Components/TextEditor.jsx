@@ -1,4 +1,5 @@
 // @flow
+import { connect } from 'react-redux';
 import { Divider, Slider, TextField, Toggle } from 'material-ui';
 import { MAX_TEXT_LENGTH } from '../variables';
 import { t } from 'i18next';
@@ -11,6 +12,7 @@ import type { Animation } from 'Reducer';
 type Props = {
   animation: Animation,
   currentText?: ?string,
+  updateAnimationAction: typeof updateAnimation,
 };
 
 type State = {
@@ -43,7 +45,7 @@ const style = {
 };
 
 @Radium
-export default class TextEditor extends React.Component<Props, State> {
+class TextEditor extends React.Component<Props, State> {
   state: State = {
     livePreview: true,
   };
@@ -54,7 +56,7 @@ export default class TextEditor extends React.Component<Props, State> {
     if (e.target.value.length > MAX_TEXT_LENGTH) {
       return;
     }
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         // $FlowFixMe
         [prop]: e.target.value,
@@ -64,7 +66,7 @@ export default class TextEditor extends React.Component<Props, State> {
   handleSpeedChange = (e: SyntheticEvent<*>, value: number) => {
     const { animation } = this.props;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         speed: value,
       })
@@ -73,7 +75,7 @@ export default class TextEditor extends React.Component<Props, State> {
   handleDelayChange = (e: SyntheticEvent<*>, value: number) => {
     const { animation } = this.props;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         delay: value,
       })
@@ -82,7 +84,7 @@ export default class TextEditor extends React.Component<Props, State> {
   handleRepeatChange = (e: SyntheticEvent<*>, value: number) => {
     const { animation } = this.props;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         repeat: value,
       })
@@ -91,7 +93,7 @@ export default class TextEditor extends React.Component<Props, State> {
   handleDirectionChange = (e: SyntheticEvent<*>, toggled: boolean) => {
     const { animation } = this.props;
 
-    updateAnimation(
+    this.props.updateAnimationAction(
       Object.assign({}, animation, {
         direction: toggled ? 1 : 0,
       })
@@ -185,3 +187,7 @@ export default class TextEditor extends React.Component<Props, State> {
     );
   }
 }
+
+export default connect(null, {
+  updateAnimationAction: updateAnimation,
+})(TextEditor);
