@@ -9,18 +9,19 @@
 
 #### System Setup
 
-* Install NodeJS v6: https://nodejs.org/en/download/
+* Install NodeJS v8: https://nodejs.org/en/download/
+* Install Yarn: https://yarnpkg.com
 
 #### Getting started with the code
 
 Clone the Git repository, and change into the project directory.
 
     # Install dependencies and build the project
-    npm install
-    npm run build
+    yarn
+    yarn build
 
     # Run development server
-    npm run dev
+    yarn dev
 
 Now you can access the web interface via http://127.0.0.1:8080
 
