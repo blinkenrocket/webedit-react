@@ -17,12 +17,4 @@
   "plugins": [
     "transform-decorators-legacy"
   ],
-  "env": {
-    "production": {
-      "plugins": [
-        "transform-remove-console",
-        "transform-remove-debugger"
-      ]
-    }
-  }
 }
