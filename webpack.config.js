@@ -31,6 +31,8 @@ const plugins = [
     filename: 'index.html',
     template: 'html-loader!src/index.html',
     minify: {},
+    inject: 'body',
+    hash: true,
   }),
 ];
 
@@ -63,7 +65,7 @@ module.exports = {
   output: {
     path: path.resolve('www'),
     filename: 'app-[hash].js',
-    publicPath: '/',
+    publicPath: `/${process.env.BASE_URL || ''}`,
   },
   module: {
     rules: [
