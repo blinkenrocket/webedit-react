@@ -1,8 +1,8 @@
 language: node_js
-node_js: "6"
-install: npm install
+node_js: "8"
+install: yarn
 script: 
-  - npm run gh-pages
+  - yarn gh-pages
 deploy:
   provider: pages
   skip_cleanup: true
