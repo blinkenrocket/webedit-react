@@ -1,20 +1,23 @@
 {
-  "presets": ["react", "es2015", "stage-0"],
+  "presets": [["env", {
+      "targets": {
+        "chrome": 45,
+        "firefox": 42,
+        "safari": 9,
+        "opera": 32,
+        "edge": 12,
+        "iOS": 9
+      },
+      "loose": true,
+      "useBuiltIns": true
+      }],
+      "react",
+      "stage-0"
+    ],
   "plugins": [
     "transform-decorators-legacy"
   ],
   "env": {
-    "hot": {
-      "plugins": [
-        ["react-transform", {
-          "transforms": [{
-            "transform": "react-transform-hmr",
-            "imports": ["react"],
-            "locals": ["module"]
-          }]
-        }]
-      ]
-    },
     "production": {
       "plugins": [
         "transform-remove-console",

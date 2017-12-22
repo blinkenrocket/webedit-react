@@ -1,30 +1,31 @@
-import React from 'react';
+// @flow
 import { connect } from 'react-redux';
-import TextEditor from './TextEditor';
 import PixelEditor from './PixelEditor';
-
+import React from 'react';
+import TextEditor from './TextEditor';
+import type { Animation } from 'Reducer';
 
 type Props = {
-  selectedAnimation: ?Animation,
-}
+  selectedAnimation?: ?Animation,
+};
 
-/*::`*/
 @connect(state => ({
   selectedAnimation: state.selectedAnimation,
 }))
-export default class Editor extends React.Component {
-  props: Props;
+export default class Editor extends React.Component<Props> {
   render() {
     const { selectedAnimation } = this.props;
+
     if (!selectedAnimation) {
-      return (<div></div>);
+      return <div />;
     }
     switch (selectedAnimation.type) {
       case 'text':
-      return (<TextEditor animation={selectedAnimation}/>);
+        return <TextEditor animation={selectedAnimation} />;
       case 'pixel':
-      return (<PixelEditor animation={selectedAnimation}/>);
-      default: return null;
+        return <PixelEditor animation={selectedAnimation} />;
+      default:
+        return null;
     }
   }
 }

@@ -2,37 +2,23 @@
 .*node_modules/babel.*
 .*node_modules/fbjs/.*
 .*node_modules/react/.*
-.*interfaces/public/\.git.*
-.*\.json
 
 [include]
-src/
 
 [libs]
-_Interfaces/
-flow-typed/
-node_modules/iflow-bluebird/index.js.flow
-node_modules/iflow-react-redux/index.js.flow
-node_modules/iflow-react-router/index.js.flow
-node_modules/iflow-redux-actions/index.js.flow
-node_modules/iflow-immutable/index.js.flow
-node_modules/iflow-lodash/index.js.flow
-node_modules/iflow-i18next/index.js.flow
-node_modules/iflow-material-ui/index.js.flow
-node_modules/iflow-core-decorators/index.js.flow
 
 [options]
 traces=5
 module.name_mapper='^.*\.css$' -> 'ModuleStub'
 module.name_mapper='^.*\.svg$' -> 'ModuleStub'
-module.name_mapper='^@mohayonao/web-audio-api-shim$' -> 'ModuleStub'
-module.name_mapper='^redux$' -> 'ModuleStub'
 module.name_mapper='^babel-polyfill$' -> 'ModuleStub'
 module.name_mapper='^svg-inline-react$' -> 'ModuleStub'
 module.name_mapper='^redux-promise$' -> 'ModuleStub'
 module.name_mapper='^react-tap-event-plugin$' -> 'ModuleStub'
+
 module.system=haste
-module.system.node.resolve_dirname=.
+module.system.node.resolve_dirname=src
+module.system.node.resolve_dirname=node_modules
 esproposal.decorators=ignore
 esproposal.class_static_fields=enable
 esproposal.class_instance_fields=enable

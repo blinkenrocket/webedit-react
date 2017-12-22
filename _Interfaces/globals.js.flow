@@ -1,3 +1,0 @@
-declare var __PROD__: bool;
-declare var __DEV__: bool;
-declare var BASE_URL: string;

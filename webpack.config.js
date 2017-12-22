@@ -1,102 +1,91 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+/* eslint no-sync: 0, no-undef: 0 */
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const nodeEnv = (process.env.NODE_ENV || 'development').trim();
+const DashboardPlugin = require('webpack-dashboard/plugin');
+const fs = require('fs');
 
-var path = require('path');
-var process = require('process');
-var webpack = require('webpack');
-var fs = require('fs');
+// eslint-disable-next-line
+const __DEV__ = nodeEnv !== 'production';
 
-var node_env = process.env.NODE_ENV || 'development';
-var configPath = `config.${node_env}.js`;
+let config = {};
 
-var config = {};
-if (fs.existsSync(`config.${node_env}.js`)) {
-  config = require(`./config.${node_env}.js`);
+if (fs.existsSync(`./config.${nodeEnv}.js`)) {
+  config = require(`./config.${nodeEnv}.js`);
 }
 
+const devtool = __DEV__ ? '#source-map' : '';
 
-var plugins = [
-  new webpack.NoErrorsPlugin(),
-  new HtmlWebpackPlugin({
-    template: 'html-loader!./src/index.html',
-    title: 'Webedit',
-    minify: {},
-    inject: 'body',
-    hash: true,
-  }),
+const plugins = [
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify(node_env)
+      NODE_ENV: JSON.stringify(nodeEnv),
     },
-    __DEV__: JSON.stringify(node_env !== 'production'),
-    __PROD__: JSON.stringify(node_env === 'production'),
+    __DEV__: JSON.stringify(nodeEnv !== 'production'),
+    __PROD__: JSON.stringify(nodeEnv === 'production'),
     CONFIG: JSON.stringify(config),
     BASE_URL: JSON.stringify(`/${process.env.BASE_URL || ''}`),
   }),
+  new HtmlWebpackPlugin({
+    filename: 'index.html',
+    template: 'html-loader!src/index.html',
+    minify: {},
+  }),
 ];
 
-if (node_env === 'production') {
+if (__DEV__) {
+  plugins.push(new DashboardPlugin());
+} else {
   plugins.push(
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+      output: {
+        comments: false,
+      },
+      screwIe8: true,
+      sourceMap: false,
+    })
   );
 }
 
-const esLintOptions = {
-  configFile: './src/.eslintrc',
-  failOnWarning: false,
-  failOnError: true          
-};
-
 module.exports = {
-  devtool: node_env === 'production' ? undefined : 'cheap-module-source-map',
   context: __dirname,
   resolve: {
-    modules: [path.join(__dirname, 'src'), "node_modules"],
-    extensions: ['.jsx', '.js', '.json'],
-    alias: {
-      'bluebird': 'bluebird/js/browser/bluebird.min.js',
-      'bonsai': 'bonsai/src/bootstrapper/_build/common.js',
-    },
+    // Extension die wir weglassen können
+    extensions: ['.js', '.jsx'],
+    modules: [path.resolve('src'), 'node_modules'],
+    alias: {},
   },
-  entry: [
-    './src/index.js'
-  ],
+  entry: ['babel-polyfill', './src/index.js'],
   output: {
-    path: path.resolve('public'),
+    path: path.resolve('www'),
     filename: 'app-[hash].js',
-    publicPath: ''
+    publicPath: '/',
   },
   module: {
     rules: [
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
-      { test: /.*\.CSS\.js$/,
-        use: [
-          { loader: 'inline-css-loader' }, 
-          { loader: 'babel-loader' }, 
-          {
-            loader: 'eslint-loader',
-            options: esLintOptions,
-          }
-        ],
-        exclude: /(node_modules)/,
-        include: /src/,
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|primusClient)/,
+        loader: 'babel-loader',
+        query: { cacheDirectory: true },
       },
-      { test: /^((?!CSS\.js$).)*\.jsx?$/,
+      {
+        test: /\.(CSS|css)\.js$/,
         exclude: /(node_modules)/,
-        include: /src/,
-        use: [{
-          loader: 'babel-loader',
-        }, {
-          loader: 'eslint-loader',
-          options: esLintOptions,
-        }],
+        loader: 'inline-css-loader',
       },
-      { test: /\.(jpg|png|gif)$/, loader: 'file!image' },
-      { test: /\.svg/, loader: 'url-loader', include: /node_modules\/font-awesome/ },
-      { test: /\.woff2?(\?v=.*)?$/, loader: 'url-loader?limit=10000&minetype=application/font-woff' },
-      { test: /\.(eot|ttf|otf)(\?v=.*)?$/, loader: 'url-loader' },
+      { test: /\.pdf$/, loader: 'file-loader' },
+      { test: /\.(eot|ttf|otf|svg|woff2?)(\?.*)?$/, loader: 'file-loader' },
+      { test: /\.(jpg|png|gif|jpeg|ico)$/, loader: 'url-loader' },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.svg$/, loader: 'svg-inline-loader' }
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.svg$/, loader: 'svg-inline-loader' },
     ],
   },
   plugins,
+  devtool,
 };

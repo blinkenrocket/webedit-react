@@ -1,3 +1,4 @@
+// @flow
 export default {
   'html, body, #webedit, #webedit > div': {
     height: '100%',

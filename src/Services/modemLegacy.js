@@ -3,6 +3,7 @@
 /* eslint-disable */
 import _ from 'lodash';
 import { List, Map } from 'immutable';
+import type {Animation} from 'Reducer';  
 
 const STARTCODE = 0x99;
 const PATTERNCODE = 0xA9;
@@ -86,6 +87,7 @@ export default class ModemLegacy {
         }
         d = d.concat(this._textFrameHeader(animation));
         d = d.concat(this._textHeader(animation));
+        // $FlowFixMe
         d = d.concat(_.map(animation.text, char => char.charCodeAt(0)));
       }else if (animation.type === 'pixel') {
         d = d.concat(this._animationFrameHeader(animation));

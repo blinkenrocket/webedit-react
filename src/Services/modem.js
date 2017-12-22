@@ -19,6 +19,7 @@
 
 import _ from 'lodash';
 import { List, Map } from 'immutable';
+import type { Animation } from 'Reducer';
 
 const STARTCODE1 = 0xa5;
 const STARTCODE2 = 0x5a;
@@ -32,6 +33,7 @@ const sync = [
   _.range(70).map(() => 0),
 ];
 
+// $FlowFixMe
 Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
 };
@@ -127,6 +129,7 @@ export default class Modem {
         }
         d = d.concat(this._textFrameHeader(animation));
         d = d.concat(this._textHeader(animation));
+        // $FlowFixMe
         d = d.concat(_.map(animation.text, char => char.charCodeAt(0)));
       }else if (animation.type === 'pixel') {
         d = d.concat(this._animationFrameHeader(animation));

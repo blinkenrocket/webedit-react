@@ -1,9 +1,10 @@
 /* @flow */
 import { createAction } from 'redux-actions';
-import UUID from 'uuid-js';
-import { t } from 'i18next';
 import { List } from 'immutable';
 import { range } from 'lodash';
+import { t } from 'i18next';
+import UUID from 'uuid-js';
+import type { Animation } from 'Reducer';
 
 const EMPTY_DATA = List(range(8).map(() => 0x00));
 

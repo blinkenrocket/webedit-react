@@ -1,5 +1,5 @@
-{
-  "extends": "marudor",
+module.exports = {
+  "extends": "joblift/2space",
   "env": {
     "browser": true
   },
@@ -8,12 +8,9 @@
     "__PROD__": false,
     "__DEV__": false,
     "global": false,
-    "BASE_URL": false
+    "BASE_URL": false,
   },
   "rules": {
-    "class-property/class-property-semicolon": 1
-  },
-  "plugins": [
-    "class-property"
-  ]
+    "max-lines": 0
+  }
 }

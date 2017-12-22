@@ -1,42 +1,52 @@
-import React from 'react';
-import { autobind } from 'core-decorators';
+// @flow
+import { Avatar, ListItem } from 'material-ui';
+import { connect } from 'react-redux';
+import { removeAnimation, selectAnimation } from 'Actions/animations';
 import { t } from 'i18next';
-import { selectAnimation, removeAnimation } from 'Actions/animations';
-import Radium from 'radium';
-import { ListItem, Avatar } from 'material-ui';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
-import NotificationSms from 'material-ui/svg-icons/notification/sms';
 import NotificationMms from 'material-ui/svg-icons/notification/mms';
+import NotificationSms from 'material-ui/svg-icons/notification/sms';
+import Radium from 'radium';
+import React from 'react';
+import type { Animation } from 'Reducer';
 
 type Props = {
   animation: Animation,
-  selected: bool,
-}
+  selected: boolean,
+  removeAnimationAction: typeof removeAnimation,
+  selectAnimationAction: typeof selectAnimation,
+};
 
 @Radium
-export default class AnimationInMenu extends React.Component {
-  props: Props;
-  @autobind
-  selectAnimation() {
-    const { animation } = this.props;
-    selectAnimation(animation);
-  }
-  @autobind
-  removeAnimation(e: SyntheticMouseEvent) {
-    const { animation } = this.props;
-    removeAnimation(animation.id);
+class AnimationInMenu extends React.Component<Props> {
+  selectAnimation = () => {
+    const { animation, selectAnimationAction } = this.props;
+
+    selectAnimationAction(animation);
+  };
+  removeAnimation = (e: SyntheticMouseEvent<*>) => {
+    const { animation, removeAnimationAction } = this.props;
+
+    removeAnimationAction(animation.id);
     e.stopPropagation();
-  }
+  };
   render() {
     const { animation, selected } = this.props;
+
     return (
       <ListItem
-        leftAvatar={<Avatar icon={(animation.type === 'pixel') ? <NotificationMms /> : <NotificationSms />} />}
-        rightIcon={<ActionDeleteForever onClick={this.removeAnimation}/>}
+        leftAvatar={<Avatar icon={animation.type === 'pixel' ? <NotificationMms /> : <NotificationSms />} />}
+        rightIcon={<ActionDeleteForever onClick={this.removeAnimation} />}
         primaryText={animation.name}
-        secondaryText={(animation.type === 'pixel') ? t('animation.animation') : t('animation.text')}
+        secondaryText={animation.type === 'pixel' ? t('animation.animation') : t('animation.text')}
         onTouchTap={this.selectAnimation}
-        style={selected ? { backgroundColor: '#e0e0e0' } : {}} />
+        style={selected ? { backgroundColor: '#e0e0e0' } : {}}
+      />
     );
   }
 }
+
+export default connect(null, {
+  removeAnimationAction: removeAnimation,
+  selectAnimationAction: selectAnimation,
+})(AnimationInMenu);
