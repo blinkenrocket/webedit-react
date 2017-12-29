@@ -396,7 +396,7 @@ class PixelEditor extends React.Component<Props, State> {
           {animation.delay}
         </div>
         <div style={[style.sliderContainer, style.noShrink]}>
-          {t('pixelEditor.repeat')}
+          <p style={style.sliderLabel}>{t('pixelEditor.repeat')}</p>
           <Slider
             style={style.slider}
             value={animation.repeat}
