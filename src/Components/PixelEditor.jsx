@@ -40,9 +40,16 @@ const style = {
   slider: {
     marginTop: 0,
     marginBottom: 0,
-    flex: '1 1 0',
+    flex: '1 1 75%',
     marginLeft: 15,
     marginRight: 15,
+  },
+  sliderLabel: {
+    marginTop: -10,
+    marginBottom: 0,
+    flex: '1 1 25%',
+    marginRight: 10,
+    fontFamily: 'Roboto, sans-serif',
   },
 };
 
@@ -365,7 +372,7 @@ class PixelEditor extends React.Component<Props, State> {
           placeholder={t('pixelEditor.name')}
         />
         <div style={[style.sliderContainer, style.noShrink]}>
-          {t('pixelEditor.speed')}
+          <p style={style.sliderLabel}>{t('textEditor.speed')}</p>
           <Slider
             style={style.slider}
             value={animation.speed}
@@ -377,7 +384,7 @@ class PixelEditor extends React.Component<Props, State> {
           {animation.speed}
         </div>
         <div style={[style.sliderContainer, style.noShrink]}>
-          {t('pixelEditor.delay')}
+          <p style={style.sliderLabel}>{t('textEditor.delay')}</p>
           <Slider
             style={style.slider}
             value={animation.delay}
