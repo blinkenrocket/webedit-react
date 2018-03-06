@@ -39,8 +39,15 @@ const style = {
   slider: {
     marginTop: 0,
     marginBottom: -10,
-    flex: '1 1 0',
+    flex: '1 1 75%',
     marginRight: 15,
+  },
+  sliderLabel: {
+    marginTop: -10,
+    marginBottom: 0,
+    flex: '1 1 25%',
+    marginRight: 10,
+    fontFamily: 'Roboto, sans-serif',
   },
 };
 
@@ -138,6 +145,7 @@ class TextEditor extends React.Component<Props, State> {
           floatingLabelFixed
         />
         <div style={[style.sliderContainer, style.noShrink]}>
+          <p style={style.sliderLabel}>{t('textEditor.speed')}</p>
           <Slider
             description={t('textEditor.speed')}
             style={style.slider}
@@ -150,6 +158,7 @@ class TextEditor extends React.Component<Props, State> {
           {animation.speed}
         </div>
         <div style={[style.sliderContainer, style.noShrink]}>
+          <p style={style.sliderLabel}>{t('textEditor.delay')}</p>
           <Slider
             description={t('textEditor.delay')}
             style={style.slider}
@@ -162,6 +171,7 @@ class TextEditor extends React.Component<Props, State> {
           {animation.delay}
         </div>
         <div style={[style.sliderContainer, style.noShrink]}>
+          <p style={style.sliderLabel}>{t('textEditor.repeat')}</p>
           <Slider
             description={t('textEditor.repeat')}
             style={style.slider}
