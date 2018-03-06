@@ -52,6 +52,7 @@ export default class TextPreview extends React.Component<Props, State> {
       columns: List(
         flatten(
           charCodes
+            .filter(c => font[c])
             .map(c => font[c].hexcolumns.map((hexColumn: number) => padStart(hexColumn.toString(2), 8, '0')))
             .map(column => column.map(c => List(c.split('').map(x => x !== '0'))).concat([EMPTY_COLUMN]))
         )

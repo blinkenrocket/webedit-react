@@ -590,4 +590,35 @@ export default {
     description: '~',
     hexcolumns: [0x20, 0x40, 0x40, 0x20, 0x20, 0x40],
   },
+  //Before uncomment Umlaute: Update Firmware in order to be able to deal with them
+  /*'228': {
+    length: 5,
+    description: 'ä',
+    hexcolumns: [0x02, 0x55, 0x15, 0x55, 0x0f],
+  },
+  '196': {
+    length: 5,
+    description: 'Ä',
+    hexcolumns: [0x3f, 0xc8, 0x48, 0xc8, 0x3f],
+  },
+  '246': {
+    length: 5,
+    description: 'ö',
+    hexcolumns: [0x0e, 0x51, 0x11, 0x51, 0x0e],
+  },
+  '214': {
+    length: 5,
+    description: 'Ö',
+    hexcolumns: [0x3e, 0xc1, 0x41, 0xc1, 0x3e],
+  },
+  '252': {
+    length: 5,
+    description: 'ü',
+    hexcolumns: [0x1e, 0x41, 0x01, 0x41, 0x1e]
+  },
+  '220': {
+    length: 5,
+    description: 'Ü',
+    hexcolumns: [0x3e, 0x81, 0x01, 0x81, 0x3e],
+  }*/
 };
