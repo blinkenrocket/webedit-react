@@ -60,30 +60,16 @@ class TextEditor extends React.Component<Props, State> {
   handleChange(prop: string, e: SyntheticEvent<any>) {
     const { animation } = this.props;
 
-	e.target.value = deUmlaut(e.target.value);
-	e.target.value = e.target.value.split('').filter(c => font[c]).join('');
+    e.target.value = this.deUmlaut(e.target.value);
+    e.target.value = e.target.value.split('').filter(c => font[c.charCodeAt(0)]).join('');
     // $FlowFixMe
-    if (e.target.value.length > MAX_TEXT_LENGTH) {
-      return;
-    }
+    e.target.value = e.target.value.substring(0, MAX_TEXT_LENGTH);
     this.props.updateAnimationAction(
       Object.assign({}, animation, {
         // $FlowFixMe
         [prop]: e.target.value,
       })
     );
-	
-	function deUmlaut(value){
-	  value = value.toLowerCase();
-	  value = value.replace(/ä/g, 'ae');
-	  value = value.replace(/ö/g, 'oe');
-	  value = value.replace(/ü/g, 'ue');
-	  value = value.replace(/Ä/g, 'Ae');
-	  value = value.replace(/Ö/g, 'Oe');
-	  value = value.replace(/Ü/g, 'Ue');
-	  value = value.replace(/ß/g, 'ss');
-	  return value;
-	}
   }
   handleSpeedChange = (e: SyntheticEvent<*>, value: number) => {
     const { animation } = this.props;
@@ -125,6 +111,16 @@ class TextEditor extends React.Component<Props, State> {
     this.setState({
       livePreview: toggled,
     });
+  };
+  deUmlaut = (value) => {
+    value = value.replace('ä', 'ae');
+    value = value.replace('ö', 'oe');
+    value = value.replace('ü', 'ue');
+    value = value.replace('Ä', 'Ae');
+    value = value.replace('Ö', 'Oe');
+    value = value.replace('Ü', 'Ue');
+    value = value.replace('ß', 'ss');
+    return value;
   };
   render() {
     const { animation } = this.props;
