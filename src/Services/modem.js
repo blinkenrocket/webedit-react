@@ -181,8 +181,8 @@ export default class Modem {
       const second = this.data[index + 1];
       return [first, second, this.hamming(first, second)];
     }));
-  
-    let sound = this.generateSyncSignal(70);
+
+    let sound = this.generateSyncSignal(10);
     const t = {};
     this.data.forEach(byte => {
       sound = sound.concat(this.modemCode(byte));
