@@ -7,6 +7,7 @@ import { updateAnimation } from 'Actions/animations';
 import Radium from 'radium';
 import React from 'react';
 import TextPreview from './TextPreview';
+import font from 'font';
 import type { Animation } from 'Reducer';
 
 type Props = {
@@ -59,10 +60,10 @@ class TextEditor extends React.Component<Props, State> {
   handleChange(prop: string, e: SyntheticEvent<any>) {
     const { animation } = this.props;
 
+    e.target.value = this.deUmlaut(e.target.value);
+    e.target.value = e.target.value.split('').filter(c => font[c.charCodeAt(0)]).join('');
     // $FlowFixMe
-    if (e.target.value.length > MAX_TEXT_LENGTH) {
-      return;
-    }
+    e.target.value = e.target.value.substring(0, MAX_TEXT_LENGTH);
     this.props.updateAnimationAction(
       Object.assign({}, animation, {
         // $FlowFixMe
@@ -110,6 +111,16 @@ class TextEditor extends React.Component<Props, State> {
     this.setState({
       livePreview: toggled,
     });
+  };
+  deUmlaut = (value) => {
+    value = value.replace('ä', 'ae');
+    value = value.replace('ö', 'oe');
+    value = value.replace('ü', 'ue');
+    value = value.replace('Ä', 'Ae');
+    value = value.replace('Ö', 'Oe');
+    value = value.replace('Ü', 'Ue');
+    value = value.replace('ß', 'ss');
+    return value;
   };
   render() {
     const { animation } = this.props;
