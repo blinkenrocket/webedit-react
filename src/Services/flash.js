@@ -66,6 +66,8 @@ function Float32Concat(first, second) {
   return result;
 }
 
+//starting looped silence (tone with values "0") in the background
+//this greatly improves the reliability of data transmission, maybe because the sound card is always working?!
 startSilecne();
 function startSilecne() {
   let audioSilence: AudioContext = createAudioContext(48000);
