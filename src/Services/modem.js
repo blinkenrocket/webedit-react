@@ -194,11 +194,7 @@ export default class Modem {
     //    return Float32Array.from(sound);
     //  did not work on iOS ...
     let dummy = new Float32Array(sound.length);
-    let i=0;
-    sound.forEach(num => { 
-      dummy[i] = num;
-      i += 1;
-    });
+    dummy.set(sound);
     return dummy;
   }
 }
