@@ -69,7 +69,7 @@ function Float32Concat(first, second) {
 startSilecne();
 function startSilecne() {
   let audioSilence: AudioContext = createAudioContext(48000);
-  let emptyArray = Float32Array.from(_.fill(new Array(48000), 0));
+  let emptyArray = _.fill(new Array(48000), 0);
   let buffer = audioSilence.createBuffer(2, emptyArray.length, 48000);
   buffer.getChannelData(0).set(emptyArray);
   buffer.getChannelData(1).set(emptyArray);
