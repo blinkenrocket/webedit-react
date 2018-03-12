@@ -8,7 +8,7 @@ import type { Animation } from 'Reducer';
 
 const EMPTY_DATA = List(range(8).map(() => 0x00));
 
-export const addNewAnimation = createAction('ADD_ANIMATION', (type: string, defaulttext: string) => ({
+export const addNewAnimation = createAction('ADD_ANIMATION', (type: string, defaulttext?: string) => ({
   delay: 0,
   repeat: 0,
   direction: 0,
