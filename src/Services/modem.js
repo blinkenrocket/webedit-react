@@ -27,11 +27,6 @@ const PATTERNCODE1 = 0x0f;
 const PATTERNCODE2 = 0xf0;
 const ENDCODE = 0x84;
 
-// silence is used as sync signal in new transfer protocol
-const sync = [
-  _.range(70).map(() => 0),
-  _.range(70).map(() => 0),
-];
 
 // $FlowFixMe
 Math.radians = function(degrees) {
@@ -49,7 +44,6 @@ for(var j = 0; j < 144; j += 1) {
     lowLong.push(0);
 }
 
-
 // faded sine wave, short duration (high activity for bit encoding) 
 var highShort = [];
 for(var j = 0; j < 18; j += 1) highShort.push(j/18.0*Math.sin(Math.radians(j*10)));
@@ -61,7 +55,6 @@ var highLong = [];
 for(var j = 0; j < 18; j += 1) highLong.push(j/18.0*Math.sin(Math.radians(j*10)));
 for(var j = 0; j < 108; j += 1) highLong.push(Math.sin(Math.radians((j+18)*10)));
 for(var j = 0; j < 18; j += 1) highLong.push((18-j)/18.0*Math.sin(Math.radians((j+126)*10)));
-
 
 var bits = [
   [	lowShort,lowLong,], 
@@ -80,12 +73,13 @@ export default class Modem {
   constructor(animations: Map<string, Animation>) {
     this.setData(animations);
   }
-  _generateSync(): number[] {
-    this.hilo ^= 1;
-    return sync[this.hilo];
-  }
+
+  // slow sine wave for sync signal 
   generateSyncSignal(number: number = 1): number[] {
-    return _.flatten(_.range(number).map(() => this._generateSync()));
+  var ssig = [];
+  for(var j = 0; j < number*360; j += 1) 
+     ssig.push(Math.sin(Math.radians((j/4))));
+  return ssig;
   }
 
   _textFrameHeader(animation: Animation): number[] {
@@ -181,24 +175,20 @@ export default class Modem {
       const second = this.data[index + 1];
       return [first, second, this.hamming(first, second)];
     }));
-  
-    let sound = this.generateSyncSignal(70);
+
+    let sound = this.generateSyncSignal(200);
     const t = {};
     this.data.forEach(byte => {
       sound = sound.concat(this.modemCode(byte));
       t[byte] = this.modemCode(byte);
     });
-    sound = sound.concat(this.generateSyncSignal(200));
+    // sound = sound.concat(this.generateSyncSignal(200));
 
     //  the next lines are a workaround because
     //    return Float32Array.from(sound);
     //  did not work on iOS ...
     let dummy = new Float32Array(sound.length);
-    let i=0;
-    sound.forEach(num => { 
-      dummy[i] = num;
-      i += 1;
-    });
+    dummy.set(sound);
     return dummy;
   }
 }

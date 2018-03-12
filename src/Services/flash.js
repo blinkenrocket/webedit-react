@@ -4,39 +4,77 @@ import Modem from './modem';
 import ModemLegacy from './modemLegacy';
 import type { Animation } from 'Reducer';
 import type { Map } from 'immutable';
-let transferActive = 0;
+
+var transferActive = 0;
+var audioCtx: AudioContext = createAudioContext(48000);
 
 export default function transfer(animations: Map<string, Animation>) {
   if (transferActive === 1) {
+    console.log("did not start transfer because already running!");
     return;
   }
   transferActive = 1;
-  setTimeout(() => (transferActive = 0), 2000);
-  const audioCtx: AudioContext = createAudioContext(48000);
+  setTimeout(() => (transferActive = 0), 4000);   // iOS workaround!
 
   // get data signals for the legacy firmware
-  const modem = new ModemLegacy(animations);
-  const data = modem.generateAudio();
+  let modem = new ModemLegacy(animations);
+  let data = modem.generateAudio();
 
-  // // get data signals for the v2 firmware
-  const modem2 = new Modem(animations);
-  const data2 = modem2.generateAudio();
-  const buffer = audioCtx.createBuffer(1, data.length + data2.length, 48000);
+  // get data signals for the v2 firmware
+  let modem2 = new Modem(animations);
+  let data2 = modem2.generateAudio();
 
-  const clippedData = data.subarray(0, Math.min(data.length, buffer.length));
-  const clippedData2 = data2.subarray(0, Math.min(data2.length, buffer.length - data.length));
+  playTone(Float32Concat(data2, data));
+}
 
-  buffer.getChannelData(0).set(clippedData);
-  buffer.getChannelData(0).set(clippedData2, data.length);
+window.playTone = function(array) {
+  array = array || window.lastArray;
+  window.lastArray = array;
 
-  const source = audioCtx.createBufferSource();
+  var buffer = audioCtx.createBuffer(1, array.length, 48000);
+  buffer.getChannelData(0).set(array);
 
-  window.buffer = buffer;
-
+  var source = audioCtx.createBufferSource();
   source.buffer = buffer;
   source.connect(audioCtx.destination);
+
   source.onended = () => {
-    transferActive = 0;
+    transferActive = 0; // not reliably reached in iOS !?
   };
+  source.start(0);
+};
+
+window.startTest = function (interval) {
+  stopTest();
+  interval = interval || 3500;
+  window.intervalHandler = setInterval(function() {
+    playTone()
+  }, interval);
+};
+
+window.stopTest = function () {
+  clearInterval(window.intervalHandler);
+};
+
+function Float32Concat(first, second) {
+  var result = new Float32Array(first.length + second.length);
+  result.set(first);
+  result.set(second, first.length);
+
+  return result;
+}
+
+//starting looped silence (tone with values "0") in the background
+//this improves the reliability of data transmission on some hardware platforms (stabilizing sound gain ?!)
+startSilence();
+function startSilence() {
+  let audioSilence: AudioContext = createAudioContext(48000);
+  let emptyArray = _.fill(new Array(48000), 0);
+  let buffer = audioSilence.createBuffer(1, emptyArray.length, 48000);
+  buffer.getChannelData(0).set(emptyArray);
+  let source = audioSilence.createBufferSource();
+  source.connect(audioSilence.destination);
+  source.buffer = buffer;
+  source.loop = true;
   source.start(0);
 }

@@ -138,8 +138,7 @@ export default class ModemLegacy {
       return [first, second, this.hamming(first, second)];
     }));
 
-    let sound = this.generateSyncSignal(5000);
-    // let sound = [];
+    let sound = this.generateSyncSignal(1000);
     let count = 0;
     const t = {};
 
@@ -158,11 +157,7 @@ export default class ModemLegacy {
     //    return Float32Array.from(sound);
     //  did not work on iOS ...
     let dummy = new Float32Array(sound.length);
-    let i=0;
-    sound.forEach(num => { 
-      dummy[i] = num;
-      i += 1;
-    });
+    dummy.set(sound);
     return dummy;
   }
 }
