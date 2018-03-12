@@ -138,8 +138,7 @@ export default class ModemLegacy {
       return [first, second, this.hamming(first, second)];
     }));
 
-    let sound = this.generateSyncSignal(5000);
-    // let sound = [];
+    let sound = this.generateSyncSignal(1000);
     let count = 0;
     const t = {};
 
