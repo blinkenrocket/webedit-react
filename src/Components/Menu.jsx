@@ -35,15 +35,11 @@ class Menu extends React.Component<Props> {
     super(props);
     const { animations, selectAnimationAction } = this.props;
     var animation;
-    if((/Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent))) {
-      if(animations.toList().size == 0) {
-        animation = this.props.addNewAnimationAction('text').payload;
-      }
-      selectAnimationAction(animation || animations.toList().get(0));
+    if(animations.toList().size == 0) {
+      animation = this.props.addNewAnimationAction('text', 'blinkenrocket.com').payload;
     }
+    selectAnimationAction(animation || animations.toList().get(0));
   }
-
-
 
   addNewAnimationText = () => {
     this.props.addNewAnimationAction('text');
