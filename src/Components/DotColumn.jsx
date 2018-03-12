@@ -26,6 +26,7 @@ export default class DotColumn extends React.Component<Props> {
             cy={index * 25 + 15}
             cx={row * 25 + 15}
             fill={on ? ON : OFF}
+            style={{cursor: 'pointer'}}
             onMouseDown={mouseDownCallback && mouseDownCallback.bind(this, index, row)}
             onMouseUp={mouseUpCallback && mouseUpCallback.bind(this, index, row)}
             onMouseOver={mouseOverCallback && mouseOverCallback.bind(this, index, row)}
