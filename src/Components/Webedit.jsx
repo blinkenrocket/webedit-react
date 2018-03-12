@@ -47,7 +47,7 @@ type State = {
 @Radium
 class Webedit extends React.Component<Props, State> {
   state = {
-    drawerOpen: true,
+    drawerOpen: !(/Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent)),
   };
 
   toggleDrawer = () => {

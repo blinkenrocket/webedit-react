@@ -1,5 +1,5 @@
 /* @flow */
-import { addNewAnimation } from 'Actions/animations';
+import { addNewAnimation, selectAnimation } from 'Actions/animations';
 import { Avatar, Divider, List, ListItem, Paper } from 'material-ui';
 import { connect } from 'react-redux';
 import { t } from 'i18next';
@@ -30,6 +30,17 @@ const style = {
 };
 
 class Menu extends React.Component<Props> {
+
+  constructor(props) {
+    super(props);
+    const { animations, selectAnimationAction } = this.props;
+    var animation;
+    if(animations.toList().size == 0) {
+      animation = this.props.addNewAnimationAction('text', 'blinkenrocket.com').payload;
+    }
+    selectAnimationAction(animation || animations.toList().get(0));
+  }
+
   addNewAnimationText = () => {
     this.props.addNewAnimationAction('text');
   };
@@ -81,5 +92,6 @@ export default connect(
   }),
   {
     addNewAnimationAction: addNewAnimation,
+    selectAnimationAction: selectAnimation
   }
 )(Radium(Menu));
