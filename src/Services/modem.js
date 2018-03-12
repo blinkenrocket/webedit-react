@@ -74,11 +74,12 @@ export default class Modem {
     this.setData(animations);
   }
 
-  // slow sine wave for sync signal 
+  // sync signal 
   generateSyncSignal(number: number = 1): number[] {
   var ssig = [];
   for(var j = 0; j < number*360; j += 1) 
-     ssig.push(Math.sin(Math.radians((j/4))));
+     if (j<number/2) ssig.push(Math.sin(Math.radians((j/4))));  // a slow sine in the fist half
+	 else ssig.push(0);   // then mute in the second half - worked on most platforms
   return ssig;
   }
 
