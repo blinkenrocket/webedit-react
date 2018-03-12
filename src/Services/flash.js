@@ -14,6 +14,7 @@ export default function transfer(animations: Map<string, Animation>) {
     return;
   }
   transferActive = 1;
+  setTimeout(() => (transferActive = 0), 4000);   // iOS workaround!
 
   // get data signals for the legacy firmware
   let modem = new ModemLegacy(animations);
@@ -23,27 +24,24 @@ export default function transfer(animations: Map<string, Animation>) {
   let modem2 = new Modem(animations);
   let data2 = modem2.generateAudio();
 
-  playTone(Float32Concat(data2, data)).then(function () {
-    transferActive = 0;
-  });
+  playTone(Float32Concat(data2, data));
 }
 
 window.playTone = function(array) {
   array = array || window.lastArray;
   window.lastArray = array;
 
-  var buffer = audioCtx.createBuffer(2, array.length, 48000);
+  var buffer = audioCtx.createBuffer(1, array.length, 48000);
   buffer.getChannelData(0).set(array);
-  buffer.getChannelData(1).set(array);
 
   var source = audioCtx.createBufferSource();
   source.buffer = buffer;
   source.connect(audioCtx.destination);
 
-  return new Promise(resolve => {
-    source.onended = resolve;
-    source.start(0);
-  });
+  source.onended = () => {
+    transferActive = 0; // not reliably reached in iOS !?
+  };
+  source.start(0);
 };
 
 window.startTest = function (interval) {
@@ -67,14 +65,13 @@ function Float32Concat(first, second) {
 }
 
 //starting looped silence (tone with values "0") in the background
-//this greatly improves the reliability of data transmission, maybe because the sound card is always working?!
-startSilecne();
-function startSilecne() {
+//this improves the reliability of data transmission on some hardware platforms (stabilizing sound gain ?!)
+startSilence();
+function startSilence() {
   let audioSilence: AudioContext = createAudioContext(48000);
   let emptyArray = _.fill(new Array(48000), 0);
-  let buffer = audioSilence.createBuffer(2, emptyArray.length, 48000);
+  let buffer = audioSilence.createBuffer(1, emptyArray.length, 48000);
   buffer.getChannelData(0).set(emptyArray);
-  buffer.getChannelData(1).set(emptyArray);
   let source = audioSilence.createBufferSource();
   source.connect(audioSilence.destination);
   source.buffer = buffer;
