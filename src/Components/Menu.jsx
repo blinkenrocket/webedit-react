@@ -33,12 +33,13 @@ class Menu extends React.Component<Props> {
 
   constructor(props) {
     super(props);
-    const { animations, selectAnimationAction } = this.props
+    const { animations, selectAnimationAction } = this.props;
+    var animation;
     if((/Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent))) {
       if(animations.toList().size == 0) {
-        this.addNewAnimationText();
+        animation = this.props.addNewAnimationAction('text').payload;
       }
-      selectAnimationAction(animations.toList().get(0));
+      selectAnimationAction(animation || animations.toList().get(0));
     }
   }
 
