@@ -59,6 +59,9 @@ class Menu extends React.Component<Props> {
       <Paper style={style.wrap}>
         <List>
           {animations
+            .sort((animation1, animation2) => {
+              return animation1.creationDate >= animation2.creationDate
+            })
             .map(animation => (
               <AnimationInMenu
                 selected={animation.id === selectedId}
