@@ -72,12 +72,12 @@ class Menu extends React.Component<Props> {
           <ListItem
             leftAvatar={<Avatar icon={<NotificationSms />} />}
             primaryText={t('menu.addText')}
-            onTouchTap={this.addNewAnimationText}
+            onClick={this.addNewAnimationText}
           />
           <ListItem
             leftAvatar={<Avatar icon={<NotificationMms />} />}
             primaryText={t('menu.addAnimation')}
-            onTouchTap={this.addNewAnimation}
+            onClick={this.addNewAnimation}
           />
         </List>
       </Paper>

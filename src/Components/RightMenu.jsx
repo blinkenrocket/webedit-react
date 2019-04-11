@@ -114,7 +114,7 @@ class RightMenu extends React.Component<Props, State> {
         key="a"
         label={t('transfer_dialog.cancel')}
         secondary
-        onTouchTap={this.cancelTransfer}
+        onClick={this.cancelTransfer}
         icon={<NavigationClose />}
       />,
       <FlatButton
@@ -122,7 +122,7 @@ class RightMenu extends React.Component<Props, State> {
         label={t('transfer_dialog.transfer')}
         primary
         keyboardFocused
-        onTouchTap={this.confirmTransfer}
+        onClick={this.confirmTransfer}
         icon={<ContentSend />}
       />,
     ];
@@ -132,7 +132,7 @@ class RightMenu extends React.Component<Props, State> {
         key="c"
         label={t('share_dialog.close')}
         primary
-        onTouchTap={this.closeShare}
+        onClick={this.closeShare}
         icon={<NavigationClose />}
       />,
     ];
@@ -143,15 +143,15 @@ class RightMenu extends React.Component<Props, State> {
       <div style={style.wrap}>
         <RaisedButton
           label={t('menu.share')}
-          onTouchTap={this.share}
+          onClick={this.share}
           primary
           style={style.button}
           icon={<SocialShare />}
         />
-        <RaisedButton label={t('menu.new')} onTouchTap={this.new} primary style={style.button} icon={<ContentAdd />} />
+        <RaisedButton label={t('menu.new')} onClick={this.new} primary style={style.button} icon={<ContentAdd />} />
         <RaisedButton
           label={t('menu.transfer')}
-          onTouchTap={this.transfer}
+          onClick={this.transfer}
           primary
           style={style.button}
           icon={<ContentSend />}

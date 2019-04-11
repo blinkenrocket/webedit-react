@@ -39,7 +39,7 @@ class AnimationInMenu extends React.Component<Props> {
         rightIcon={<ActionDeleteForever onClick={this.removeAnimation} />}
         primaryText={animation.name}
         secondaryText={animation.type === 'pixel' ? t('animation.animation') : t('animation.text')}
-        onTouchTap={this.selectAnimation}
+        onClick={this.selectAnimation}
         style={selected ? { backgroundColor: '#e0e0e0' } : {}}
       />
     );
