@@ -40,6 +40,7 @@ export default class TextPreview extends React.Component<Props, State> {
   }
   componentWillUnmount() {
     clearInterval(this.interval);
+    clearTimeout(this.timeout);
   }
   componentWillReceiveProps(nextProps: Props) {
     this.updateColumns(nextProps);
@@ -64,11 +65,13 @@ export default class TextPreview extends React.Component<Props, State> {
       const updateFn = () => {
         const currentStart = (this.state.currentStart + (rtl ? -1 : 1)) % this.state.columns.size;
 
+        // have we reached the last frame?
         if (currentStart === this.state.columns.size - Math.min(8, this.state.columns.size - 2)) {
+          // clear interval, await `delay` and restart animation
           clearInterval(this.interval);
           this.timeout = setTimeout(() => {
             this.interval = setInterval(updateFn, speed);
-          }, (delay || 1) * 1000);
+          }, (delay || 0) * 1000);
         }
         this.setState({
           currentStart: (this.state.currentStart + (rtl ? -1 : 1)) % this.state.columns.size || 0,
