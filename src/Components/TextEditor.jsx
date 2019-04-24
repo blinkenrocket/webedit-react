@@ -6,7 +6,7 @@ import { t } from 'i18next';
 import { updateAnimation } from 'Actions/animations';
 import Radium from 'radium';
 import React from 'react';
-import TextPreview from './TextPreview';
+import AnimationPreview from './AnimationPreview';
 import font from 'font';
 import type { Animation } from 'Reducer';
 
@@ -128,14 +128,7 @@ class TextEditor extends React.Component<Props, State> {
 
     return (
       <div style={style.wrapper}>
-        <TextPreview
-          delay={animation.delay}
-          repeat={animation.repeat}
-          rtl={animation.direction === 1}
-          livePreview={livePreview}
-          text={animation.text}
-          speed={animation.speed}
-        />
+        <AnimationPreview animation={animation} />
         <Divider />
         <TextField
           style={style.noShrink}
