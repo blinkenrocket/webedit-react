@@ -1,19 +1,25 @@
 // @flow
+import React from 'react';
+import Radium from 'radium';
 import { connect } from 'react-redux';
-import { FlatButton, Slider, TextField } from 'material-ui';
-import { List } from 'immutable';
-import { MAX_ANIMATION_FRAMES } from '../variables';
 import { range } from 'lodash';
 import { t } from 'i18next';
+import { List } from 'immutable';
+import { MAX_ANIMATION_FRAMES } from '../variables';
 import { updateAnimation } from 'Actions/animations';
+
+import { FlatButton, Slider, TextField } from 'material-ui';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
 import AvSkipNext from 'material-ui/svg-icons/av/skip-next';
 import AvSkipPrevious from 'material-ui/svg-icons/av/skip-previous';
 import ContentContentCopy from 'material-ui/svg-icons/content/content-copy';
-import PixelPreview from './PixelPreview';
-import Radium from 'radium';
-import React from 'react';
+import AvPlayCircleOutline from 'material-ui/svg-icons/av/play-circle-outline';
+import AvPauseCircleOutline from 'material-ui/svg-icons/av/pause-circle-outline';
+
+import AnimationPreview from './AnimationPreview';
+import Frame from './Frame';
 import type { Animation } from 'Reducer';
+import { getFrameColumns } from '../utils';
 
 const style = {
   buttons: {},
@@ -64,6 +70,7 @@ type Props = {
 
 type State = {
   mouseMode: string,
+  playing: bool
 };
 
 const EMPTY_DATA = List(range(8).map(() => 0x00));
@@ -308,6 +315,7 @@ class PixelEditor extends React.Component<Props, State> {
 
   render() {
     const { animation } = this.props;
+    const { playing } = this.state;
 
     let pixelPreviewCursor = 'auto';
 
@@ -319,30 +327,38 @@ class PixelEditor extends React.Component<Props, State> {
 
     return (
       <div style={style.wrapper}>
+      <div>
+      { playing && <AnimationPreview animation={animation} /> }
+      { !playing && <Frame
+            columns={getFrameColumns(animation, animation.animation.currentFrame)}
+            cursor={pixelPreviewCursor}
+            mouseDownCallback={this.mouseDown.bind(this)}
+            mouseUpCallback={this.mouseUp.bind(this)}
+            mouseOverCallback={this.mouseOver.bind(this)}
+          />
+      }
+      </div>
+      <div>
+        <FlatButton primary onClick={() => { this.setState(s => ({playing: !s.playing}))}} style={style.buttons} icon={(playing) ? <AvPauseCircleOutline /> : <AvPlayCircleOutline />} />
         Frame {animation.animation.currentFrame + 1} / {animation.animation.frames}
-        <PixelPreview
-          cursor={pixelPreviewCursor}
-          data={animation.animation.data}
-          frame={animation.animation.currentFrame}
-          mouseDownCallback={this.mouseDown.bind(this)}
-          mouseUpCallback={this.mouseUp.bind(this)}
-          mouseOverCallback={this.mouseOver.bind(this)}
-        />
+      </div>
         <div style={style.buttonWrapper}>
-          <FlatButton
+        <FlatButton
             label={t('pixelEditor.previousFrame')}
             labelPosition="after"
             primary
+            disabled={playing || animation.animation.currentFrame === 0}
             onClick={this.handlePreviousFrame}
             style={style.buttons}
             icon={<AvSkipPrevious />}
           />
-          <FlatButton primary onClick={this.handleDeleteFrame} style={style.buttons} icon={<ActionDeleteForever />} />
-          <FlatButton primary onClick={this.handleCopyFrame} style={style.buttons} icon={<ContentContentCopy />} />
-          <FlatButton
+        <FlatButton primary onClick={this.handleDeleteFrame} style={style.buttons} icon={<ActionDeleteForever />} disabled={playing}/>
+        <FlatButton primary onClick={this.handleCopyFrame} style={style.buttons} icon={<ContentContentCopy />} disabled={playing} />
+        <FlatButton
             label={t('pixelEditor.nextFrame')}
             labelPosition="before"
             primary
+            disabled={playing}
             onClick={this.handleNextFrame}
             style={style.buttons}
             icon={<AvSkipNext />}
