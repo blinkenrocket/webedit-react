@@ -1,6 +1,6 @@
 // @flow
 import { handleActions } from 'redux-actions';
-import { type List, Map } from 'immutable';
+import { Map, List } from 'immutable';
 
 export type Animation = {
   id: string,
@@ -31,6 +31,15 @@ let initialAnimations = Map();
 if (savedAnimations) {
   try {
     initialAnimations = Map(JSON.parse(savedAnimations));
+    // Ensure all pixel-animation data is an immutable list
+    initialAnimations = initialAnimations.map((animation) => 
+      Object.assign({}, animation, {
+        animation: {
+          ...animation.animation,
+          data: List(animation.animation.data),
+        }
+      })
+    );
   } catch (e) {
     localStorage.removeItem('animations');
   }

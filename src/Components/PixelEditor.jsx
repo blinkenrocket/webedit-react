@@ -74,21 +74,6 @@ class PixelEditor extends React.Component<Props, State> {
     mouseMode: MOUSE_MODE_NOTHING,
   };
 
-  componentWillMount() {
-    const { animation } = this.props;
-
-    this.props.updateAnimationAction(
-      Object.assign({}, animation, {
-        animation: {
-          data: List(animation.animation.data),
-          currentFrame: 0,
-          length: animation.animation.length,
-          frames: animation.animation.frames,
-        },
-      })
-    );
-  }
-
   handleChange = (prop: string, e: SyntheticKeyboardEvent<*>) => {
     const { animation } = this.props;
 
