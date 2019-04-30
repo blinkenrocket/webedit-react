@@ -99,6 +99,21 @@ export default handleActions(
         selectedAnimation: undefined,
       };
     },
+    LOGIN: (state: State, { payload }) => {
+      return {
+        ...state,
+        uid: payload
+      };
+    },
+    LOGOUT: () => {
+      localStorage.clear();
+
+      return {
+        uid: null,
+        animations: Map(),
+        selectedAnimation: undefined
+      }
+    },
   },
   initialState
 );

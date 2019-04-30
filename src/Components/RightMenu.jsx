@@ -8,12 +8,18 @@ import { t } from 'i18next';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentLink from 'material-ui/svg-icons/content/link';
 import ContentSend from 'material-ui/svg-icons/content/send';
+import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import PropTypes from 'prop-types';
 import Radium from 'radium';
 import React from 'react';
 import SocialShare from 'material-ui/svg-icons/social/share';
 import transfer from 'Services/flash';
+import AuthDialog from './AuthDialog';
+import firebase from 'firebase/app';
+import { FirebaseAuthConsumer } from '@react-firebase/auth';
+import { loggedOut } from '../Actions/auth';
+
 
 const style = {
   button: {
@@ -47,6 +53,7 @@ type Props = {
 
 type State = {
   transferWidgetOpen: boolean,
+  authWidgetOpen: boolean,
   shareWidgetOpen: boolean,
   shareString: string,
 };
@@ -55,12 +62,14 @@ type State = {
 class RightMenu extends React.Component<Props, State> {
   state: State = {
     transferWidgetOpen: false,
+    authWidgetOpen: false,
     shareWidgetOpen: false,
     shareString: '',
   };
   static contextTypes = {
     store: PropTypes.object.isRequired,
   };
+
   transfer = () => {
     if (this.context.store.getState().animations.size > 0) {
       //     transfer(this.context.store.getState().animations);
@@ -104,10 +113,42 @@ class RightMenu extends React.Component<Props, State> {
       shareWidgetOpen: false,
     });
   };
+  
+  logout = () => {
+    firebase.auth().signOut().then(() => {
+      this.context.store.dispatch(loggedOut());
+    })
+  }
 
   new = () => {
     this.props.resetAction();
   };
+  
+  authButton = ({ isSignedIn, user }) => {
+    if (isSignedIn) {
+      return [ 
+        <RaisedButton
+          key="logout"
+          primary
+          label={t('menu.logout') + ' ' + user.email}
+          onClick={this.logout}
+          style={style.button}
+          icon={<ActionExitToApp />}
+        />
+      ]
+    } else {
+      return [ 
+        <RaisedButton
+          key="openauth"
+          primary
+          label={t('menu.login')}
+          onClick={() => this.setState({authWidgetOpen: true})}
+          style={style.button}
+        />
+      ]
+    }
+  }
+  
   render() {
     const transferActions = [
       <FlatButton
@@ -156,6 +197,7 @@ class RightMenu extends React.Component<Props, State> {
           style={style.button}
           icon={<ContentSend />}
         />
+        <FirebaseAuthConsumer children={this.authButton} />
 
         <Dialog
           title={t('transfer_dialog.title')}
@@ -184,6 +226,8 @@ class RightMenu extends React.Component<Props, State> {
             <RaisedButton label={t('share_dialog.link')} primary keyboardFocused icon={<ContentLink />} />
           </Link>
         </Dialog>
+
+        <AuthDialog isOpen={this.state.authWidgetOpen} close={() => this.setState({authWidgetOpen: false})} />
       </div>
     );
   }

@@ -30,7 +30,22 @@
     "transfer": "Transfer",
     "new": "New",
     "addAnimation": "New Animation",
-    "addText": "New Text"
+    "addText": "New Text",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "auth_dialog": {
+    "title": "Login or Signup",
+    "login": "Login",
+    "signup": "Signup",
+    "reset": "Request reset Link",
+    "close": "Close",
+    "email": "Email",
+    "password": "Password",
+    "account_missing": "First time here?",
+    "create_account": "Create a new Account!",
+    "forgot_pwd": "I forgot my password.",
+    "resetlink_sent_notification": "Link sent! Please check your inbox."
   },
   "transfer_dialog": {
     "cancel": "Cancel",

@@ -7,6 +7,18 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import reducer from 'Reducer';
 import reduxPromise from 'redux-promise';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import { FirebaseAuthProvider, } from '@react-firebase/auth';
+
+const firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: ""
+};
 
 const store = (global.store = compose(
   applyMiddleware(reduxPromise),
@@ -51,9 +63,11 @@ export default class App extends React.Component<any> {
     return (
       <StyleRoot>
         <Style rules={GlobalCSS} />
-        <Provider store={store}>
-          <Webedit />
-        </Provider>
+        <FirebaseAuthProvider firebase={firebase} {...firebaseConfig} >
+          <Provider store={store}>
+            <Webedit />
+          </Provider>
+        </FirebaseAuthProvider>
       </StyleRoot>
     );
   }

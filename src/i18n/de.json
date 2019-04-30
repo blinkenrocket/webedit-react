@@ -30,7 +30,22 @@
     "transfer": "Übertragen",
     "new": "Neu",
     "addAnimation": "Neue Animation",
-    "addText": "Neuer Text"
+    "addText": "Neuer Text",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "auth_dialog": {
+    "title": "Einloggen oder Anmelden",
+    "login": "Login",
+    "signup": "Anmelden",
+    "reset": "Link anfordern",
+    "close": "Schließen",
+    "email": "Email",
+    "password": "Passwort",
+    "account_missing": "Zum ersten mal hier?",
+    "create_account": "Erstelle ein Konto!",
+    "forgot_pwd": "Ich habe mein Passwort vergessen.",
+    "resetlink_sent_notification": "Link geschickt! Bitte schauen sie in Ihr Emailpostfach."
   },
   "transfer_dialog": {
     "cancel": "Abbrechen",
