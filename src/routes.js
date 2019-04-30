@@ -1,10 +1,10 @@
 /* @flow */
 import { browserHistory, Route, Router } from 'react-router';
-import App from 'Components/App';
+import Webedit from 'Components/Webedit';
 import React from 'react';
 
 export default (
   <Router history={browserHistory}>
-    <Route path={BASE_URL} component={App} />
+    <Route path={BASE_URL} component={Webedit} />
   </Router>
 );

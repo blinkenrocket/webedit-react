@@ -7,8 +7,10 @@ import Menu from './Menu';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Radium from 'radium';
 import React from 'react';
+import PropTypes from 'prop-types';
 import RightMenu from './RightMenu';
 import withWidth from 'material-ui/utils/withWidth';
+import { addAnimation } from '../Actions/animations';
 
 const style = {
   appRight: {
@@ -49,6 +51,19 @@ class Webedit extends React.Component<Props, State> {
   state = {
     drawerOpen: !(/Android|webOS|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent)),
   };
+
+  static contextTypes = {
+    store: PropTypes.object.isRequired,
+  };
+
+  componentDidMount() {
+    const encodedAnimation = this.props.location.query.s;
+
+    if (encodedAnimation) {
+      const decodedAnimation = JSON.parse(atob(encodedAnimation));
+      this.context.store.dispatch(addAnimation(decodedAnimation));
+    }
+  }
 
   toggleDrawer = () => {
     this.setState({

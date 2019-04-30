@@ -1,6 +1,6 @@
 // @flow
 export default {
-  'html, body, #webedit, #webedit > div': {
+  'html, body, #app, #app > div': {
     height: '100%',
     width: '100%',
   },
