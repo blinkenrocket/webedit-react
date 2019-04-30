@@ -81,12 +81,19 @@ export default class AnimationPreview extends React.Component<Props, State> {
       } 
       const nextFrame = (this.state.currentFrame + (direction ? -1 : 1)) % frames;
       
+      const now = new Date().getTime();
+      let offset = msPerFrame;
       // set timing for next animation-frame
       if (nextFrame === lastFrameIndex(this.props.animation) && delay > 0) {
-        nextUpdate += delay * 1000;
-      } else {
-        nextUpdate += msPerFrame;
-      }
+        offset = (delay * 1000);
+      }       
+      nextUpdate += offset;
+      if (nextUpdate < now) {
+        // the browser will stop AF requests when the tab is idle/inactive. 
+        // this condition avoids having a sped up animation after inactivity,
+        // due to the timer being way in the past
+        nextUpdate = now + offset;
+      } 
       // step to next Frame
       this.setState({ currentFrame: nextFrame});
       this.rAF = window.requestAnimationFrame(loop);
