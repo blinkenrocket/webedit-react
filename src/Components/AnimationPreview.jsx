@@ -13,10 +13,6 @@ type State = {
 };
 
 const style = {
-  flexShrink: 0,
-  overflow: 'auto',
-  cursor: 'default',
-
   // avoid dragging the whole preview in FireFox
   UserSelect: 'none',
   MozUserSelect: 'none',
@@ -108,7 +104,7 @@ export default class AnimationPreview extends React.Component<Props, State> {
       columns={columns} 
       size={this.props.size} 
       offColor={this.props.offColor} 
-      style={style} 
+      style={this.props.style} 
       />
   }
 }

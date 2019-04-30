@@ -23,10 +23,10 @@ const style = {
     display: 'flex',
     // flex: '0 0 20%',
     flexDirection: 'column',
-    paddingTop: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
   },
+  list: {
+    width: '100%',
+  }
 };
 
 class Menu extends React.Component<Props> {
@@ -57,7 +57,7 @@ class Menu extends React.Component<Props> {
 
     return (
       <Paper style={style.wrap}>
-        <List>
+        <List style={style.list}>
           {animations
             .map(animation => (
               <AnimationInMenu

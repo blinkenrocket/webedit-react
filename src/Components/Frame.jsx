@@ -14,8 +14,8 @@ type Props = {
 
 const style = {
   flexShrink: 0,
-  overflow: 'auto',
   cursor: 'default',
+  display: 'block',
 
   // avoid dragging the whole preview in FireFox
   UserSelect: 'none',

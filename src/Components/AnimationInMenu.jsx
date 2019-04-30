@@ -9,6 +9,16 @@ import NotificationSms from 'material-ui/svg-icons/notification/sms';
 import Radium from 'radium';
 import React from 'react';
 import type { Animation } from 'Reducer';
+import AnimationPreview from './AnimationPreview';
+
+
+const style = {
+  itemText: {
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap'
+  }
+};
 
 type Props = {
   animation: Animation,
@@ -32,13 +42,18 @@ class AnimationInMenu extends React.Component<Props> {
   };
   render() {
     const { animation, selected } = this.props;
-
+    const avatar = <AnimationPreview 
+      animation={animation} 
+      size="thumb" 
+      offColor="black"
+      style={{position: 'absolute', top: '8px', left: '16px' }}
+    />
+    const txt = <div style={style.itemText}>{animation.name || animation.text || '\u00A0'}</div>;
     return (
       <ListItem
-        leftAvatar={<Avatar icon={animation.type === 'pixel' ? <NotificationMms /> : <NotificationSms />} />}
+        leftAvatar={avatar}
         rightIcon={<ActionDeleteForever onClick={this.removeAnimation} />}
-        primaryText={animation.name}
-        secondaryText={animation.type === 'pixel' ? t('animation.animation') : t('animation.text')}
+        primaryText={txt}
         onClick={this.selectAnimation}
         style={selected ? { backgroundColor: '#e0e0e0' } : {}}
       />
