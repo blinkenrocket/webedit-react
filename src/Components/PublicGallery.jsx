@@ -2,12 +2,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import UUID from 'uuid-js';
 import { t } from 'i18next';
 import Radium from 'radium';
 import { Map } from 'immutable';
 
 import App from './App';
 import Gallery from './Gallery';
+import { addAnimation } from '../Actions/animations';
 import { loadGallery } from '../Actions/gallery';
 
 const style = {
@@ -33,6 +35,18 @@ class PublicGallery extends React.Component<Props, State> {
     }
   }
 
+  copyAnimationToLibrary = (animation) => {
+    const cleaned = Object.assign({}, animation,
+      {
+        id: UUID.create().toString(),
+        author: undefined,
+        animation: { ...animation.animation }
+      }
+    );
+
+    this.props.addAnimation(animation, this.props.uid);
+  }
+
   render() {
     const { gallery } = this.props;
 
@@ -42,7 +56,10 @@ class PublicGallery extends React.Component<Props, State> {
     return (
       <App activeView="gallery" {...this.props} >
         <div style={style.canvas}>
-          <Gallery gallery={gallery} />
+          <Gallery 
+            gallery={gallery} 
+            onClick={this.copyAnimationToLibrary}
+          />
         </div>
       </App>
     );
@@ -50,6 +67,9 @@ class PublicGallery extends React.Component<Props, State> {
 }
 
 export default connect(
-  (state => ({ gallery: state.gallery })), 
-  { loadGallery }
+  (state => ({ 
+    uid: state.uid,
+    gallery: state.gallery 
+  })), 
+  { addAnimation, loadGallery }
 )(PublicGallery);

@@ -5,7 +5,7 @@ import AnimationPreview from './AnimationPreview';
 import { getFrameColumns } from '../utils';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
-import RemoveIcon from '@material-ui/icons/Remove';
+import AddIcon from '@material-ui/icons/Add';
 
 const style = {
   galleryItem: {
@@ -30,7 +30,8 @@ const style = {
 };
 
 type Props = {
-  animation: Animation
+  animation: Animation,
+  onClick?: (animations: Array<Animation>) => void
 };
 
 type State = {
@@ -43,6 +44,7 @@ class GalleryItem extends React.Component<Props, State> {
   };
   shouldComponentUpdate(nextProps, nextState){
     const update = (this.state.playing !== nextState.playing
+      || this.props.onClick !== nextProps.onClick
       || this.props.animation !== nextProps.animation
     );
     return update
@@ -74,20 +76,21 @@ class GalleryItem extends React.Component<Props, State> {
           offColor="black"
         />
         }
-        { /* this.state.playing && 
+        { this.state.playing && 
           <div style={style.overlay}>
             <div style={{position: 'relative', left: '-50%', opacity: 0.32}}>
               <Tooltip title="FOOBAR">
                 <Fab 
                   size="small" 
                   color="secondary" 
+                  onClick={() => { this.props.onClick(animation) }}
                 >
-                  <RemoveIcon />,
+                  <AddIcon />,
                 </Fab>
               </Tooltip>
             </div>
           </div>
-        */}
+        }
       </div>
     );
   }

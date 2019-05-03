@@ -18,7 +18,7 @@ type Props = {
 class Webedit extends React.Component<Props, State> {
 
   handleUpdate = (animation) => (
-    this.props.updateAnimation(this.props.uid, animation)
+    this.props.updateAnimation(animation, this.props.uid)
   )
 
   render() {

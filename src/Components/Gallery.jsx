@@ -37,6 +37,7 @@ export default class Gallery extends React.Component<Props, State> {
             key={ animation.id }
             animation={ animation } 
             size="gallery"
+            onClick={this.props.onClick}
           />
         )}
       </div>

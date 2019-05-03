@@ -25,12 +25,16 @@ export const newAnimation = (type: string, defaulttext?: string) => ({
   animation: { data: EMPTY_DATA, currentFrame: 0, frames: 1, length: 1 },
 });
 
-export const addAnimation = createAction('ADD_ANIMATION', (animation: Animation) => {
+export const addAnimation = createAction('ADD_ANIMATION', (animation: Animation, uid: string) => {
   localStorage.setItem(`animation:${animation.id}`, JSON.stringify(animation));
+  // store remotely
+  if (uid) {
+    saveAnimationsToRemote(uid, new Map({[animation.id]: animation}));
+  }
   return animation;
 });
 
-export const updateAnimation = createAction('UPDATE_ANIMATION', (uid: string, animation: Animation) => {
+export const updateAnimation = createAction('UPDATE_ANIMATION', (animation: Animation, uid: string) => {
   // inject modification date
   animation = Object.assign({}, animation, { modifiedAt: new Date() })
 
@@ -44,7 +48,7 @@ export const updateAnimation = createAction('UPDATE_ANIMATION', (uid: string, an
   return animation;
 });
 
-export const removeAnimation = createAction('REMOVE_ANIMATION', (uid: string, animationId: string) => {
+export const removeAnimation = createAction('REMOVE_ANIMATION', (animationId: string, uid: string) => {
   localStorage.removeItem(`animation:${animationId}`);
 
   if (uid) {

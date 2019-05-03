@@ -39,7 +39,7 @@ class Menu extends React.Component<Props> {
   }
 
   handleRemove = (animationId) => (
-    this.props.removeAnimation(this.props.uid, animationId)
+    this.props.removeAnimation(animationId, this.props.uid)
   )
 
   addTextAnimation = () => {
