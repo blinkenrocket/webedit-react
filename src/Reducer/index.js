@@ -35,7 +35,7 @@ const initialAnimations = Object.keys(localStorage).reduce((animations, key) => 
   try {
     const tmp = JSON.parse(localStorage[key]);
     tmp.animation.data = List(tmp.animation.data);
-    return animations.set(key, tmp)
+    return animations.set(key.slice(10, key.length), tmp)
   } catch (e) {
     return animations;
   }

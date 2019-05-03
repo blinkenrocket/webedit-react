@@ -16,7 +16,7 @@ export const syncLibrary = createAction('UPSERT_ANIMATIONS', async (uid, localLi
 
   // store all remote animations locally
   remoteLib.map(animation => { 
-    localStorage.setItem(animation.id, JSON.stringify(animation));
+    localStorage.setItem(`animation:${animation.id}`, JSON.stringify(animation));
   })
 
   // save new, unsaved animations from localLib to the cloud
