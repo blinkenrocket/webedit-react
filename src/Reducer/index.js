@@ -25,26 +25,20 @@ export type State = {
   selectedAnimation: ?Animation,
 };
 
-const savedAnimations = localStorage.getItem('animations');
-let initialAnimations = Map();
 
-if (savedAnimations) {
-  try {
-    initialAnimations = Map(JSON.parse(savedAnimations));
-    // Ensure all pixel-animation data is an immutable list
-    initialAnimations = initialAnimations.map((animation) => 
-      Object.assign({}, animation, {
-        animation: {
-          ...animation.animation,
-          data: List(animation.animation.data),
-        }
-      })
-    );
-  } catch (e) {
-    localStorage.removeItem('animations');
+const initialAnimations = Object.keys(localStorage).reduce((animations, key) => {
+  if (!key.startsWith('animation:')) {
+    return animations;
   }
-}
-
+  try {
+    const tmp = JSON.parse(localStorage[key]);
+    tmp.animation.data = List(tmp.animation.data);
+    return animations.set(key, tmp)
+  } catch (e) {
+    return animations;
+  }
+}, Map());
+ 
 const initialState: State = {
   animations: initialAnimations,
   selectedAnimation: undefined,
@@ -55,26 +49,23 @@ export default handleActions(
     ADD_ANIMATION: (state: State, { payload }) => {
       const animations = state.animations.set(payload.id, payload);
 
-      localStorage.setItem('animations', JSON.stringify(animations.toJSON()));
-
       return {
-        animations,
-        selectedAnimation: payload,
+        ...state,
+        animations
       };
     },
-    SELECT_ANIMATION: (state: State, { payload }) => ({
-      ...state,
-      selectedAnimation: payload,
-    }),
     UPDATE_ANIMATION: (state: State, { payload }) => {
       const animations = state.animations.set(payload.id, payload);
 
-      localStorage.setItem('animations', JSON.stringify(animations.toJSON()));
+      return {
+        ...state,
+        animations
+      };
+    },
 
       return {
-        animations,
-        selectedAnimation:
-          state.selectedAnimation && state.selectedAnimation.id === payload.id ? payload : state.selectedAnimation,
+        ...state,
+        animations
       };
     },
     REMOVE_ANIMATION: (state: State, { payload }) => {
@@ -83,7 +74,11 @@ export default handleActions(
       }
       const animations = state.animations.remove(payload);
 
-      localStorage.setItem('animations', JSON.stringify(animations.toJSON()));
+      return {
+        ...state,
+        animations
+      };
+    },
 
       return {
         animations,

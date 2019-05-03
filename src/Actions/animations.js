@@ -8,7 +8,8 @@ import type { Animation } from 'Reducer';
 
 const EMPTY_DATA = List(range(8).map(() => 0x00));
 
-export const addNewAnimation = createAction('ADD_ANIMATION', (type: string, defaulttext?: string) => ({
+
+export const newAnimation = (type: string, defaulttext?: string) => ({
   delay: 0,
   repeat: 0,
   direction: 0,
@@ -20,14 +21,27 @@ export const addNewAnimation = createAction('ADD_ANIMATION', (type: string, defa
   type,
   text: defaulttext,
   animation: { data: EMPTY_DATA, currentFrame: 0, frames: 1, length: 1 },
-}));
+});
 
-export const addAnimation = createAction('ADD_ANIMATION', (animation: Animation) => animation);
+export const addAnimation = createAction('ADD_ANIMATION', (animation: Animation) => {
+  localStorage.setItem(`animation:${animation.id}`, JSON.stringify(animation));
+  return animation;
+});
 
-export const selectAnimation = createAction('SELECT_ANIMATION', (animation: Animation) => animation);
+export const updateAnimation = createAction('UPDATE_ANIMATION', (animation: Animation) => {
+  // inject modification date
+  animation = Object.assign({}, animation, { modifiedAt: new Date() })
 
-export const updateAnimation = createAction('UPDATE_ANIMATION', (animation: Animation) => animation);
+  // store locally
+  localStorage.setItem(`animation:${animation.id}`, JSON.stringify(animation));
 
-export const removeAnimation = createAction('REMOVE_ANIMATION', (animationId: string) => animationId);
+  return animation;
+});
+
+export const removeAnimation = createAction('REMOVE_ANIMATION', (animationId: string) => {
+  localStorage.removeItem(`animation:${animationId}`);
+
+  return animationId;
+});
 
 export const reset = createAction('RESET');

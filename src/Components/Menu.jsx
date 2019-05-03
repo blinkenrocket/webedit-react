@@ -7,12 +7,12 @@ import type { Map } from 'immutable';
 import { Avatar, Divider, List, ListItem, Paper } from 'material-ui';
 import AddIcon from '@material-ui/icons/Add';
 import AnimationInMenu from './AnimationInMenu';
-import { addNewAnimation } from 'Actions/animations';
+import { newAnimation, addAnimation, removeAnimation } from 'Actions/animations';
 import type { Animation } from 'Reducer';
 
 type Props = {
   animations?: Map<string, Animation>,
-  addNewAnimation: typeof addNewAnimation,
+  addAnimation: typeof addAnimation,
 };
 
 const style = {
@@ -33,16 +33,20 @@ class Menu extends React.Component<Props> {
     const { animations } = this.props;
     var animation;
     if(animations.toList().size == 0) {
-      this.props.addNewAnimation('text', 'blinkenrocket.com').payload;
+      this.props.addAnimation(newAnimation('text', 'blinkenrocket.com'));
     }
   }
 
-  addNewAnimationText = () => {
-    const { payload } = this.props.addNewAnimation('text');
+  handleRemove = (animationId) => (
+    this.props.removeAnimation(animationId)
+  )
+
+  addTextAnimation = () => {
+    const { payload } = this.props.addAnimation(newAnimation('text'));
     this.props.navigate(`/${payload.id}`);
   };
-  addNewAnimation = () => {
-    const { payload } = this.props.addNewAnimation('pixel');
+  addPixelAnimation = () => {
+    const { payload } = this.props.addAnimation(newAnimation('pixel'));
     this.props.navigate(`/${payload.id}`);
   };
 
@@ -55,12 +59,12 @@ class Menu extends React.Component<Props> {
           <ListItem
             leftAvatar={<Avatar icon={<AddIcon />} />}
             primaryText={t('menu.addText')}
-            onClick={this.addNewAnimationText}
+            onClick={this.addTextAnimation}
           />
           <ListItem
             leftAvatar={<Avatar icon={<AddIcon />} />}
             primaryText={t('menu.addAnimation')}
-            onClick={this.addNewAnimation}
+            onClick={this.addPixelAnimation}
           />
           <Divider />
           {animations
@@ -70,6 +74,7 @@ class Menu extends React.Component<Props> {
                 key={animation.creationDate}
                 animation={animation}
                 onClick={() => { this.props.navigate(`/${animation.id}`) }}
+                onRemove={this.handleRemove}
               />
             ))
             .toList()
@@ -84,5 +89,5 @@ export default connect(
   state => ({
     animations: state.animations,
   }),
-  { addNewAnimation }
+  { addAnimation, removeAnimation }
 )(Radium(Menu));

@@ -1,12 +1,10 @@
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
 import Radium from 'radium';
 import { ListItem } from 'material-ui';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
 
 import AnimationPreview from './AnimationPreview';
-import { removeAnimation } from 'Actions/animations';
 import type { Animation } from 'Reducer';
 
 
@@ -21,16 +19,16 @@ const style = {
 type Props = {
   animation: Animation,
   selected: boolean,
-  removeAnimation: typeof removeAnimation,
+  onRemove: (string) => void
 };
 
 @Radium
 class AnimationInMenu extends React.Component<Props> {
 
   remove = (e: SyntheticMouseEvent<*>) => {
-    const { animation, removeAnimation } = this.props;
+    const { animation } = this.props;
 
-    removeAnimation(animation.id);
+    this.props.onRemove(animation.id);
     e.stopPropagation();
   };
 
@@ -56,4 +54,4 @@ class AnimationInMenu extends React.Component<Props> {
   }
 }
 
-export default connect(null, { removeAnimation })(AnimationInMenu);
+export default AnimationInMenu;
