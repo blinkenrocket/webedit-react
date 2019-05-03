@@ -1,6 +1,7 @@
 /* @flow */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { t } from 'i18next';
 import Radium from 'radium';
 import firebase from 'firebase/app';
@@ -14,7 +15,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { FlatButton, TextField, RaisedButton } from 'material-ui';
 
-import { loggedIn } from 'Actions/auth';
+import { signedUp, loggedIn, syncLibrary } from 'Actions/auth';
 
 
 const style = {
@@ -36,10 +37,7 @@ type State = {
 };
 
 @Radium
-export default class AuthDialog extends React.Component<Props, State> {
-  static contextTypes = {
-    store: PropTypes.object.isRequired,
-  };
+class AuthDialog extends React.Component<Props, State> {
 
   state: State = {
     view: 'login',
@@ -51,7 +49,7 @@ export default class AuthDialog extends React.Component<Props, State> {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.context.store.dispatch(loggedIn(user));
+        this.props.loggedIn(user['uid']);
       }
     });
   }
@@ -61,7 +59,8 @@ export default class AuthDialog extends React.Component<Props, State> {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((res) => {
-        this.context.store.dispatch(loggedIn(res.user));
+        this.props.loggedIn(res.user['uid']);
+        this.props.syncLibrary(res.user['uid'], this.props.animations);
         this.close();
       })
       .catch((error) => {
@@ -73,6 +72,7 @@ export default class AuthDialog extends React.Component<Props, State> {
     const { email, password} = this.state;
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((res) => {
+        this.props.signedUp(res.user.uid, this.props.animations);
         this.close();
       })
       .catch((error) => {
@@ -149,3 +149,7 @@ export default class AuthDialog extends React.Component<Props, State> {
     );
   }
 }
+export default connect(
+  (state) => ({ animations: state.animations }),
+  { signedUp, loggedIn, syncLibrary })
+(AuthDialog);

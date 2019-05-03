@@ -18,9 +18,11 @@ export type Animation = {
     frames: number,
     data: List<number>,
   },
+  modifiedAt?: number,
 };
 
 export type State = {
+  uid: string,
   animations: Map<string, Animation>,
   selectedAnimation: ?Animation,
 };
@@ -40,6 +42,7 @@ const initialAnimations = Object.keys(localStorage).reduce((animations, key) => 
 }, Map());
  
 const initialState: State = {
+  uid: '',
   animations: initialAnimations,
   selectedAnimation: undefined,
 };
@@ -62,6 +65,11 @@ export default handleActions(
         animations
       };
     },
+    UPSERT_ANIMATIONS: (state: State, { payload }) => {
+      let animations = state.animations;
+      payload.map(animation => {
+        animations = animations.set(animation.id, animation);
+      })
 
       return {
         ...state,

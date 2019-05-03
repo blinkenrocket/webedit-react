@@ -2,9 +2,11 @@
 import { createAction } from 'redux-actions';
 import { List } from 'immutable';
 import { range } from 'lodash';
+import { Map } from 'immutable';
 import { t } from 'i18next';
 import UUID from 'uuid-js';
 import type { Animation } from 'Reducer';
+import { saveAnimationsToRemote, removeAnimationRemote } from '../db';
 
 const EMPTY_DATA = List(range(8).map(() => 0x00));
 
@@ -28,19 +30,26 @@ export const addAnimation = createAction('ADD_ANIMATION', (animation: Animation)
   return animation;
 });
 
-export const updateAnimation = createAction('UPDATE_ANIMATION', (animation: Animation) => {
+export const updateAnimation = createAction('UPDATE_ANIMATION', (uid: string, animation: Animation) => {
   // inject modification date
   animation = Object.assign({}, animation, { modifiedAt: new Date() })
 
   // store locally
   localStorage.setItem(`animation:${animation.id}`, JSON.stringify(animation));
 
+  // store remotely
+  if (uid) {
+    saveAnimationsToRemote(uid, new Map({[animation.id]: animation}));
+  }
   return animation;
 });
 
-export const removeAnimation = createAction('REMOVE_ANIMATION', (animationId: string) => {
+export const removeAnimation = createAction('REMOVE_ANIMATION', (uid: string, animationId: string) => {
   localStorage.removeItem(`animation:${animationId}`);
 
+  if (uid) {
+    removeAnimationRemote(uid, animationId);
+  }
   return animationId;
 });
 

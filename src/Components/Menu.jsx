@@ -38,7 +38,7 @@ class Menu extends React.Component<Props> {
   }
 
   handleRemove = (animationId) => (
-    this.props.removeAnimation(animationId)
+    this.props.removeAnimation(this.props.uid, animationId)
   )
 
   addTextAnimation = () => {
@@ -87,6 +87,7 @@ class Menu extends React.Component<Props> {
 
 export default connect(
   state => ({
+    uid: state.uid,
     animations: state.animations,
   }),
   { addAnimation, removeAnimation }
