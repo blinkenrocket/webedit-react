@@ -91,7 +91,8 @@ class RightMenu extends React.Component<Props, State> {
   };
 
   share = () => {
-    const selectedAnimation = this.context.store.getState().selectedAnimation;
+    const { animations, currentAnimationId } = this.props
+    const selectedAnimation = animations.get(currentAnimationId);
     const encodedAnimation = btoa(JSON.stringify(selectedAnimation));
 
     const shareUrl = encodedAnimation;
@@ -233,6 +234,8 @@ class RightMenu extends React.Component<Props, State> {
   }
 }
 
-export default connect(null, {
+export default connect(state => ({
+  animations: state.animations
+}), {
   resetAction: reset,
 })(RightMenu);

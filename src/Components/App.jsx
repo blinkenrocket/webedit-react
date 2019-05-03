@@ -78,7 +78,7 @@ class Webedit extends React.Component<Props, State> {
             onLeftIconButtonClick={this.toggleDrawer}
             title={this.props.width > 1 ? t('headerTitle') : ''}
             iconStyleRight={style.appRight}
-            iconElementRight={<RightMenu />}
+            iconElementRight={<RightMenu currentAnimationId={currentAnimationId}/>}
           />
           <div style={this.state.drawerOpen ? style.contentOpen : style.contentClose}>
             <Drawer open={this.state.drawerOpen}>
