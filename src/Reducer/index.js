@@ -24,7 +24,7 @@ export type Animation = {
 export type State = {
   uid: string,
   animations: Map<string, Animation>,
-  selectedAnimation: ?Animation,
+  gallery: Map<string, Animation>,
 };
 
 
@@ -44,11 +44,13 @@ const initialAnimations = Object.keys(localStorage).reduce((animations, key) => 
 const initialState: State = {
   uid: '',
   animations: initialAnimations,
-  selectedAnimation: undefined,
+  gallery: Map(),
+  adminGallery: Map()
 };
 
 export default handleActions(
   {
+    // Local Library
     ADD_ANIMATION: (state: State, { payload }) => {
       const animations = state.animations.set(payload.id, payload);
 
@@ -88,20 +90,39 @@ export default handleActions(
       };
     },
 
-      return {
-        animations,
-        selectedAnimation:
-          state.selectedAnimation && state.selectedAnimation.id === payload ? undefined : state.selectedAnimation,
-      };
-    },
-    RESET: () => {
-      localStorage.removeItem('animations');
+    // Public Gallery
+    UPSERT_GALLERY_ANIMATIONS: (state: State, { payload }) => {
+      let gallery = state.gallery;
+      payload.map(animation => {
+        gallery = gallery.set(animation.id, animation);
+      })
 
       return {
-        animations: Map(),
-        selectedAnimation: undefined,
+        ...state,
+        gallery
       };
     },
+    REMOVE_GALLERY_ANIMATION: (state: State, { payload }) => {
+      if (!state.gallery.has(payload)) {
+        return state;
+      }
+      const gallery = state.gallery.remove(payload)
+
+      return {
+        ...state,
+        gallery
+      };
+    },
+    RESET_GALLERY: (state: State) => {
+
+      return {
+        ...state,
+        gallery: new Map()
+      };
+    },
+
+
+    // Authentication
     LOGIN: (state: State, { payload }) => {
       return {
         ...state,
@@ -113,9 +134,20 @@ export default handleActions(
 
       return {
         uid: null,
-        animations: Map(),
-        selectedAnimation: undefined
+        animations: new Map(),
+        gallery: new Map(),
       }
+    },
+
+    // App-State reset
+    RESET: () => {
+      localStorage.clear();
+
+      return {
+        uid: '',
+        gallery: new Map(),
+        animations: new Map()
+      };
     },
   },
   initialState

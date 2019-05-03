@@ -6,6 +6,7 @@ import Radium from 'radium';
 import type { Map } from 'immutable';
 import { Avatar, Divider, List, ListItem, Paper } from 'material-ui';
 import AddIcon from '@material-ui/icons/Add';
+import ImagePhotoLibrary from 'material-ui/svg-icons/image/photo-library';
 import AnimationInMenu from './AnimationInMenu';
 import { newAnimation, addAnimation, removeAnimation } from 'Actions/animations';
 import type { Animation } from 'Reducer';
@@ -65,6 +66,12 @@ class Menu extends React.Component<Props> {
             leftAvatar={<Avatar icon={<AddIcon />} />}
             primaryText={t('menu.addAnimation')}
             onClick={this.addPixelAnimation}
+          />
+          <ListItem
+            leftAvatar={<Avatar icon={<ImagePhotoLibrary />} />}
+            primaryText={'Gallery'}
+            style={(this.props.active === 'gallery') ? { backgroundColor: '#e0e0e0' } : {}}
+            onClick={() => this.props.navigate('/gallery')}
           />
           <Divider />
           {animations

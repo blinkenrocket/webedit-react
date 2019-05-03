@@ -25,6 +25,7 @@ const style = {
 
 const sizes = {
   thumb: 2,
+  gallery: 5,
   small: 10,
   mid: 15,
   huge: 20,
