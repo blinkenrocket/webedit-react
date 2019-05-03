@@ -5,6 +5,6 @@ import React from 'react';
 
 export default (
   <Router history={browserHistory}>
-    <Route path={BASE_URL} component={Webedit} />
+    <Route path="/(:animationId)" component={Webedit} />
   </Router>
 );

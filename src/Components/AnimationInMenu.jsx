@@ -1,15 +1,13 @@
 // @flow
-import { Avatar, ListItem } from 'material-ui';
-import { connect } from 'react-redux';
-import { removeAnimation, selectAnimation } from 'Actions/animations';
-import { t } from 'i18next';
-import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
-import NotificationMms from 'material-ui/svg-icons/notification/mms';
-import NotificationSms from 'material-ui/svg-icons/notification/sms';
-import Radium from 'radium';
 import React from 'react';
-import type { Animation } from 'Reducer';
+import { connect } from 'react-redux';
+import Radium from 'radium';
+import { ListItem } from 'material-ui';
+import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
+
 import AnimationPreview from './AnimationPreview';
+import { removeAnimation } from 'Actions/animations';
+import type { Animation } from 'Reducer';
 
 
 const style = {
@@ -23,23 +21,19 @@ const style = {
 type Props = {
   animation: Animation,
   selected: boolean,
-  removeAnimationAction: typeof removeAnimation,
-  selectAnimationAction: typeof selectAnimation,
+  removeAnimation: typeof removeAnimation,
 };
 
 @Radium
 class AnimationInMenu extends React.Component<Props> {
-  selectAnimation = () => {
-    const { animation, selectAnimationAction } = this.props;
 
-    selectAnimationAction(animation);
-  };
-  removeAnimation = (e: SyntheticMouseEvent<*>) => {
-    const { animation, removeAnimationAction } = this.props;
+  remove = (e: SyntheticMouseEvent<*>) => {
+    const { animation, removeAnimation } = this.props;
 
-    removeAnimationAction(animation.id);
+    removeAnimation(animation.id);
     e.stopPropagation();
   };
+
   render() {
     const { animation, selected } = this.props;
     const avatar = <AnimationPreview 
@@ -49,19 +43,17 @@ class AnimationInMenu extends React.Component<Props> {
       style={{position: 'absolute', top: '8px', left: '16px' }}
     />
     const txt = <div style={style.itemText}>{animation.name || animation.text || '\u00A0'}</div>;
+
     return (
       <ListItem
         leftAvatar={avatar}
-        rightIcon={<ActionDeleteForever onClick={this.removeAnimation} />}
+        rightIcon={<ActionDeleteForever onClick={this.remove} />}
         primaryText={txt}
-        onClick={this.selectAnimation}
+        onClick={this.props.onClick}
         style={selected ? { backgroundColor: '#e0e0e0' } : {}}
       />
     );
   }
 }
 
-export default connect(null, {
-  removeAnimationAction: removeAnimation,
-  selectAnimationAction: selectAnimation,
-})(AnimationInMenu);
+export default connect(null, { removeAnimation })(AnimationInMenu);

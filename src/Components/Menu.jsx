@@ -1,27 +1,24 @@
 /* @flow */
-import { addNewAnimation, selectAnimation } from 'Actions/animations';
-import { Avatar, Divider, List, ListItem, Paper } from 'material-ui';
+import React from 'react';
 import { connect } from 'react-redux';
 import { t } from 'i18next';
-import AnimationInMenu from './AnimationInMenu';
-import NotificationMms from 'material-ui/svg-icons/notification/mms';
-import NotificationSms from 'material-ui/svg-icons/notification/sms';
 import Radium from 'radium';
-import React from 'react';
-import type { Animation } from 'Reducer';
 import type { Map } from 'immutable';
+import { Avatar, Divider, List, ListItem, Paper } from 'material-ui';
+import AddIcon from '@material-ui/icons/Add';
+import AnimationInMenu from './AnimationInMenu';
+import { addNewAnimation } from 'Actions/animations';
+import type { Animation } from 'Reducer';
 
 type Props = {
   animations?: Map<string, Animation>,
-  selectedId?: ?string,
-  addNewAnimationAction: typeof addNewAnimation,
+  addNewAnimation: typeof addNewAnimation,
 };
 
 const style = {
   wrap: {
     alignItems: 'center',
     display: 'flex',
-    // flex: '0 0 20%',
     flexDirection: 'column',
   },
   list: {
@@ -33,52 +30,50 @@ class Menu extends React.Component<Props> {
 
   constructor(props) {
     super(props);
-    const { animations, selectAnimationAction } = this.props;
+    const { animations } = this.props;
     var animation;
     if(animations.toList().size == 0) {
-      animation = this.props.addNewAnimationAction('text', 'blinkenrocket.com').payload;
+      this.props.addNewAnimation('text', 'blinkenrocket.com').payload;
     }
-    selectAnimationAction(animation || animations.toList().get(0));
   }
 
   addNewAnimationText = () => {
-    this.props.addNewAnimationAction('text');
+    const { payload } = this.props.addNewAnimation('text');
+    this.props.navigate(`/${payload.id}`);
   };
   addNewAnimation = () => {
-    this.props.addNewAnimationAction('pixel');
+    const { payload } = this.props.addNewAnimation('pixel');
+    this.props.navigate(`/${payload.id}`);
   };
 
   render() {
-    const { animations, selectedId } = this.props;
-
-    if (!animations) {
-      return null;
-    }
+    const { animations } = this.props;
 
     return (
       <Paper style={style.wrap}>
         <List style={style.list}>
-          {animations
-            .map(animation => (
-              <AnimationInMenu
-                selected={animation.id === selectedId}
-                key={animation.creationDate}
-                animation={animation}
-              />
-            ))
-            .toList()
-            .toArray()}
-          <Divider />
           <ListItem
-            leftAvatar={<Avatar icon={<NotificationSms />} />}
+            leftAvatar={<Avatar icon={<AddIcon />} />}
             primaryText={t('menu.addText')}
             onClick={this.addNewAnimationText}
           />
           <ListItem
-            leftAvatar={<Avatar icon={<NotificationMms />} />}
+            leftAvatar={<Avatar icon={<AddIcon />} />}
             primaryText={t('menu.addAnimation')}
             onClick={this.addNewAnimation}
           />
+          <Divider />
+          {animations
+            .map(animation => (
+              <AnimationInMenu
+                selected={this.props.active === 'webedit' && animation.id === this.props.currentAnimationId}
+                key={animation.creationDate}
+                animation={animation}
+                onClick={() => { this.props.navigate(`/${animation.id}`) }}
+              />
+            ))
+            .toList()
+            .toArray()}
         </List>
       </Paper>
     );
@@ -88,10 +83,6 @@ class Menu extends React.Component<Props> {
 export default connect(
   state => ({
     animations: state.animations,
-    selectedId: state.selectedAnimation ? state.selectedAnimation.id : undefined,
   }),
-  {
-    addNewAnimationAction: addNewAnimation,
-    selectAnimationAction: selectAnimation
-  }
+  { addNewAnimation }
 )(Radium(Menu));
