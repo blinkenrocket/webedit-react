@@ -369,6 +369,7 @@ class PixelEditor extends React.Component<Props, State> {
           onChange={this.handleChange.bind(this, 'name')}
           floatingLabelText={t('pixelEditor.name')}
           placeholder={t('pixelEditor.name')}
+          floatingLabelFixed
         />
         <div style={[style.sliderContainer, style.noShrink]}>
           <p style={style.sliderLabel}>{t('textEditor.speed')}</p>
