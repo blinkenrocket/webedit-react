@@ -18,13 +18,17 @@ export type Animation = {
     frames: number,
     data: List<number>,
   },
+  author?: string,
+  reviewedAt?: number,
   modifiedAt?: number,
+  originalId?: string,
 };
 
 export type State = {
   uid: string,
   animations: Map<string, Animation>,
   gallery: Map<string, Animation>,
+  adminGallery: Map<string, Animation>
 };
 
 
@@ -121,6 +125,18 @@ export default handleActions(
       };
     },
 
+    // Admin Gallery
+    UPSERT_ADMIN_GALLERY_ANIMATIONS: (state: State, { payload }) => {
+      let gallery = state.adminGallery;
+      payload.map(animation => {
+        gallery = gallery.set(animation.id, animation);
+      })
+
+      return {
+        ...state,
+        adminGallery: gallery
+      };
+    },
 
     // Authentication
     LOGIN: (state: State, { payload }) => {
@@ -136,6 +152,7 @@ export default handleActions(
         uid: null,
         animations: new Map(),
         gallery: new Map(),
+        adminGallery: new Map(),
       }
     },
 
@@ -146,6 +163,7 @@ export default handleActions(
       return {
         uid: '',
         gallery: new Map(),
+        adminGallery: new Map(),
         animations: new Map()
       };
     },

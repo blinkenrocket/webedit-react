@@ -29,3 +29,30 @@ export const removeAnimationFromGallery = createAction('REMOVE_GALLERY_ANIMATION
   return animation.id;
 });
 export const resetGallery = createAction('RESET_GALLERY');
+
+
+// Admin Gallery 
+export const loadAdminGallery = createAction('UPSERT_ADMIN_GALLERY_ANIMATIONS', async () => {
+  const users = await DB.collection('users').get();
+  return await Promise.all(
+    users.docs.map(user => 
+      user.ref.collection('animations').get().then(aniSnapshot => 
+        aniSnapshot.docs.map(animation => 
+          mapAnimationToLocal(Object.assign(animation.data(), { author: user.id }))
+        )
+      )
+    )
+  ).then(animationLists => (
+    animationLists.reduce((acc, cur) => acc.concat(cur), [])
+  ));
+});
+
+export const reviewAnimation = createAction('UPSERT_ADMIN_GALLERY_ANIMATIONS', (animation: Animation, when) => {
+  const updated = Object.assign({}, animation, { reviewedAt: when });
+  DB.collection('users').doc(animation.author)
+    .collection('animations').doc(animation.id).set({
+      reviewedAt: updated.reviewedAt,
+    }, { merge: true });
+  return [updated];
+});
+
