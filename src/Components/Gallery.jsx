@@ -19,6 +19,9 @@ const style = {
 
 type Props = {
   gallery: Map<string, Animation>,
+  clickIcon: string,
+  clickLabel: string,
+  onClick?: (animations: Array<Animation>) => void
 };
 
 @Radium
@@ -37,6 +40,8 @@ export default class Gallery extends React.Component<Props, State> {
             key={ animation.id }
             animation={ animation } 
             size="gallery"
+            clickIcon={this.props.clickIcon}
+            clickLabel={this.props.clickLabel}
             onClick={this.props.onClick}
           />
         )}

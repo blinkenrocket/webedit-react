@@ -58,6 +58,7 @@ class PublicGallery extends React.Component<Props, State> {
         <div style={style.canvas}>
           <Gallery 
             gallery={gallery} 
+            clickLabel={ t('admin_gallery.copy_animation') }
             onClick={this.copyAnimationToLibrary}
           />
         </div>

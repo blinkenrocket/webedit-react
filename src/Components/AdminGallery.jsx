@@ -107,7 +107,12 @@ class AdminGallery extends React.Component<Props, State> {
           </div>
           <div style={style.publicCanvas}>
             <h2>Public Gallery</h2>
-            <Gallery gallery={gallery} onClick={this.removeFromGallery}/>
+            <Gallery 
+              gallery={gallery} 
+              clickLabel={ t('admin_gallery.unpublish') }
+              clickIcon="remove"
+              onClick={this.removeFromGallery}
+            />
           </div>
         </div>
       </App>

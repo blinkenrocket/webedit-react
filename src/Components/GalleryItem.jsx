@@ -6,6 +6,7 @@ import { getFrameColumns } from '../utils';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 const style = {
   galleryItem: {
@@ -29,8 +30,15 @@ const style = {
   }
 };
 
+const actionIcons = {
+  add: <AddIcon />,
+  remove: <RemoveIcon />
+}
+
 type Props = {
   animation: Animation,
+  clickIcon: string,
+  clickLabel: string,
   onClick?: (animations: Array<Animation>) => void
 };
 
@@ -42,6 +50,11 @@ class GalleryItem extends React.Component<Props, State> {
   state: State = {
     playing: false,
   };
+  static defaultProps = {
+    clickIcon: 'add',
+    clickLabel: '',
+  };
+
   shouldComponentUpdate(nextProps, nextState){
     const update = (this.state.playing !== nextState.playing
       || this.props.onClick !== nextProps.onClick
@@ -79,13 +92,13 @@ class GalleryItem extends React.Component<Props, State> {
         { this.state.playing && 
           <div style={style.overlay}>
             <div style={{position: 'relative', left: '-50%', opacity: 0.32}}>
-              <Tooltip title="FOOBAR">
+              <Tooltip title={this.props.clickLabel}>
                 <Fab 
                   size="small" 
                   color="secondary" 
                   onClick={() => { this.props.onClick(animation) }}
                 >
-                  <AddIcon />,
+                  { actionIcons[this.props.clickIcon] }
                 </Fab>
               </Tooltip>
             </div>

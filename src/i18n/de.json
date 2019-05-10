@@ -62,5 +62,11 @@
     "instructions": "Gebe diesen Link weiter, um deine Animation zu teilen. Beim Aufrufen des Links wird diese automatisch importiert.",
     "link": "klickediklick",
     "close": "Schließen"
+  },
+  "gallery": {
+    "copy_animation": "Zu meinen Animationen hinzufuegen"
+  },
+  "admin_gallery": {
+    "unpublish": "Von oeffentlicher Gallerie entfernen"
   }
 }
