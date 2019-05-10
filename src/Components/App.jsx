@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { t } from 'i18next';
 import Radium from 'radium';
+import UUID from 'uuid-js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import withWidth from 'material-ui/utils/withWidth';
@@ -58,7 +59,9 @@ class Webedit extends React.Component<Props, State> {
 
     if (encodedAnimation) {
       const decodedAnimation = JSON.parse(atob(encodedAnimation));
+      decodedAnimation.id = UUID.create().toString();
       this.props.addAnimation(decodedAnimation);
+      this.props.router.push(`/${decodedAnimation.id}`);
     }
   }
 
