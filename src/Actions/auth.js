@@ -3,7 +3,10 @@ import { createAction } from 'redux-actions';
 import { Map } from 'immutable';
 import { DB, saveAnimationsToRemote, mapAnimationToLocal } from '../db';
 
-export const loggedIn = createAction('LOGIN');
+export const loggedIn = createAction('LOGIN', async (uid) => {
+  const info = await DB.collection('users').doc(uid).get();
+  return { uid, admin: info.data()['admin'] || false };
+});
 export const loggedOut = createAction('LOGOUT');
 
 
@@ -30,6 +33,6 @@ export const signedUp = createAction('LOGIN', (uid, localLib) => {
   //TODO add more signup context. last login referrer etc
   DB.collection('users').doc(uid).set({active: true }, {merge: true});
   saveAnimationsToRemote(uid, lib);
-  return uid;
+  return { uid, admin: false };
 });
 //

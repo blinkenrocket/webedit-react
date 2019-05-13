@@ -58,9 +58,26 @@ class AdminGallery extends React.Component<Props, State> {
     gallery: new Map(),
     adminGallery: new Map()
   };
+
   componentDidMount() {
-    this.props.loadAdminGallery();
-    this.props.loadGallery();
+    this.init();
+  }
+  
+  componentDidUpdate(prevProps) {
+    if (this.props.uid != prevProps.uid) {
+      this.init();
+    }
+  }
+
+  init = () => {
+    const { uid, admin } = this.props;
+
+    if (uid && admin === true) {
+      this.props.loadAdminGallery();
+      this.props.loadGallery();
+    } else if (uid && admin === false) {
+      this.props.router.push('/gallery');
+    }
   }
 
   addToGallery = (animation) => {
@@ -124,6 +141,8 @@ class AdminGallery extends React.Component<Props, State> {
 
 export default connect(
   state => ({ 
+    uid: state.uid, 
+    admin: state.admin,
     gallery: state.gallery, 
     adminGallery: state.adminGallery 
   }), 

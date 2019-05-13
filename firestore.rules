@@ -1,0 +1,28 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+  	function signedIn() {
+      return request.auth != null && request.auth.uid != null;
+    }
+    function isUser(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+    function isAdmin() {
+      return signedIn() && ("admin" in get(/databases/$(database)/documents/users/$(request.auth.uid)).data) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    match /publicAnimations/{animationId} {
+      allow read;
+      allow write: if isAdmin();
+    }
+    match /users/{uid} {
+      allow create: if !signedIn();
+      allow read: if isUser(uid) || isAdmin();  
+      allow update: if isAdmin() || (isUser(uid) && !("admin" in request.resource.data));
+
+      match /animations/{animationId} {
+      	allow read, write: if isUser(uid) || isAdmin();
+      }
+    }
+  }
+}

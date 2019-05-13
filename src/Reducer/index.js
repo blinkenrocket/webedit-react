@@ -26,6 +26,7 @@ export type Animation = {
 
 export type State = {
   uid: string,
+  admin: bool,
   animations: Map<string, Animation>,
   gallery: Map<string, Animation>,
   adminGallery: Map<string, Animation>
@@ -47,6 +48,7 @@ const initialAnimations = Object.keys(localStorage).reduce((animations, key) => 
  
 const initialState: State = {
   uid: '',
+  admin: false,
   animations: initialAnimations,
   gallery: Map(),
   adminGallery: Map()
@@ -142,7 +144,8 @@ export default handleActions(
     LOGIN: (state: State, { payload }) => {
       return {
         ...state,
-        uid: payload
+        uid: payload.uid,
+        admin: payload.admin
       };
     },
     LOGOUT: () => {
@@ -150,6 +153,7 @@ export default handleActions(
 
       return {
         uid: null,
+        admin: false,
         animations: new Map(),
         gallery: new Map(),
         adminGallery: new Map(),
@@ -162,6 +166,7 @@ export default handleActions(
 
       return {
         uid: '',
+        admin: false,
         gallery: new Map(),
         adminGallery: new Map(),
         animations: new Map()
