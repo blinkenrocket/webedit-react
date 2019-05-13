@@ -10,12 +10,10 @@ import './db';
 import './i18n';
 import './vendor';
 import { FirebaseAuthProvider, } from '@react-firebase/auth';
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import firebase from 'firebase';
 
 import reducer from 'Reducer';
 import routes from './routes';
-
 
 export const store = (global.store = compose(
   applyMiddleware(reduxPromise),

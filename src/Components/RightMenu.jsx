@@ -15,7 +15,7 @@ import React from 'react';
 import SocialShare from 'material-ui/svg-icons/social/share';
 import transfer from 'Services/flash';
 import AuthDialog from './AuthDialog';
-import firebase from 'firebase/app';
+import firebase from '../firebase';
 import { FirebaseAuthConsumer } from '@react-firebase/auth';
 import { loggedOut } from '../Actions/auth';
 

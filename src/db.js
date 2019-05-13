@@ -1,23 +1,8 @@
-import firebase from 'firebase/app';
 import { List } from 'immutable';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/database';
+import firebase from 'firebase';
 
 //TODO(flo) document publicAnimations and user.animations and overall firebase schema
 
-const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  databaseURL: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: ""
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
 export const DB = firebase.firestore();
 
 

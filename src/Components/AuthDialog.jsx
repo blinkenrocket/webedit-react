@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { t } from 'i18next';
 import Radium from 'radium';
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import firebase from '../firebase';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
