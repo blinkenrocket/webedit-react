@@ -35,13 +35,17 @@ const style = {
     width: '50%',
     padding: '20px', 
     margin: '20px', 
-    border: '1px solid goldenrod',
   },
   publicCanvas: {
     width: '50%', 
     padding: '20px', 
     margin: '20px', 
-    border: '1px solid limegreen',
+  },
+  publicFrame: {
+    border: '1px solid #d5d5d5',
+    backgroundColor: '#d5d5d526',
+    borderRadius: '3px',
+    padding: '15px',
   },
 };
 
@@ -126,12 +130,14 @@ class AdminGallery extends React.Component<Props, State> {
           </div>
           <div style={style.publicCanvas}>
             <h2>Public Gallery</h2>
-            <Gallery 
-              gallery={gallery} 
-              clickLabel={ t('admin_gallery.unpublish') }
-              clickIcon="remove"
-              onClick={this.removeFromGallery}
-            />
+            <div style={style.publicFrame}>
+              <Gallery 
+                gallery={gallery} 
+                clickLabel={ t('admin_gallery.unpublish') }
+                clickIcon="remove"
+                onClick={this.removeFromGallery}
+              />
+            </div>
           </div>
         </div>
       </App>
