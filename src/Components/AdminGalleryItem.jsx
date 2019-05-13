@@ -12,9 +12,39 @@ import ArchiveIcon from '@material-ui/icons/Archive';
 
 const style = {
   galleryItem: {
-    padding: '8px',
-    margin: '8px',
+    padding: '20px',
+    margin: '20px',
+    borderRadius: '6px',
+    boxShadow: '2px 2px 5px lightgrey',
   },
+  title: {
+    fontFamily: 'sans-serif',
+    fontSize: '12px',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    marginBottom: '16px',
+    marginTop: '-6px',
+    width: '100px',
+  },
+  bottomInfo: {
+    marginTop: '-4px',
+    marginBottom: '16px',
+    textAlign: 'center',
+    fontFamily: 'monospace',
+    fontSize: '10px',
+    color: '#999',
+  },
+  topInfo: {
+    marginTop: '-4px',
+    fontFamily: 'monospace',
+    fontSize: '10px',
+    color: '#999',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    width: '100px',
+  }
 };
 
 const actionIcons = {
@@ -61,12 +91,22 @@ class AdminGalleryItem extends React.Component<Props, State> {
 
   render() {
     const { animation } = this.props;
+    const dateFmt = (dt) => dt.toISOString().slice(0, 16).replace('T', ' ');
+
     return (
       <div 
         style={style.galleryItem}
         onMouseEnter={() => this.setState({preview: true})}
         onMouseLeave={() => this.setState({preview: false})}
       >
+        <div style={style.title} title={animation.name} alt={animation.name}>
+          { animation.name ? <b>{animation.name}</b> : <i>Untitled</i> } 
+        </div>
+        <div style={style.topInfo} alt={animation.text} title={animation.text}>
+          {animation.type}: 
+          {animation.type === 'pixel' && animation.animation.frames} 
+          {animation.type === 'text' && animation.text } 
+        </div>
         { !this.state.preview && 
         <Frame
           columns={getFrameColumns(animation, animation.animation.currentFrame)}
@@ -78,12 +118,13 @@ class AdminGalleryItem extends React.Component<Props, State> {
 
         { this.state.preview && 
         <AnimationPreview 
-          animation={this.props.animation} 
-          key={this.props.animation.id}
+          animation={animation} 
+          key={animation.id}
           size="gallery" 
           offColor="black"
         />
         }
+        <div style={style.bottomInfo}>{dateFmt(new Date(animation.creationDate * 1000))} </div>
         { this.props.handlePrimary &&
           <Tooltip title={tooltips[this.props.primaryAction]}>
             <Fab 
@@ -91,7 +132,6 @@ class AdminGalleryItem extends React.Component<Props, State> {
               color="primary" 
               onClick={() => { this.props.handlePrimary(animation) }}
               disabled={this.props.buttonsDisabled}
-              style={{top: '-8px'}}
             >
               { actionIcons[this.props.primaryAction] }
             </Fab>
@@ -104,7 +144,7 @@ class AdminGalleryItem extends React.Component<Props, State> {
               color="secondary" 
               onClick={() => { this.props.handleSecondary(animation) }}
               disabled={this.props.buttonsDisabled}
-              style={{top: '-8px', right: '-23px'}}
+              style={{ right: '-23px'}}
             >
               { actionIcons[this.props.secondaryAction] }
             </Fab>

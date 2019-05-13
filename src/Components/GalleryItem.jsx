@@ -15,8 +15,8 @@ const style = {
     height: '100px',
     display: 'flex', 
     alignItems: 'center',
-
     margin: '8px',
+    boxShadow: '7px 6px 2px lightgrey',
   },
   frame: {
     position: 'absolute',
@@ -91,7 +91,7 @@ class GalleryItem extends React.Component<Props, State> {
         }
         { this.state.playing && 
           <div style={style.overlay}>
-            <div style={{position: 'relative', left: '-50%', opacity: 0.32}}>
+            <div style={{position: 'relative', left: '-50%', opacity: 0.42}}>
               <Tooltip title={this.props.clickLabel}>
                 <Fab 
                   size="small" 
