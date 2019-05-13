@@ -48,7 +48,7 @@ class PublicGallery extends React.Component<Props, State> {
   }
 
   render() {
-    const { gallery } = this.props;
+    const gallery = this.props.gallery.valueSeq().sortBy(a => a.creationDate).reverse();
 
     if (gallery.size === 0) {
       return <center><h3>Loading...</h3></center>;

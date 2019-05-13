@@ -80,7 +80,9 @@ class AdminGallery extends React.Component<Props, State> {
 
   render() {
     const originalIds = this.props.gallery.valueSeq().map(anim => anim.originalId).toJS();
-    const adminGallery = this.props.adminGallery.valueSeq().filter((a) => (!a.originalId) && (a.reviewedAt || -1) < (a.modifiedAt || 1));
+    const adminGallery = this.props.adminGallery.valueSeq()
+      .filter((a) => (!a.originalId) && (a.reviewedAt || -1) < (a.modifiedAt || 1))
+      .sortBy(a => a.modifiedAt || a.creationDate).reverse();
     const gallery = this.props.gallery.valueSeq().sortBy(a => a.creationDate).reverse();
 
     return (
