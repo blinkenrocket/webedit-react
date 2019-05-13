@@ -28,7 +28,8 @@
   "menu": {
     "share": "Share",
     "transfer": "Transfer",
-    "new": "New",
+    "new": "Reset",
+    "newWarning": "Delete all animations?",
     "addAnimation": "New Animation",
     "addText": "New Text",
     "login": "Login",

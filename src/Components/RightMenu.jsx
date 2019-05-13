@@ -5,7 +5,6 @@ import { Link } from 'react-router';
 import { range } from 'lodash';
 import { reset } from 'Actions/animations';
 import { t } from 'i18next';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentLink from 'material-ui/svg-icons/content/link';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
@@ -122,7 +121,9 @@ class RightMenu extends React.Component<Props, State> {
   }
 
   new = () => {
-    this.props.resetAction();
+    if (confirm(t('menu.newWarning'))) {
+      this.props.resetAction();
+    }
   };
   
   authButton = ({ isSignedIn, user }) => {
@@ -190,7 +191,7 @@ class RightMenu extends React.Component<Props, State> {
           style={style.button}
           icon={<SocialShare />}
         />
-        <RaisedButton label={t('menu.new')} onClick={this.new} primary style={style.button} icon={<ContentAdd />} />
+        { !this.props.uid && <RaisedButton label={t('menu.new')} onClick={this.new} primary style={style.button} />}
         <RaisedButton
           label={t('menu.transfer')}
           onClick={this.transfer}
@@ -235,6 +236,7 @@ class RightMenu extends React.Component<Props, State> {
 }
 
 export default connect(state => ({
+  uid: state.uid,
   animations: state.animations
 }), {
   resetAction: reset,

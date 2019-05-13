@@ -28,7 +28,8 @@
   "menu": {
     "share": "Teilen",
     "transfer": "Übertragen",
-    "new": "Neu",
+    "new": "Reset",
+    "newWarning": "Alle Animationen löschen?",
     "addAnimation": "Neue Animation",
     "addText": "Neuer Text",
     "login": "Login",
