@@ -50,17 +50,17 @@ class PublicGallery extends React.Component<Props, State> {
   render() {
     const gallery = this.props.gallery.valueSeq().sortBy(a => a.creationDate).reverse();
 
-    if (gallery.size === 0) {
-      return <center><h3>Loading...</h3></center>;
-    }
     return (
       <App activeView="gallery" {...this.props} >
         <div style={style.canvas}>
-          <Gallery 
-            gallery={gallery} 
-            clickLabel={ t('gallery.copy_animation') }
-            onClick={this.copyAnimationToLibrary}
-          />
+          { gallery.size === 0 
+            ? <center><h3>Loading...</h3></center>
+            : <Gallery 
+                gallery={gallery} 
+                clickLabel={ t('gallery.copy_animation') }
+                onClick={this.copyAnimationToLibrary}
+              />
+          }
         </div>
       </App>
     );
