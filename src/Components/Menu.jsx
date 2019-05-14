@@ -10,6 +10,7 @@ import ImagePhotoLibrary from 'material-ui/svg-icons/image/photo-library';
 import AnimationInMenu from './AnimationInMenu';
 import { newAnimation, addAnimation, removeAnimation } from 'Actions/animations';
 import type { Animation } from 'Reducer';
+import { INITIAL_ANIMATION_TEXT } from '../variables';
 
 type Props = {
   animations?: Map<string, Animation>,
@@ -34,7 +35,7 @@ class Menu extends React.Component<Props> {
     const { animations } = this.props;
     var animation;
     if(animations.toList().size == 0) {
-      this.props.addAnimation(newAnimation('text', 'blinkenrocket.com'));
+      this.props.addAnimation(newAnimation('text', INITIAL_ANIMATION_TEXT));
     }
   }
 
