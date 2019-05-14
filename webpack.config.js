@@ -25,7 +25,7 @@ const plugins = [
     __DEV__: JSON.stringify(nodeEnv !== 'production'),
     __PROD__: JSON.stringify(nodeEnv === 'production'),
     CONFIG: JSON.stringify(config),
-    BASE_URL: JSON.stringify(`/${process.env.BASE_URL || ''}`),
+    BASE_URL: JSON.stringify(`${process.env.BASE_URL || ''}`),
   }),
   new HtmlWebpackPlugin({
     filename: 'index.html',

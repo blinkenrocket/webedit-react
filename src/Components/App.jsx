@@ -61,7 +61,7 @@ class Webedit extends React.Component<Props, State> {
       const decodedAnimation = JSON.parse(atob(encodedAnimation));
       decodedAnimation.id = UUID.create().toString();
       this.props.addAnimation(decodedAnimation);
-      this.props.router.push(`/${decodedAnimation.id}`);
+      this.props.router.push(`${BASE_URL}/${decodedAnimation.id}`);
     }
   }
 
@@ -93,7 +93,7 @@ class Webedit extends React.Component<Props, State> {
               <Menu 
                 active={activeView}
                 currentAnimationId={currentAnimationId}
-                navigate={(path) => this.props.router.push(path)}
+                navigate={(path) => this.props.router.push(`${BASE_URL}${path}`)}
               />
             </Drawer>
             { this.props.children }

@@ -80,7 +80,7 @@ class AdminGallery extends React.Component<Props, State> {
       this.props.loadAdminGallery();
       this.props.loadGallery();
     } else if (uid && admin === false) {
-      this.props.router.push('/gallery');
+      this.props.router.push(`${BASE_URL}/gallery`);
     }
   }
 

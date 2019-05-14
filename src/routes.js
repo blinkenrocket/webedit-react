@@ -7,8 +7,8 @@ import React from 'react';
 
 export default (
   <Router history={browserHistory}>
-    <Route path="/gallery" component={PublicGallery} />
-    <Route path="/gallery/admin" component={AdminGallery} />
-    <Route path="/(:animationId)" component={Webedit} />
+    <Route path={`${BASE_URL}/gallery`} component={PublicGallery} />
+    <Route path={`${BASE_URL}/gallery/admin`} component={AdminGallery} />
+    <Route path={`${BASE_URL}/(:animationId)`} component={Webedit} />
   </Router>
 );
