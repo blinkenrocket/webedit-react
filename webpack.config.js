@@ -68,7 +68,7 @@ module.exports = {
   output: {
     path: path.resolve('public'),
     filename: 'app-[hash].js',
-    publicPath: `/${process.env.BASE_URL || ''}`,
+    publicPath: `${process.env.BASE_URL || ''}`,
   },
   module: {
     rules: [
