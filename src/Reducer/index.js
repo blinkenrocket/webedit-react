@@ -32,6 +32,22 @@ export type State = {
   adminGallery: Map<string, Animation>
 };
 
+// Previously animations where stored in one, big localStore value which was 
+// updated for each edit. (incl de-/serialization of the entire data-structure). 
+// The new model saves each animation as its own entry, using a key-prefix. 
+// Since old users migth still have animations in their localStore using the old 
+// format, we're migrating them here so nothing gets lost. 
+const legacyAnimations = localStorage.getItem('animations');
+if (legacyAnimations) {
+  try {
+    Map(JSON.parse(legacyAnimations)).map(animation => {
+      localStorage.setItem(`animation:${animation.id}`, JSON.stringify(animation));
+    });
+    localStorage.removeItem('animations');
+  } catch (e) {
+    console.log('error migrating old animations:', e);
+  }
+}
 
 const initialAnimations = Object.keys(localStorage).reduce((animations, key) => {
   if (!key.startsWith('animation:')) {
