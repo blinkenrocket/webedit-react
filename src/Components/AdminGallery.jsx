@@ -108,7 +108,7 @@ class AdminGallery extends React.Component<Props, State> {
 
     return (
       <App 
-        activeView="gallery" 
+        activeView="admingallery" 
         {...this.props}
       >
         <div style={style.canvas}>

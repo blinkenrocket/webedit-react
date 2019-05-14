@@ -74,6 +74,14 @@ class Menu extends React.Component<Props> {
             style={(this.props.active === 'gallery') ? { backgroundColor: '#e0e0e0' } : {}}
             onClick={() => this.props.navigate('/gallery')}
           />
+          {this.props.admin && 
+          <ListItem
+            leftAvatar={<Avatar icon={<ImagePhotoLibrary />} />}
+            primaryText={'Admin Gallery'}
+            style={(this.props.active === 'admingallery') ? { backgroundColor: '#e0e0e0' } : {}}
+            onClick={() => this.props.navigate('/gallery/admin')}
+          />
+          }
           <Divider />
           {animations
             .map(animation => (
@@ -96,6 +104,7 @@ class Menu extends React.Component<Props> {
 export default connect(
   state => ({
     uid: state.uid,
+    admin: state.admin,
     animations: state.animations,
   }),
   { addAnimation, removeAnimation }
