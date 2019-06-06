@@ -3,30 +3,36 @@ import React from 'react';
 import Frame from './Frame';
 import AnimationPreview from './AnimationPreview';
 import { getFrameColumns } from '../utils';
-import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
 const style = {
   galleryItem: {
-    position: 'relative',
-    width: '100px',
-    height: '100px',
-    display: 'flex', 
     alignItems: 'center',
-    margin: '8px',
-    boxShadow: '7px 6px 2px lightgrey',
+    margin: '15px',
+  },
+  title: {
+    fontFamily: 'sans-serif',
+    fontSize: '12px',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    marginBottom: '4px',
+    width: '100px',
   },
   frame: {
-    position: 'absolute',
-    width: "100%",
-    height: "100%",
+    boxShadow: '7px 6px 2px lightgrey',
   },
   overlay: {
     position: 'absolute',
     left: '50%'
 
+  },
+  actionButton: {
+    marginTop: '10px',
+    width: '100%',
   }
 };
 
@@ -71,9 +77,13 @@ class GalleryItem extends React.Component<Props, State> {
         onMouseEnter={() => this.setState({playing: true})}
         onMouseLeave={() => this.setState({playing: false})}
       >
+        <div style={style.title} title={animation.name} alt={animation.name}>
+          { animation.name ? <b>{animation.name}</b> : <i>Untitled</i> } 
+        </div>
         { !this.state.playing && 
         <Frame
           columns={getFrameColumns(animation, animation.animation.currentFrame)}
+          onClick={() => this.setState({playing: true})}
           size={this.props.size}
           offColor="black"
           style={{...style.frame, opacity: 0.5 }}
@@ -87,23 +97,19 @@ class GalleryItem extends React.Component<Props, State> {
           size={this.props.size}
           style={style.frame}
           offColor="black"
+          onClick={() => this.setState({playing: false})}
         />
         }
-        { this.state.playing && 
-          <div style={style.overlay}>
-            <div style={{position: 'relative', left: '-50%', opacity: 0.42}}>
-              <Tooltip title={this.props.clickLabel}>
-                <Fab 
-                  size="small" 
-                  color="secondary" 
-                  onClick={() => { this.props.onClick(animation) }}
-                >
-                  { actionIcons[this.props.clickIcon] }
-                </Fab>
-              </Tooltip>
-            </div>
-          </div>
-        }
+        <Button 
+          size="small" 
+          variant="outlined"
+          color="primary" 
+          onClick={() => { this.props.onClick(animation) }}
+          style={style.actionButton}
+        >
+          { actionIcons[this.props.clickIcon] }
+          { this.props.clickLabel }
+        </Button>
       </div>
     );
   }

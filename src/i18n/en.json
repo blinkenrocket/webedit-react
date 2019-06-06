@@ -65,9 +65,9 @@
     "close": "Close"
   },
   "gallery": {
-    "copy_animation": "Copy to my Library"
+    "copy_animation": "Copy"
   },
   "admin_gallery": {
-    "unpublish": "Remove from public library"
+    "unpublish": "Remove"
   }
 }

@@ -65,9 +65,9 @@
     "close": "Schließen"
   },
   "gallery": {
-    "copy_animation": "Zu meinen Animationen hinzufuegen"
+    "copy_animation": "Kopieren"
   },
   "admin_gallery": {
-    "unpublish": "Von oeffentlicher Gallerie entfernen"
+    "unpublish": "Entfernen"
   }
 }

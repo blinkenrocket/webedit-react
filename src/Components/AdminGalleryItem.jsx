@@ -28,7 +28,7 @@ const style = {
     width: '100px',
   },
   bottomInfo: {
-    marginTop: '-4px',
+    marginTop: '1px',
     marginBottom: '16px',
     textAlign: 'center',
     fontFamily: 'monospace',

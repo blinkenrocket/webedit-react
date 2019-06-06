@@ -5,7 +5,8 @@ import Frame from './Frame';
 import type { Animation } from '../Reducer';
 
 type Props = {
-  animation: Animation
+  animation: Animation,
+  onClick?: Function
 };
 
 type State = {
@@ -105,6 +106,7 @@ export default class AnimationPreview extends React.Component<Props, State> {
       size={this.props.size} 
       offColor={this.props.offColor} 
       style={this.props.style} 
+      onClick={this.props.onClick}
       />
   }
 }
