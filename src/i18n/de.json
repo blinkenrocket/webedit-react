@@ -32,6 +32,9 @@
     "newWarning": "Alle Animationen löschen?",
     "addAnimation": "Neue Animation",
     "addText": "Neuer Text",
+    "gallery": "Galerie",
+    "admin_gallery": "Admin Galerie",
+    "clear_library": "Alle Löschen",
     "login": "Login",
     "logout": "Logout"
   },

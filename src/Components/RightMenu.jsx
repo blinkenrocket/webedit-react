@@ -2,7 +2,6 @@
 import { connect } from 'react-redux';
 import { Dialog, FlatButton, RaisedButton } from 'material-ui';
 import { range } from 'lodash';
-import { reset } from 'Actions/animations';
 import { t } from 'i18next';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
@@ -40,10 +39,6 @@ const style = {
     flex: '0 0 1',
     flexDirection: 'column',
   },
-};
-
-type Props = {
-  resetAction: typeof reset,
 };
 
 type State = {
@@ -89,12 +84,6 @@ class RightMenu extends React.Component<Props, State> {
     })
   }
 
-  new = () => {
-    if (confirm(t('menu.newWarning'))) {
-      this.props.resetAction();
-    }
-  };
-  
   authButton = ({ isSignedIn, user }) => {
     if (isSignedIn) {
       return [ 
@@ -145,7 +134,6 @@ class RightMenu extends React.Component<Props, State> {
 
     return (
       <div style={style.wrap}>
-        { !this.props.uid && <RaisedButton label={t('menu.new')} onClick={this.new} primary style={style.button} />}
         <RaisedButton
           label={t('menu.transfer')}
           onClick={this.transfer}
@@ -179,8 +167,5 @@ class RightMenu extends React.Component<Props, State> {
 }
 
 export default connect(state => ({
-  uid: state.uid,
   animations: state.animations
-}), {
-  resetAction: reset,
-})(RightMenu);
+}))(RightMenu);

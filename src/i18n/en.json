@@ -32,6 +32,9 @@
     "newWarning": "Delete all animations?",
     "addAnimation": "New Animation",
     "addText": "New Text",
+    "gallery": "Gallery",
+    "admin_gallery": "Admin Gallery",
+    "clear_library": "Delete All",
     "login": "Login",
     "logout": "Logout"
   },

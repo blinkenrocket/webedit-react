@@ -4,17 +4,20 @@ import { connect } from 'react-redux';
 import { t } from 'i18next';
 import Radium from 'radium';
 import type { Map } from 'immutable';
+import Button from '@material-ui/core/Button';
 import { Avatar, Divider, List, ListItem, Paper } from 'material-ui';
 import AddIcon from '@material-ui/icons/Add';
 import ImagePhotoLibrary from 'material-ui/svg-icons/image/photo-library';
 import AnimationInMenu from './AnimationInMenu';
-import { newAnimation, addAnimation, removeAnimation } from 'Actions/animations';
+import { newAnimation, addAnimation, removeAnimation, reset } from 'Actions/animations';
 import type { Animation } from 'Reducer';
 import { INITIAL_ANIMATION_TEXT } from '../variables';
 
 type Props = {
   animations?: Map<string, Animation>,
   addAnimation: typeof addAnimation,
+  removeAnimation: typeof removeAnimation,
+  reset: typeof reset,
 };
 
 const style = {
@@ -25,6 +28,12 @@ const style = {
   },
   list: {
     width: '100%',
+  },
+  reset: {
+    width: '100%', 
+    marginTop: '30px', 
+    minHeight: '34px', 
+    color: '#da1616'
   }
 };
 
@@ -42,6 +51,13 @@ class Menu extends React.Component<Props> {
   handleRemove = (animationId) => (
     this.props.removeAnimation(animationId, this.props.uid)
   )
+  
+  handleReset = () => {
+    if (confirm(t('menu.newWarning'))) {
+      this.props.reset();
+      this.props.navigate('/');
+    }
+  };
 
   addTextAnimation = () => {
     const { payload } = this.props.addAnimation(newAnimation('text'));
@@ -70,14 +86,14 @@ class Menu extends React.Component<Props> {
           />
           <ListItem
             leftAvatar={<Avatar icon={<ImagePhotoLibrary />} />}
-            primaryText={'Gallery'}
+            primaryText={t('menu.gallery')}
             style={(this.props.active === 'gallery') ? { backgroundColor: '#e0e0e0' } : {}}
             onClick={() => this.props.navigate('/gallery')}
           />
           {this.props.admin && 
           <ListItem
             leftAvatar={<Avatar icon={<ImagePhotoLibrary />} />}
-            primaryText={'Admin Gallery'}
+            primaryText={t('menu.admin_gallery')}
             style={(this.props.active === 'admingallery') ? { backgroundColor: '#e0e0e0' } : {}}
             onClick={() => this.props.navigate('/gallery/admin')}
           />
@@ -95,6 +111,16 @@ class Menu extends React.Component<Props> {
             ))
             .toList()
             .toArray()}
+          <Divider />
+          { !this.props.uid && 
+          <Button
+             size="small"
+             style={style.reset}
+             onClick={this.handleReset}
+           >
+            { t('menu.clear_library') }
+           </Button>
+          }
         </List>
       </Paper>
     );
@@ -107,5 +133,5 @@ export default connect(
     admin: state.admin,
     animations: state.animations,
   }),
-  { addAnimation, removeAnimation }
+  { addAnimation, removeAnimation, reset }
 )(Radium(Menu));
