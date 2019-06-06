@@ -87,7 +87,7 @@ class Menu extends React.Component<Props> {
             .map(animation => (
               <AnimationInMenu
                 selected={this.props.active === 'webedit' && animation.id === this.props.currentAnimationId}
-                key={animation.creationDate}
+                key={animation.id}
                 animation={animation}
                 onClick={() => { this.props.navigate(`/${animation.id}`) }}
                 onRemove={this.handleRemove}
