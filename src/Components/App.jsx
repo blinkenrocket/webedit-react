@@ -8,6 +8,9 @@ import UUID from 'uuid-js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import withWidth from 'material-ui/utils/withWidth';
+import Button from '@material-ui/core/Button';
+import Badge from '@material-ui/core/Badge';
+import MenuIcon from '@material-ui/icons/Menu';
 import { AppBar, Drawer } from 'material-ui';
 
 import Menu from './Menu';
@@ -36,6 +39,24 @@ const style = {
     display: 'flex',
     flex: '1 1 0',
   },
+  hamburger: {
+    badge: {
+      marginTop: 15, 
+      marginRight: 20 
+    },
+    button: {
+      padding: 12, 
+      marginTop: -15, 
+      marginRight: -20 
+    },
+    icon: {
+      height: 24,
+      width: 24,
+      display: 'inline-block',
+      color: 'white',
+      fill: 'white',
+    }
+  }
 };
 
 const muiTheme = getMuiTheme({});
@@ -73,6 +94,13 @@ class Webedit extends React.Component<Props, State> {
 
   render() {
     const { activeView, currentAnimationId } = this.props
+    const hamburger = (
+      <Badge badgeContent={this.props.animations.size} style={style.hamburger.badge} color="primary">
+        <Button style={style.hamburger.button}>
+          <MenuIcon style={style.hamburger.icon}/>
+        </Button>
+      </Badge>
+    );
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
@@ -80,6 +108,7 @@ class Webedit extends React.Component<Props, State> {
           <AppBar
             onLeftIconButtonClick={this.toggleDrawer}
             title={this.props.width > 1 ? t('headerTitle') : ''}
+            iconElementLeft={hamburger}
             iconStyleRight={style.appRight}
             iconElementRight={<RightMenu currentAnimationId={currentAnimationId}/>}
           />
@@ -104,5 +133,5 @@ class Webedit extends React.Component<Props, State> {
   }
 }
 
-export default connect(null, { addAnimation })(withWidth()(Webedit));
+export default connect(state => ({ animations: state.animations }), { addAnimation })(withWidth()(Webedit));
 
