@@ -4,7 +4,7 @@
   "description": "Webeditor for Blinkenrockets",
   "scripts": {
     "test": "npm run build && npm run lint && flow",
-    "gh-pages": "NODE_ENV=production BASE_URL=/webedit-react webpack",
+    "gh-pages": "NODE_ENV=production HOST=blinkenrocket.de BASE_URL=/webedit-react webpack",
     "start": "BABEL_ENV=hot webpack-dev-server --host 0.0.0.0 --hot --inline --progress --history-api-fallback --content-base public",
     "dev": "webpack-dashboard -- webpack-dev-server --host 0.0.0.0 --inline --content-base public/ --history-api-fallback --quiet",
     "lint": "eslint src/**/*.js && eslint src/**/*.jsx",
@@ -68,6 +68,7 @@
     "prop-types": "^15.6.0",
     "radium": "^0.19.6",
     "react": "^16.4.0",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.4.0",
     "react-redux": "^5.0.6",
     "react-router": "^3",

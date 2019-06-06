@@ -6,8 +6,10 @@ import { t } from 'i18next';
 import { List } from 'immutable';
 import { MAX_ANIMATION_FRAMES } from '../variables';
 
+import Button from '@material-ui/core/Button';
 import { FlatButton, Slider, TextField } from 'material-ui';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
+import SocialShare from 'material-ui/svg-icons/social/share';
 import AvSkipNext from 'material-ui/svg-icons/av/skip-next';
 import AvSkipPrevious from 'material-ui/svg-icons/av/skip-previous';
 import ContentContentCopy from 'material-ui/svg-icons/content/content-copy';
@@ -63,7 +65,8 @@ const MOUSE_MODE_ERASE = 'MOUSE_MODE_ERASE';
 
 type Props = {
   animation: Animation,
-  onUpdate: (Animation) => any
+  onUpdate: (Animation) => any,
+  onShare: (Animation) => any
 };
 
 type State = {
@@ -325,6 +328,15 @@ class PixelEditor extends React.Component<Props, State> {
 
     return (
       <div style={style.wrapper}>
+        <Button
+           size="small"
+           variant="outlined"
+           color="primary"
+           style={{alignSelf: 'flex-end', marginTop: '10px', marginBottom: '-20px', minHeight: '34px'}}
+           onClick={() => this.props.onShare(animation)}
+         >
+           {<SocialShare />} Share
+         </Button>
       <div>
       { playing && <AnimationPreview animation={animation} /> }
       { !playing && <Frame

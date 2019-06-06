@@ -7,11 +7,14 @@ import React from 'react';
 import AnimationPreview from './AnimationPreview';
 import font from 'font';
 import type { Animation } from 'Reducer';
+import Button from '@material-ui/core/Button';
+import SocialShare from 'material-ui/svg-icons/social/share';
 
 type Props = {
   animation: Animation,
   currentText?: ?string,
-  onUpdate: (Animation) => any
+  onUpdate: (Animation) => any,
+  onShare: (Animation) => any
 };
 
 type State = {
@@ -126,6 +129,15 @@ class TextEditor extends React.Component<Props, State> {
 
     return (
       <div style={style.wrapper}>
+        <Button
+           size="small"
+           variant="outlined"
+           color="primary"
+           style={{alignSelf: 'flex-end', marginTop: '10px', marginBottom: '-20px'}}
+           onClick={() => this.props.onShare(animation)}
+         >
+           {<SocialShare />} Share
+         </Button>
         <AnimationPreview animation={animation} />
         <Divider />
         <TextField

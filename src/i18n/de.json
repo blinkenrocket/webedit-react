@@ -61,7 +61,7 @@
   "share_dialog": {
     "title": "Animation teilen",
     "instructions": "Gebe diesen Link weiter, um deine Animation zu teilen. Beim Aufrufen des Links wird diese automatisch importiert.",
-    "link": "klickediklick",
+        "link": "Link in Zwischenablage kopieren",
     "close": "Schließen"
   },
   "gallery": {

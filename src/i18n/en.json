@@ -61,7 +61,7 @@
   "share_dialog": {
     "title": "Share",
     "instructions": "Using this link you can share your animation. It'll be automatically imported when opening the link.",
-    "link": "clickediclick",
+    "link": "Copy link to clipboard",
     "close": "Close"
   },
   "gallery": {

@@ -1,18 +1,15 @@
 /* @flow */
 import { connect } from 'react-redux';
 import { Dialog, FlatButton, RaisedButton } from 'material-ui';
-import { Link } from 'react-router';
 import { range } from 'lodash';
 import { reset } from 'Actions/animations';
 import { t } from 'i18next';
-import ContentLink from 'material-ui/svg-icons/content/link';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import PropTypes from 'prop-types';
 import Radium from 'radium';
 import React from 'react';
-import SocialShare from 'material-ui/svg-icons/social/share';
 import transfer from 'Services/flash';
 import AuthDialog from './AuthDialog';
 import firebase from '../firebase';
@@ -22,7 +19,6 @@ import { loggedOut } from '../Actions/auth';
 
 const style = {
   button: {
-    margin: 12,
   },
   wrap: {
     alignSelf: 'center',
@@ -52,18 +48,14 @@ type Props = {
 
 type State = {
   transferWidgetOpen: boolean,
-  authWidgetOpen: boolean,
-  shareWidgetOpen: boolean,
-  shareString: string,
+  authWidgetOpen: boolean
 };
 
 @Radium
 class RightMenu extends React.Component<Props, State> {
   state: State = {
     transferWidgetOpen: false,
-    authWidgetOpen: false,
-    shareWidgetOpen: false,
-    shareString: '',
+    authWidgetOpen: false
   };
   static contextTypes = {
     store: PropTypes.object.isRequired,
@@ -89,30 +81,7 @@ class RightMenu extends React.Component<Props, State> {
     });
   };
 
-  share = () => {
-    const { animations, currentAnimationId } = this.props
-    const selectedAnimation = animations.get(currentAnimationId);
-    const encodedAnimation = btoa(JSON.stringify(selectedAnimation));
 
-    const shareUrl = encodedAnimation;
-
-    if (!selectedAnimation) {
-      return;
-    }
-
-    if (this.context.store.getState().animations.size > 0) {
-      this.setState({
-        shareWidgetOpen: true,
-        shareString: shareUrl,
-      });
-    }
-  };
-
-  closeShare = () => {
-    this.setState({
-      shareWidgetOpen: false,
-    });
-  };
   
   logout = () => {
     firebase.auth().signOut().then(() => {
@@ -131,6 +100,7 @@ class RightMenu extends React.Component<Props, State> {
       return [ 
         <RaisedButton
           key="logout"
+          size="small"
           primary
           label={t('menu.logout') + ' ' + user.email}
           onClick={this.logout}
@@ -142,6 +112,7 @@ class RightMenu extends React.Component<Props, State> {
       return [ 
         <RaisedButton
           key="openauth"
+          size="small"
           primary
           label={t('menu.login')}
           onClick={() => this.setState({authWidgetOpen: true})}
@@ -170,31 +141,15 @@ class RightMenu extends React.Component<Props, State> {
       />,
     ];
 
-    const shareActions = [
-      <FlatButton
-        key="c"
-        label={t('share_dialog.close')}
-        primary
-        onClick={this.closeShare}
-        icon={<NavigationClose />}
-      />,
-    ];
-
     const flashInstructions = range(4).map(i => `${i + 1}. ${t(`transfer_dialog.instructions${i}`)}`);
 
     return (
       <div style={style.wrap}>
-        <RaisedButton
-          label={t('menu.share')}
-          onClick={this.share}
-          primary
-          style={style.button}
-          icon={<SocialShare />}
-        />
         { !this.props.uid && <RaisedButton label={t('menu.new')} onClick={this.new} primary style={style.button} />}
         <RaisedButton
           label={t('menu.transfer')}
           onClick={this.transfer}
+          size="small"
           primary
           style={style.button}
           icon={<ContentSend />}
@@ -216,18 +171,6 @@ class RightMenu extends React.Component<Props, State> {
           </ul>
         </Dialog>
 
-        <Dialog
-          title={t('share_dialog.title')}
-          actions={shareActions}
-          modal
-          autoScrollBodyContent
-          open={this.state.shareWidgetOpen}
-        >
-          <p>{t('share_dialog.instructions')}</p>
-          <Link to={{ pathname: `${BASE_URL}/`, query: { s: this.state.shareString } }}>
-            <RaisedButton label={t('share_dialog.link')} primary keyboardFocused icon={<ContentLink />} />
-          </Link>
-        </Dialog>
 
         <AuthDialog isOpen={this.state.authWidgetOpen} close={() => this.setState({authWidgetOpen: false})} />
       </div>
