@@ -44,7 +44,7 @@ class PublicGallery extends React.Component<Props, State> {
       }
     );
 
-    this.props.addAnimation(animation, this.props.uid);
+    this.props.addAnimation(cleaned, this.props.uid);
   }
 
   render() {
