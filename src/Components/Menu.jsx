@@ -84,6 +84,9 @@ class Menu extends React.Component<Props> {
           }
           <Divider />
           {animations
+            .sort((animation1, animation2) => {
+              return animation1.creationDate >= animation2.creationDate
+            })
             .map(animation => (
               <AnimationInMenu
                 selected={this.props.active === 'webedit' && animation.id === this.props.currentAnimationId}

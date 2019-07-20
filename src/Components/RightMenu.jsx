@@ -81,7 +81,11 @@ class RightMenu extends React.Component<Props, State> {
     this.setState({
       transferWidgetOpen: false,
     });
-    transfer(this.context.store.getState().animations);
+    transfer(this.context.store.getState().animations
+      .sort((animation1, animation2) => {
+        return animation1.creationDate >= animation2.creationDate
+      })
+    );
   };
   cancelTransfer = () => {
     this.setState({
