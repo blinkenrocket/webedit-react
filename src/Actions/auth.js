@@ -19,7 +19,7 @@ export const syncLibrary = createAction('UPSERT_ANIMATIONS', async (uid, localLi
   ), Map());
 
   // store all remote animations locally
-  remoteLib.map(animation => { 
+  remoteLib.map(animation => {
     localStorage.setItem(`animation:${animation.id}`, JSON.stringify(animation));
   })
 
@@ -32,8 +32,8 @@ export const syncLibrary = createAction('UPSERT_ANIMATIONS', async (uid, localLi
 export const signedUp = createAction('LOGIN', (uid, localLib) => {
   const lib = localLib.filterNot(a => a.text === INITIAL_ANIMATION_TEXT);
   //TODO add more signup context. last login referrer etc
-  DB.collection('users').doc(uid).set({active: true }, {merge: true});
-  saveAnimationsToRemote(uid, lib);
+  DB.collection('users').doc(uid).set({active: true})
+    .then(() => {saveAnimationsToRemote(uid, lib)})
+    .catch((err) => {console.log("error during signup: ", err)});
   return { uid, admin: false };
 });
-//

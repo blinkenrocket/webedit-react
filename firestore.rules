@@ -16,9 +16,7 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     match /users/{uid} {
-      allow create: if !signedIn();
-      allow read: if isUser(uid) || isAdmin();  
-      allow update: if isAdmin() || (isUser(uid) && !("admin" in request.resource.data));
+      allow create, read, update: if isAdmin() || (isUser(uid) && !("admin" in request.resource.data));
 
       match /animations/{animationId} {
       	allow read, write: if isUser(uid) || isAdmin();
