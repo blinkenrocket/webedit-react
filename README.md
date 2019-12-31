@@ -26,6 +26,16 @@ Clone the Git repository, and change into the project directory.
 Now you can access the web interface via http://127.0.0.1:8080
 
 
+#### Deployment
+
+The [production release](https://editor.blinkenrocket.de) is hosted at Firebase. To deploy a new version, execute the following commands on your local machine:
+
+  $ FIREBASE_PROJECT_ID='blinkenrocket' FIREBASE_API_KEY='<api key>' FIREBASE_AUTH_DOMAIN='editor.blinkenrocket.de' yarn build-firebase
+  $ firebase login
+  $ firebase deploy -m "some explanation what this release changes"
+
+
+
 ## Notes
 
 * if you want to test the interface from other devices use `webpack-dev-server --host <ip-adress-of-your-computer>`
@@ -40,3 +50,4 @@ Now you can access the web interface via http://127.0.0.1:8080
 * Chris Veigl (https://github.com/ChrisVeigl)
 * Overflo (https://github.com/overflo23)
 * Chris Hager (https://github.com/metachris)
+* Flo Lauber (https://github.com/sushimako)

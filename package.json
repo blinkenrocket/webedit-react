@@ -8,6 +8,7 @@
     "start": "BABEL_ENV=hot webpack-dev-server --host 0.0.0.0 --hot --inline --progress --history-api-fallback --content-base public",
     "dev": "webpack-dashboard -- webpack-dev-server --host 0.0.0.0 --inline --content-base public/ --history-api-fallback --quiet",
     "lint": "eslint src/**/*.js && eslint src/**/*.jsx",
+    "build-firebase": "NODE_ENV=production HOST=editor.blinkenrocket.de webpack",
     "build": "webpack"
   },
   "repository": {
@@ -59,6 +60,7 @@
     "@react-firebase/auth": "^0.2.9",
     "babel-polyfill": "^6.7.4",
     "firebase": "^6.0.2",
+    "firebase-tools": "^7.11.0",
     "font-awesome": "^4.7.0",
     "i18next": "10.2.1",
     "immutable": "^4.0.0-rc.9",
