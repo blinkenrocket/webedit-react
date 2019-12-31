@@ -27,7 +27,7 @@ class ShareWidget extends React.Component<Props, State> {
     if (!animation) {
       return null;
     }
-    const url = `${HOST}${BASE_URL}/s=${shareString}`;
+    const url = `${HOST}${BASE_URL}/?s=${shareString}`;
 
     return (
         <Dialog

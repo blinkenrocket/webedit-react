@@ -79,7 +79,7 @@ class Webedit extends React.Component<Props, State> {
     const encodedAnimation = this.props.location.query.s;
 
     if (encodedAnimation) {
-      const decodedAnimation = JSON.parse(atob(encodedAnimation));
+      const decodedAnimation = JSON.parse(atob(decodeURIComponent(encodedAnimation)));
       decodedAnimation.id = UUID.create().toString();
       this.props.addAnimation(decodedAnimation);
       this.props.router.push(`${BASE_URL}/${decodedAnimation.id}`);
