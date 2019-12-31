@@ -29,11 +29,11 @@ Now you can access the web interface via http://127.0.0.1:8080
 #### Deployment
 
 The [production release](https://editor.blinkenrocket.de) is hosted at Firebase. To deploy a new version, execute the following commands on your local machine:
-
+```
   $ FIREBASE_PROJECT_ID='blinkenrocket' FIREBASE_API_KEY='<api key>' FIREBASE_AUTH_DOMAIN='editor.blinkenrocket.de' yarn build-firebase
   $ firebase login
   $ firebase deploy -m "some explanation what this release changes"
-
+```
 
 
 ## Notes
