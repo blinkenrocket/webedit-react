@@ -133,7 +133,7 @@ class TextEditor extends React.Component<Props, State> {
            size="small"
            variant="outlined"
            color="primary"
-           style={{alignSelf: 'flex-end', marginTop: '10px', marginBottom: '-20px'}}
+           style={{alignSelf: 'flex-end', marginTop: '10px', marginBottom: '-20px', minHeight: '34px'}}
            onClick={() => this.props.onShare(animation)}
          >
            {<SocialShare />} Share
