@@ -35,6 +35,9 @@ const style = {
     padding: 20,
     cursor: 'default',
   },
+  frameRate: {
+    fontFamily: 'Roboto, sans-serif',
+  },
   buttonWrapper: {
     marginBottom: 15,
   },
@@ -42,6 +45,7 @@ const style = {
     display: 'flex',
     alignItems: 'center',
     marginBottom: 15,
+    fontFamily: 'Roboto, sans-serif',
   },
   slider: {
     marginTop: 0,
@@ -348,7 +352,7 @@ class PixelEditor extends React.Component<Props, State> {
           />
       }
       </div>
-      <div>
+      <div style={style.frameRate}>
         <FlatButton primary onClick={() => { this.setState(s => ({playing: !s.playing}))}} style={style.buttons} icon={(playing) ? <AvPauseCircleOutline /> : <AvPlayCircleOutline />} />
         Frame {animation.animation.currentFrame + 1} / {animation.animation.frames}
       </div>
