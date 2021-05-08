@@ -65,7 +65,7 @@
     "i18next": "10.2.1",
     "immutable": "^4.0.0-rc.9",
     "ios-safe-audio-context": "^1.0.1",
-    "lodash": "^4.11.1",
+    "lodash": "^4.17.21",
     "material-ui": "0.20.0",
     "prop-types": "^15.6.0",
     "radium": "^0.19.6",
